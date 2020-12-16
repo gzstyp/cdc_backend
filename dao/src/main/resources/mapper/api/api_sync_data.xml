@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="api_sync_data">
+
+    <!-- 获取人群分类基础数据 -->
+    <select id="getCrowdCategory" resultType="HashMap" parameterType="HashMap">
+        select kid,name from bs_crowd order by name
+    </select>
+
+    <!-- 获取人群类型 -->
+    <select id="getCrowdType" resultType="HashMap" parameterType="HashMap">
+        select kid,crowd_id,name from bs_crowd_type order by name
+    </select>
+
+    <!-- 获取经营场所数据 -->
+    <select id="getManagerArea" resultType="HashMap" parameterType="HashMap">
+        select kid,site_name,site_letter from bs_manage where area_id = #{areaId} order by site_letter
+    </select>
+
+</mapper>

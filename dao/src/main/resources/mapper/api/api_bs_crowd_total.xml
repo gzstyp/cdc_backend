@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="api_bs_crowd_total">
+
+    <sql id="sql_select">
+        <if test="area_level != null">area_level,</if>
+        <if test="city_id != null">city_id,</if>
+        <if test="county_id != null">county_id,</if>
+        <if test="craete_userid != null">craete_userid,</if>
+        <if test="create_date != null">create_date,</if>
+        <if test="crowd_date != null">crowd_date,</if>
+        <if test="crowd_id != null">crowd_id,</if>
+        <if test="crowd_type_id != null">crowd_type_id,</if>
+        <if test="detection_total != null">detection_total,</if>
+        <if test="kid != null">kid,</if>
+        <if test="masculine_total != null">masculine_total,</if>
+        <if test="modify_date != null">modify_date,</if>
+        <if test="modify_userid != null">modify_userid,</if>
+        <if test="province_id != null">province_id,</if>
+        <if test="sampling_total != null">sampling_total</if>
+    </sql>
+
+    <sql id="sql_column">
+        area_level,
+        city_id,
+        county_id,
+        craete_userid,
+        create_date,
+        crowd_date,
+        crowd_id,
+        crowd_type_id,
+        detection_total,
+        kid,
+        masculine_total,
+        modify_date,
+        modify_userid,
+        province_id,
+        sampling_total
+    </sql>
+
+    <!-- 添加数据 -->
+    <update id="add" parameterType="HashMap">
+        INSERT IGNORE INTO BS_CROWD_TOTAL (
+        <trim suffixOverrides=",">
+            <if test="area_level != null">area_level,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="crowd_date != null">crowd_date,</if>
+            <if test="crowd_id != null">crowd_id,</if>
+            <if test="crowd_type_id != null">crowd_type_id,</if>
+            <if test="detection_total != null">detection_total,</if>
+            <if test="kid != null">kid,</if>
+            <if test="masculine_total != null">masculine_total,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="sampling_total != null">sampling_total</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+			<if test="area_level != null">#{area_level},</if>
+			<if test="city_id != null">#{city_id},</if>
+			<if test="county_id != null">#{county_id},</if>
+			<if test="craete_userid != null">#{craete_userid},</if>
+			<if test="create_date != null">#{create_date},</if>
+			<if test="crowd_date != null">#{crowd_date},</if>
+			<if test="crowd_id != null">#{crowd_id},</if>
+			<if test="crowd_type_id != null">#{crowd_type_id},</if>
+			<if test="detection_total != null">#{detection_total},</if>
+			<if test="kid != null">#{kid},</if>
+			<if test="masculine_total != null">#{masculine_total},</if>
+			<if test="modify_date != null">#{modify_date},</if>
+			<if test="modify_userid != null">#{modify_userid},</if>
+			<if test="province_id != null">#{province_id},</if>
+			<if test="sampling_total != null">#{sampling_total}</if>
+        </trim>
+        )
+    </update>
+
+    <select id="queryExistById" resultType="String" parameterType="String">
+        SELECT kid FROM BS_CROWD_TOTAL WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+    <!-- 基于主键kid的存在就更新,否则新增操作 -->
+    <update id="updateOrEdit" parameterType="HashMap">
+        INSERT IGNORE INTO BS_CROWD_TOTAL (
+        <trim suffixOverrides=",">
+            <if test="area_level != null">area_level,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="flag != null">flag,</if>
+            <if test="crowd_date != null">crowd_date,</if>
+            <if test="crowd_id != null">crowd_id,</if>
+            <if test="crowd_type_id != null">crowd_type_id,</if>
+            <if test="detection_total != null">detection_total,</if>
+            <if test="kid != null">kid,</if>
+            <if test="masculine_total != null">masculine_total,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="sampling_total != null">sampling_total</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="area_level != null">#{area_level},</if>
+            <if test="city_id != null">#{city_id},</if>
+            <if test="county_id != null">#{county_id},</if>
+            <if test="craete_userid != null">#{craete_userid},</if>
+            <if test="create_date != null">#{create_date},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="crowd_date != null">#{crowd_date},</if>
+            <if test="crowd_id != null">#{crowd_id},</if>
+            <if test="crowd_type_id != null">#{crowd_type_id},</if>
+            <if test="detection_total != null">#{detection_total},</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="masculine_total != null">#{masculine_total},</if>
+            <if test="modify_date != null">#{modify_date},</if>
+            <if test="modify_userid != null">#{modify_userid},</if>
+            <if test="province_id != null">#{province_id},</if>
+            <if test="sampling_total != null">#{sampling_total}</if>
+        </trim>
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
+            <if test="create_date != null">create_date = #{create_date},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="crowd_date != null">crowd_date = #{crowd_date},</if>
+            <if test="crowd_id != null">crowd_id = #{crowd_id},</if>
+            <if test="crowd_type_id != null">crowd_type_id = #{crowd_type_id},</if>
+            <if test="detection_total != null">detection_total = #{detection_total},</if>
+            <if test="masculine_total != null">masculine_total = #{masculine_total},</if>
+            <if test="modify_date != null">modify_date = #{modify_date},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="sampling_total != null">sampling_total = #{sampling_total}</if>
+        </trim>
+    </update>
+
+    <!-- 基于主键kid的批量插入还是批量更新操作 VALUES (字段) VALUES内是数据库的字段，而不是实体的字段或map的key -->
+    <update id="updateEditBatch" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_CROWD_TOTAL (
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                    <if test="item.area_level != null">area_level,</if>
+                    <if test="item.city_id != null">city_id,</if>
+                    <if test="item.county_id != null">county_id,</if>
+                    <if test="item.craete_userid != null">craete_userid,</if>
+                    <if test="item.create_date != null">create_date,</if>
+                    <if test="item.flag != null">flag,</if>
+                    <if test="item.crowd_date != null">crowd_date,</if>
+                    <if test="item.crowd_id != null">crowd_id,</if>
+                    <if test="item.crowd_type_id != null">crowd_type_id,</if>
+                    <if test="item.detection_total != null">detection_total,</if>
+                    <if test="item.kid != null">kid,</if>
+                    <if test="item.masculine_total != null">masculine_total,</if>
+                    <if test="item.modify_date != null">modify_date,</if>
+                    <if test="item.modify_userid != null">modify_userid,</if>
+                    <if test="item.province_id != null">province_id,</if>
+                    <if test="item.sampling_total != null">sampling_total</if>
+                </if>
+            </trim>
+        </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.flag != null">#{item.flag},</if>
+                <if test="item.crowd_date != null">#{item.crowd_date},</if>
+                <if test="item.crowd_id != null">#{item.crowd_id},</if>
+                <if test="item.crowd_type_id != null">#{item.crowd_type_id},</if>
+                <if test="item.detection_total != null">#{item.detection_total},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.masculine_total != null">#{item.masculine_total},</if>
+                <if test="item.modify_date != null">#{item.modify_date},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.sampling_total != null">#{item.sampling_total}</if>
+            </trim>
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                <if test="item.area_level != null">area_level = values(area_level),</if>
+                <if test="item.city_id != null">city_id = values(city_id),</if>
+                <if test="item.county_id != null">county_id = values(county_id),</if>
+                <if test="item.craete_userid != null">craete_userid = values(craete_userid),</if>
+                <if test="item.create_date != null">create_date = values(create_date),</if>
+                <if test="item.flag != null">flag = values(flag),</if>
+                <if test="item.crowd_date != null">crowd_date = values(crowd_date),</if>
+                <if test="item.crowd_id != null">crowd_id = values(crowd_id),</if>
+                <if test="item.crowd_type_id != null">crowd_type_id = values(crowd_type_id),</if>
+                <if test="item.detection_total != null">detection_total = values(detection_total),</if>
+                <if test="item.kid != null">kid = values(kid),</if>
+                <if test="item.masculine_total != null">masculine_total = values(masculine_total),</if>
+                <if test="item.modify_date != null">modify_date = values(modify_date),</if>
+                <if test="item.modify_userid != null">modify_userid = values(modify_userid),</if>
+                <if test="item.province_id != null">province_id = values(province_id),</if>
+                <if test="item.sampling_total != null">sampling_total = values(sampling_total)</if>
+                </if>
+            </trim>
+        </foreach>
+    </update>
+
+    <!-- 批量添加|插入-->
+    <update id="batchAdd" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_CROWD_TOTAL (
+            <foreach collection="list" item="item" index="index">
+                <trim suffixOverrides=",">
+                    <if test="index==0">
+                        <if test="item.area_level != null">area_level,</if>
+                        <if test="item.city_id != null">city_id,</if>
+                        <if test="item.county_id != null">county_id,</if>
+                        <if test="item.craete_userid != null">craete_userid,</if>
+                        <if test="item.create_date != null">create_date,</if>
+                        <if test="item.crowd_date != null">crowd_date,</if>
+                        <if test="item.crowd_id != null">crowd_id,</if>
+                        <if test="item.crowd_type_id != null">crowd_type_id,</if>
+                        <if test="item.detection_total != null">detection_total,</if>
+                        <if test="item.kid != null">kid,</if>
+                        <if test="item.masculine_total != null">masculine_total,</if>
+                        <if test="item.modify_date != null">modify_date,</if>
+                        <if test="item.modify_userid != null">modify_userid,</if>
+                        <if test="item.province_id != null">province_id,</if>
+                        <if test="item.sampling_total != null">sampling_total</if>
+                    </if>
+                </trim>
+            </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.crowd_date != null">#{item.crowd_date},</if>
+                <if test="item.crowd_id != null">#{item.crowd_id},</if>
+                <if test="item.crowd_type_id != null">#{item.crowd_type_id},</if>
+                <if test="item.detection_total != null">#{item.detection_total},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.masculine_total != null">#{item.masculine_total},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.sampling_total != null">#{item.sampling_total}</if>
+            </trim>
+            )
+        </foreach>
+    </update>
+
+	<!-- 编辑数据 -->
+	<update id="edit" parameterType="HashMap">
+		UPDATE IGNORE BS_CROWD_TOTAL
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="crowd_id != null">crowd_id = #{crowd_id},</if>
+            <if test="crowd_type_id != null">crowd_type_id = #{crowd_type_id},</if>
+            <if test="detection_total != null">detection_total = #{detection_total},</if>
+            <if test="masculine_total != null">masculine_total = #{masculine_total},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="sampling_total != null">sampling_total = #{sampling_total},</if>
+            modify_date = now()
+		</trim>
+		WHERE kid = #{kid} LIMIT 1
+	</update>
+
+    <!-- 根据id查询对应的数据 -->
+    <select id="queryById" parameterType="String" resultType="HashMap">
+        SELECT
+            area_level,
+            city_id,
+            county_id,
+            craete_userid,
+            create_date,
+            crowd_date,
+            crowd_id,
+            flag,
+            crowd_type_id,
+            detection_total,
+            masculine_total,
+            modify_date,
+            modify_userid,
+            province_id,
+            sampling_total
+        FROM BS_CROWD_TOTAL WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+	<!-- 行删除 -->
+	<delete id="delById" parameterType="String">
+		DELETE FROM BS_CROWD_TOTAL WHERE kid = #{kid} LIMIT 1
+	</delete>
+	
+	<!-- 删除|批量删除-->
+	<delete id="delByKeys" parameterType="ArrayList">
+		DELETE FROM BS_CROWD_TOTAL WHERE 
+			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
+
+    <!-- 审批审核后提交更新 -->
+    <update id="editBatchAudit" parameterType="HashMap">
+        update bs_crowd_total set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
+        <foreach item="item" index="index" collection="listIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+	
+	<!-- listData条件查询 -->
+	<sql id="sql_where_listData">
+		<trim prefix="WHERE" prefixOverrides="AND">
+            <if test="crowd_type_id != null">
+                AND crowd_type_id LIKE CONCAT('%',#{crowd_type_id},'%')
+            </if>
+            <if test="crowd_id != null">
+                AND crowd_id LIKE CONCAT('%',#{crowd_id},'%')
+            </if>
+            <if test="craete_userid != null">
+                AND craete_userid LIKE CONCAT('%',#{craete_userid},'%')
+            </if>
+		</trim>
+	</sql>
+	
+	<!-- 列表数据 -->
+	<select id="listData" parameterType="HashMap" resultType="HashMap">
+		SELECT
+            kid,
+			area_level,
+			county_id,
+			city_id,
+            flag,
+			craete_userid,
+			create_date,
+			crowd_date,
+			crowd_id,
+			crowd_type_id,
+			detection_total,
+			masculine_total,
+			modify_date,
+			modify_userid,
+			province_id,
+			sampling_total
+		FROM BS_CROWD_TOTAL
+		<include refid="sql_where_listData"/>
+		<choose>
+    	<when test="order != null and column != null">
+    		ORDER BY ${column} ${order}
+    	</when>
+    	<otherwise>
+        </otherwise>
+        </choose>
+        <if test="section != null and pageSize != null">
+        	LIMIT #{section},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 总条数总记录数 -->
+	<select id="listTotal" parameterType="HashMap" resultType="Integer">
+		SELECT COUNT(kid) TOTAL FROM BS_CROWD_TOTAL
+		<include refid="sql_where_listData"/>
+        LIMIT 1
+	</select>
+
+</mapper>

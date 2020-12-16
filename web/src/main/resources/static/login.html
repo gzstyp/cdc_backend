@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录认证</title>
+    <style type="text/css">
+        *{
+            padding:0;
+            margin:0;
+        }
+        a:link,a:visited,a:hover,a:active{
+            text-decoration: none;
+            outline:none;
+        }
+        .inputStyle{
+            text-decoration: none;
+            outline:none;
+            height:28px;
+            line-height:28px;
+            width:300px;
+        }
+        .btn{
+            border:0;color:#fff;
+            padding:4px 8px;
+            cursor:pointer;
+            width:100%;
+            background-color:#1f9df1;
+        }
+    </style>
+</head>
+<body>
+    <form action="/login" method="post">
+        <table>
+            <tr>
+                <td>登录账号</td>
+                <td><input class="inputStyle" type="text" value="root" name="username"/></td>
+            </tr>
+            <tr>
+                <td>登录密码</td>
+                <td><input class="inputStyle" type="password" value="123" name="password"/></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="登录,其接口是/loginAuth" class="btn">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <a href="/exit">退出</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
+    采用 UsernamePasswordAuthenticationFilter 之后对请求的参数就没有要求了。即无需设置<br/>
+    .usernameParameter("userName")//请求时登录账号参数名,即表单的name,若使用了request.getInputStream()，则不好使!!!<br/>
+    .passwordParameter("password")//登录密码参数名,若使用了request.getInputStream()，则不好使!!!<br/>
+</body>
+</html>

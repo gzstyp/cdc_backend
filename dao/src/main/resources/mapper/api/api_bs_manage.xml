@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="api_bs_manage">
+
+    <sql id="sql_select">
+        <if test="address != null">address,</if>
+        <if test="area_level != null">area_level,</if>
+        <if test="area_id != null">area_id,</if>
+        <if test="audit_user != null">audit_user,</if>
+        <if test="city_id != null">city_id,</if>
+        <if test="county_id != null">county_id,</if>
+        <if test="craete_userid != null">craete_userid,</if>
+        <if test="create_date != null">create_date,</if>
+        <if test="entrance != null">entrance,</if>
+        <if test="flag != null">flag,</if>
+        <if test="freeze != null">freeze,</if>
+        <if test="kid != null">kid,</if>
+        <if test="linkman != null">linkman,</if>
+        <if test="mobile != null">mobile,</if>
+        <if test="modify_date != null">modify_date,</if>
+        <if test="modify_userid != null">modify_userid,</if>
+        <if test="province_id != null">province_id,</if>
+        <if test="remark != null">remark,</if>
+        <if test="risk != null">risk,</if>
+        <if test="site_letter != null">site_letter,</if>
+        <if test="site_name != null">site_name</if>
+    </sql>
+
+    <sql id="sql_column">
+        address,
+        area_level,
+        area_id,
+        audit_user,
+        city_id,
+        county_id,
+        craete_userid,
+        create_date,
+        entrance,
+        flag,
+        freeze,
+        kid,
+        linkman,
+        mobile,
+        modify_date,
+        modify_userid,
+        province_id,
+        remark,
+        risk,
+        site_letter,
+        site_name
+    </sql>
+
+    <!-- 添加数据 -->
+    <update id="add" parameterType="HashMap">
+        INSERT IGNORE INTO BS_MANAGE (
+        <trim suffixOverrides=",">
+            <if test="address != null">address,</if>
+            <if test="area_level != null">area_level,</if>
+            <if test="area_id != null">area_id,</if>
+            <if test="audit_user != null">audit_user,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="entrance != null">entrance,</if>
+            <if test="flag != null">flag,</if>
+            <if test="freeze != null">freeze,</if>
+            <if test="kid != null">kid,</if>
+            <if test="linkman != null">linkman,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="risk != null">risk,</if>
+            <if test="site_letter != null">site_letter,</if>
+            <if test="site_name != null">site_name</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+			<if test="address != null">#{address},</if>
+			<if test="area_level != null">#{area_level},</if>
+			<if test="area_id != null">#{area_id},</if>
+			<if test="audit_user != null">#{audit_user},</if>
+			<if test="city_id != null">#{city_id},</if>
+			<if test="county_id != null">#{county_id},</if>
+			<if test="craete_userid != null">#{craete_userid},</if>
+			<if test="create_date != null">#{create_date},</if>
+			<if test="entrance != null">#{entrance},</if>
+			<if test="flag != null">#{flag},</if>
+			<if test="freeze != null">#{freeze},</if>
+			<if test="kid != null">#{kid},</if>
+			<if test="linkman != null">#{linkman},</if>
+			<if test="mobile != null">#{mobile},</if>
+			<if test="modify_date != null">#{modify_date},</if>
+			<if test="modify_userid != null">#{modify_userid},</if>
+			<if test="province_id != null">#{province_id},</if>
+			<if test="remark != null">#{remark},</if>
+			<if test="risk != null">#{risk},</if>
+			<if test="site_letter != null">#{site_letter},</if>
+			<if test="site_name != null">#{site_name}</if>
+        </trim>
+        )
+    </update>
+
+    <select id="queryExistById" resultType="String" parameterType="String">
+        SELECT kid FROM BS_MANAGE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+    <!-- 基于主键kid的存在就更新,否则新增操作 -->
+    <update id="updateOrEdit" parameterType="HashMap">
+        INSERT IGNORE INTO BS_MANAGE (
+        <trim suffixOverrides=",">
+            <if test="address != null">address,</if>
+            <if test="area_level != null">area_level,</if>
+            <if test="area_id != null">area_id,</if>
+            <if test="audit_user != null">audit_user,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="entrance != null">entrance,</if>
+            <if test="flag != null">flag,</if>
+            <if test="freeze != null">freeze,</if>
+            <if test="kid != null">kid,</if>
+            <if test="linkman != null">linkman,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="risk != null">risk,</if>
+            <if test="site_letter != null">site_letter,</if>
+            <if test="site_name != null">site_name</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="address != null">#{address},</if>
+            <if test="area_level != null">#{area_level},</if>
+            <if test="area_id != null">#{area_id},</if>
+            <if test="audit_user != null">#{audit_user},</if>
+            <if test="city_id != null">#{city_id},</if>
+            <if test="county_id != null">#{county_id},</if>
+            <if test="craete_userid != null">#{craete_userid},</if>
+            <if test="create_date != null">#{create_date},</if>
+            <if test="entrance != null">#{entrance},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="freeze != null">#{freeze},</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="linkman != null">#{linkman},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="modify_date != null">#{modify_date},</if>
+            <if test="modify_userid != null">#{modify_userid},</if>
+            <if test="province_id != null">#{province_id},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="risk != null">#{risk},</if>
+            <if test="site_letter != null">#{site_letter},</if>
+            <if test="site_name != null">#{site_name}</if>
+        </trim>
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="address != null">address = #{address},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="audit_user != null">audit_user = #{audit_user},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
+            <if test="create_date != null">create_date = #{create_date},</if>
+            <if test="entrance != null">entrance = #{entrance},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="freeze != null">freeze = #{freeze},</if>
+            <if test="linkman != null">linkman = #{linkman},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="modify_date != null">modify_date = #{modify_date},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="risk != null">risk = #{risk},</if>
+            <if test="site_letter != null">site_letter = #{site_letter},</if>
+            <if test="site_name != null">site_name = #{site_name}</if>
+        </trim>
+    </update>
+
+    <!-- 基于主键kid的批量插入还是批量更新操作 VALUES (字段) VALUES内是数据库的字段，而不是实体的字段或map的key -->
+    <update id="updateEditBatch" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_MANAGE (
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                    <if test="item.address != null">address,</if>
+                    <if test="item.area_level != null">area_level,</if>
+                    <if test="item.area_id != null">area_id,</if>
+                    <if test="item.audit_user != null">audit_user,</if>
+                    <if test="item.city_id != null">city_id,</if>
+                    <if test="item.county_id != null">county_id,</if>
+                    <if test="item.craete_userid != null">craete_userid,</if>
+                    <if test="item.create_date != null">create_date,</if>
+                    <if test="item.entrance != null">entrance,</if>
+                    <if test="item.flag != null">flag,</if>
+                    <if test="item.freeze != null">freeze,</if>
+                    <if test="item.kid != null">kid,</if>
+                    <if test="item.linkman != null">linkman,</if>
+                    <if test="item.mobile != null">mobile,</if>
+                    <if test="item.modify_date != null">modify_date,</if>
+                    <if test="item.modify_userid != null">modify_userid,</if>
+                    <if test="item.province_id != null">province_id,</if>
+                    <if test="item.remark != null">remark,</if>
+                    <if test="item.risk != null">risk,</if>
+                    <if test="item.site_letter != null">site_letter,</if>
+                    <if test="item.site_name != null">site_name</if>
+                </if>
+            </trim>
+        </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.address != null">#{item.address},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.audit_user != null">#{item.audit_user},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.entrance != null">#{item.entrance},</if>
+                <if test="item.flag != null">#{item.flag},</if>
+                <if test="item.freeze != null">#{item.freeze},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.linkman != null">#{item.linkman},</if>
+                <if test="item.mobile != null">#{item.mobile},</if>
+                <if test="item.modify_date != null">#{item.modify_date},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.remark != null">#{item.remark},</if>
+                <if test="item.risk != null">#{item.risk},</if>
+                <if test="item.site_letter != null">#{item.site_letter},</if>
+                <if test="item.site_name != null">#{item.site_name}</if>
+            </trim>
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                <if test="item.address != null">address = values(address),</if>
+                <if test="item.area_level != null">area_level = values(area_level),</if>
+                <if test="item.area_id != null">area_id = values(area_id),</if>
+                <if test="item.audit_user != null">audit_user = values(audit_user),</if>
+                <if test="item.city_id != null">city_id = values(city_id),</if>
+                <if test="item.county_id != null">county_id = values(county_id),</if>
+                <if test="item.craete_userid != null">craete_userid = values(craete_userid),</if>
+                <if test="item.create_date != null">create_date = values(create_date),</if>
+                <if test="item.entrance != null">entrance = values(entrance),</if>
+                <if test="item.flag != null">flag = values(flag),</if>
+                <if test="item.freeze != null">freeze = values(freeze),</if>
+                <if test="item.kid != null">kid = values(kid),</if>
+                <if test="item.linkman != null">linkman = values(linkman),</if>
+                <if test="item.mobile != null">mobile = values(mobile),</if>
+                <if test="item.modify_date != null">modify_date = values(modify_date),</if>
+                <if test="item.modify_userid != null">modify_userid = values(modify_userid),</if>
+                <if test="item.province_id != null">province_id = values(province_id),</if>
+                <if test="item.remark != null">remark = values(remark),</if>
+                <if test="item.risk != null">risk = values(risk),</if>
+                <if test="item.site_letter != null">site_letter = values(site_letter),</if>
+                <if test="item.site_name != null">site_name = values(site_name)</if>
+                </if>
+            </trim>
+        </foreach>
+    </update>
+
+    <!-- 批量添加|插入-->
+    <update id="batchAdd" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_MANAGE (
+            <foreach collection="list" item="item" index="index">
+                <trim suffixOverrides=",">
+                    <if test="index==0">
+                        <if test="item.address != null">address,</if>
+                        <if test="item.area_level != null">area_level,</if>
+                        <if test="item.area_id != null">area_id,</if>
+                        <if test="item.audit_user != null">audit_user,</if>
+                        <if test="item.city_id != null">city_id,</if>
+                        <if test="item.county_id != null">county_id,</if>
+                        <if test="item.craete_userid != null">craete_userid,</if>
+                        <if test="item.create_date != null">create_date,</if>
+                        <if test="item.entrance != null">entrance,</if>
+                        <if test="item.flag != null">flag,</if>
+                        <if test="item.freeze != null">freeze,</if>
+                        <if test="item.kid != null">kid,</if>
+                        <if test="item.linkman != null">linkman,</if>
+                        <if test="item.mobile != null">mobile,</if>
+                        <if test="item.modify_date != null">modify_date,</if>
+                        <if test="item.modify_userid != null">modify_userid,</if>
+                        <if test="item.province_id != null">province_id,</if>
+                        <if test="item.remark != null">remark,</if>
+                        <if test="item.risk != null">risk,</if>
+                        <if test="item.site_letter != null">site_letter,</if>
+                        <if test="item.site_name != null">site_name</if>
+                    </if>
+                </trim>
+            </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.address != null">#{item.address},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.audit_user != null">#{item.audit_user},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.entrance != null">#{item.entrance},</if>
+                <if test="item.flag != null">#{item.flag},</if>
+                <if test="item.freeze != null">#{item.freeze},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.linkman != null">#{item.linkman},</if>
+                <if test="item.mobile != null">#{item.mobile},</if>
+                <if test="item.modify_date != null">#{item.modify_date},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.remark != null">#{item.remark},</if>
+                <if test="item.risk != null">#{item.risk},</if>
+                <if test="item.site_letter != null">#{item.site_letter},</if>
+                <if test="item.site_name != null">#{item.site_name}</if>
+            </trim>
+            )
+        </foreach>
+    </update>
+
+	<!-- 编辑数据 -->
+	<update id="edit" parameterType="HashMap">
+		UPDATE IGNORE BS_MANAGE
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="address != null">address = #{address},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="audit_user != null">audit_user = #{audit_user},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
+            <if test="create_date != null">create_date = #{create_date},</if>
+            <if test="entrance != null">entrance = #{entrance},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="freeze != null">freeze = #{freeze},</if>
+            <if test="linkman != null">linkman = #{linkman},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="modify_date != null">modify_date = #{modify_date},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="risk != null">risk = #{risk},</if>
+            <if test="site_letter != null">site_letter = #{site_letter},</if>
+            <if test="site_name != null">site_name = #{site_name}</if>
+		</trim>
+		WHERE kid = #{kid} LIMIT 1
+	</update>
+
+    <!-- 根据id查询对应的数据 -->
+    <select id="queryById" parameterType="String" resultType="HashMap">
+        SELECT
+            address,
+            area_level,
+            area_id,
+            audit_user,
+            city_id,
+            county_id,
+            craete_userid,
+            create_date,
+            entrance,
+            flag,
+            freeze,
+            linkman,
+            mobile,
+            modify_date,
+            modify_userid,
+            province_id,
+            remark,
+            risk,
+            site_letter,
+            site_name
+        FROM BS_MANAGE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+	<!-- 行删除 -->
+	<delete id="delById" parameterType="String">
+		DELETE FROM BS_MANAGE WHERE kid = #{kid} LIMIT 1
+	</delete>
+	
+	<!-- 删除|批量删除-->
+	<delete id="delByKeys" parameterType="ArrayList">
+		DELETE FROM BS_MANAGE WHERE 
+			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
+	
+	<!-- listData条件查询 -->
+	<sql id="sql_where_listData">
+		<trim prefix="WHERE" prefixOverrides="AND">
+            <if test="site_letter != null">
+                AND site_letter LIKE CONCAT('%',#{site_letter},'%')
+            </if>
+		</trim>
+	</sql>
+	
+	<!-- 列表数据 -->
+	<select id="listData" parameterType="HashMap" resultType="HashMap">
+		SELECT
+            kid,
+			address,
+            area_level,
+            area_id,
+			audit_user,
+			craete_userid,
+			create_date,
+			entrance,
+			freeze,
+			linkman,
+			mobile,
+			modify_userid,
+			province_id,
+			remark,
+			risk,
+			site_letter,
+			site_name,
+			flag
+		FROM BS_MANAGE
+		<include refid="sql_where_listData"/>
+		<choose>
+    	<when test="order != null and column != null">
+    		ORDER BY ${column} ${order}
+    	</when>
+    	<otherwise>
+        </otherwise>
+        </choose>
+        <if test="section != null and pageSize != null">
+        	LIMIT #{section},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 总条数总记录数 -->
+	<select id="listTotal" parameterType="HashMap" resultType="Integer">
+		SELECT COUNT(kid) TOTAL FROM BS_MANAGE
+		<include refid="sql_where_listData"/>
+        LIMIT 1
+	</select>
+
+    <!-- 用于实时查询经营场所名称 -->
+    <select id="listDataPage" resultType="HashMap" parameterType="HashMap">
+        <choose>
+            <when test="site_letter != null">
+                select kid,site_name from bs_manage where site_letter LIKE CONCAT(#{site_letter},'%') order by site_letter LIMIT 20
+            </when>
+            <otherwise>
+                select kid,site_name from bs_manage order by site_letter LIMIT 20
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

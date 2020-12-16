@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="api_bs_crowd_type">
+
+    <sql id="sql_select">
+        <if test="crowd_id != null">crowd_id,</if>
+        <if test="kid != null">kid,</if>
+        <if test="name != null">name</if>
+    </sql>
+
+    <sql id="sql_column">
+        crowd_id,
+        kid,
+        name
+    </sql>
+
+    <!-- 添加数据 -->
+    <update id="add" parameterType="HashMap">
+        INSERT IGNORE INTO BS_CROWD_TYPE (
+        <trim suffixOverrides=",">
+            <if test="crowd_id != null">crowd_id,</if>
+            <if test="kid != null">kid,</if>
+            <if test="name != null">name</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+			<if test="crowd_id != null">#{crowd_id},</if>
+			<if test="kid != null">#{kid},</if>
+			<if test="name != null">#{name}</if>
+        </trim>
+        )
+    </update>
+
+    <select id="queryExistById" resultType="String" parameterType="String">
+        SELECT kid FROM BS_CROWD_TYPE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+    <!-- 基于主键kid的存在就更新,否则新增操作 -->
+    <update id="updateOrEdit" parameterType="HashMap">
+        INSERT IGNORE INTO BS_CROWD_TYPE (
+        <trim suffixOverrides=",">
+            <if test="crowd_id != null">crowd_id,</if>
+            <if test="kid != null">kid,</if>
+            <if test="name != null">name</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="crowd_id != null">#{crowd_id},</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="name != null">#{name}</if>
+        </trim>
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="crowd_id != null">crowd_id = #{crowd_id},</if>
+            <if test="name != null">name = #{name}</if>
+        </trim>
+    </update>
+
+    <!-- 基于主键kid的批量插入还是批量更新操作 VALUES (字段) VALUES内是数据库的字段，而不是实体的字段或map的key -->
+    <update id="updateEditBatch" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_CROWD_TYPE (
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                    <if test="item.crowd_id != null">crowd_id,</if>
+                    <if test="item.kid != null">kid,</if>
+                    <if test="item.name != null">name</if>
+                </if>
+            </trim>
+        </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.crowd_id != null">#{item.crowd_id},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.name != null">#{item.name}</if>
+            </trim>
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                <if test="item.crowd_id != null">crowd_id = values(crowd_id),</if>
+                <if test="item.kid != null">kid = values(kid),</if>
+                <if test="item.name != null">name = values(name)</if>
+                </if>
+            </trim>
+        </foreach>
+    </update>
+
+    <!-- 批量添加|插入-->
+    <update id="batchAdd" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_CROWD_TYPE (
+            <foreach collection="list" item="item" index="index">
+                <trim suffixOverrides=",">
+                    <if test="index==0">
+                        <if test="item.crowd_id != null">crowd_id,</if>
+                        <if test="item.kid != null">kid,</if>
+                        <if test="item.name != null">name</if>
+                    </if>
+                </trim>
+            </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.crowd_id != null">#{item.crowd_id},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.name != null">#{item.name}</if>
+            </trim>
+            )
+        </foreach>
+    </update>
+
+	<!-- 编辑数据 -->
+	<update id="edit" parameterType="HashMap">
+		UPDATE IGNORE BS_CROWD_TYPE
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="crowd_id != null">crowd_id = #{crowd_id},</if>
+            <if test="name != null">name = #{name}</if>
+		</trim>
+		WHERE kid = #{kid} LIMIT 1
+	</update>
+
+    <!-- 根据id查询对应的数据 -->
+    <select id="queryById" parameterType="String" resultType="HashMap">
+        SELECT
+            crowd_id,
+            name
+        FROM BS_CROWD_TYPE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+	<!-- 行删除 -->
+	<delete id="delById" parameterType="String">
+		DELETE FROM BS_CROWD_TYPE WHERE kid = #{kid} LIMIT 1
+	</delete>
+	
+	<!-- 删除|批量删除-->
+	<delete id="delByKeys" parameterType="ArrayList">
+		DELETE FROM BS_CROWD_TYPE WHERE 
+			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
+	
+	<!-- listData条件查询 -->
+	<sql id="sql_where_listData">
+		<trim prefix="WHERE" prefixOverrides="AND">
+            <if test="name != null">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+		</trim>
+	</sql>
+	
+	<!-- 列表数据 -->
+	<select id="listData" parameterType="HashMap" resultType="HashMap">
+		SELECT
+            kid,
+			name,
+			crowd_id
+		FROM BS_CROWD_TYPE
+		<include refid="sql_where_listData"/>
+		<choose>
+    	<when test="order != null and column != null">
+    		ORDER BY ${column} ${order}
+    	</when>
+    	<otherwise>
+        </otherwise>
+        </choose>
+        <if test="section != null and pageSize != null">
+        	LIMIT #{section},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 总条数总记录数 -->
+	<select id="listTotal" parameterType="HashMap" resultType="Integer">
+		SELECT COUNT(kid) TOTAL FROM BS_CROWD_TYPE
+		<include refid="sql_where_listData"/>
+        LIMIT 1
+	</select>
+
+    <select id="getList" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            kid,
+			name,
+			crowd_id
+		FROM BS_CROWD_TYPE
+    </select>
+
+</mapper>
