@@ -1,6 +1,5 @@
 package com.fwtai.service.core;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.bean.SysUser;
 import com.fwtai.config.ConfigFile;
@@ -252,79 +251,46 @@ public class UserService{
         }
     }
 
-    public String saveUserArea(final PageFormData pageFormData){
+    public String saveUserArea(final PageFormData formData){
 
-        final String params = pageFormData.getString("params");
-        if(params == null) return ToolClient.jsonValidateField();
-        final JSONObject jsonObject = ToolString.parseJsonObj(params);
-        final int size = jsonObject.size();
-        if(size <= 0)return ToolClient.jsonValidateField();
-        final String userId = jsonObject.getString("user_id");
-        if(size ==1){
+        final Long provinceId = formData.getLong("province_id");
+        final String userId = formData.getString("user_id");
+        if(provinceId == null){
             //移除区域信息
             final int rows = userDao.delUserArea(userId);
             return ToolClient.executeRows(rows);
-        }else{
-            //添加或更新
-            final Long area_id = jsonObject.getLong("area_id");//主键
-            final Long pid = jsonObject.getLong("pid");
-            final Integer level = jsonObject.getInteger("level");
-            final String area_name = jsonObject.getString("area_name");
-
-            /*
-            <if test="province_id != null">province_id,</if>
-            <if test="city_id != null">city_id,</if>
-            <if test="county_id != null">county_id,</if>=
-
-             */
-            final PageFormData formData = new PageFormData();
-            formData.put("kid",ToolString.getIdsChar32());
-            formData.put("area_level",level);
-            formData.put("user_id",userId);
-            //formData.put("area_id",area_id);//主键
-
-            switch (level){
-                case 1://省,仅有省村数据
-                    formData.put("area_id",area_id);
-                    break;
-                case 2://市,仅有省、市数据
-                    break;
-                case 3://县,仅有省、市、县数据
-                    break;
-                case 4://镇,仅有省、市、县、镇数据
-                    break;
-                case 5://村,仅有省、市、县、镇、村数据
-                    break;
-                default:
-                    break;
-            }
-
-            formData.put("area_name",area_name);
-            //updateArea(level,area_id,pid,userId);
-            return ToolClient.executeRows(0);
-            //return ToolClient.executeRows(userDao.addUserArea(formData));
         }
+        final Long city_id = formData.getLong("city_id");
+        final Long county_id = formData.getLong("county_id");
+        final Long towns_id = formData.getLong("towns_id");
+        final Long vallage_id = formData.getLong("vallage_id");
+
+        Long area_id = provinceId;
+
+        if(city_id != null){
+            area_id = city_id;
+        }
+        if(county_id != null){
+            area_id = county_id;
+        }
+        if(towns_id != null){
+            area_id = towns_id;
+        }
+        if(vallage_id != null){
+            area_id = vallage_id;
+        }
+
+        formData.put("user_id",userId);
+        formData.put("area_id",area_id);
+        final HashMap<String,Object> map = getAreaLevel(area_id);
+        formData.put("area_level",map.get("level"));
+        formData.put("area_name",map.get("name"));
+        return ToolClient.executeRows(userDao.addUserArea(formData));
     }
 
-    private void updateArea(final int level,final long kid,final long pid,final String userId){
-        final PageFormData formData = new PageFormData();
-        switch (level){
-            case 1://省,仅有省村数据
-                formData.put("user_id",userId);
-                formData.put("area_id",kid);
-                asyncService.updateUserArea(formData);
-                break;
-            case 2://市,仅有省、市数据
-                break;
-            case 3://县,仅有省、市、县数据
-                break;
-            case 4://镇,仅有省、市、县、镇数据
-                break;
-            case 5://村,仅有省、市、县、镇、村数据
-                break;
-            default:
-                break;
-        }
+    //获取级别1-5,省市县镇村
+    private HashMap<String,Object> getAreaLevel(final long kid){
+        return userDao.getAreaLevel(kid);
     }
 
     public String delByKeys(final PageFormData pageFormData){

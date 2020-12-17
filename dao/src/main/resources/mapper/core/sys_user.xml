@@ -412,7 +412,7 @@
         delete from bs_user_area where user_id = #{user_id}
     </update>
 
-    <!-- 基于主键kid的存在就更新,否则新增操作 -->
+    <!-- 基于主键userId的存在就更新,否则新增操作 -->
     <update id="updateOrEditUserArea" parameterType="HashMap">
         INSERT IGNORE INTO BS_USER_AREA (
         <trim suffixOverrides=",">
@@ -446,4 +446,9 @@
             <if test="user_id != null">user_id = #{user_id}</if>
         </trim>
     </update>
+
+    <!-- 获取级别1-5,省市县镇村和名称 -->
+    <select id="getAreaLevel" resultType="HashMap" parameterType="HashMap">
+        SELECT level,name FROM sys_area WHERE kid = #{kid} LIMIT 1
+    </select>
 </mapper>

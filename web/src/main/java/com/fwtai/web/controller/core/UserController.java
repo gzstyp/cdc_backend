@@ -1,6 +1,5 @@
 package com.fwtai.web.controller.core;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.service.core.UserService;
 import com.fwtai.tool.ToolClient;
@@ -141,7 +140,6 @@ public class UserController{
     @PreAuthorize("hasAuthority('user_row_saveUserArea')")
     @PostMapping("/saveUserArea")
     public void saveUserArea(final HttpServletRequest request,final HttpServletResponse response){
-        JSONObject requestData = ToolClient.getRequestData(request);
         ToolClient.responseJson(userService.saveUserArea(ToolClient.getFormData(request)),response);
     }
 

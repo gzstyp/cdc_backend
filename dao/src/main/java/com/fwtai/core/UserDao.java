@@ -201,4 +201,9 @@ public class UserDao{
     public int addUserArea(final PageFormData formData){
         return dao.execute("sys_user.updateOrEditUserArea",formData);
     }
+
+    //获取级别1-5,省市县镇村
+    public HashMap<String,Object> getAreaLevel(final long kid){
+        return dao.queryForHashMap("sys_user.getAreaLevel",kid);
+    }
 }
