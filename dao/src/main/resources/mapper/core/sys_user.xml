@@ -404,7 +404,7 @@
     </select>
 
     <select id="queryArea" resultType="HashMap" parameterType="HashMap">
-        select s.kid id,s.name from sys_area s where s.pid = #{pid} ORDER BY s.kid ASC
+        select s.kid id,s.name,s.level from sys_area s where s.pid = #{pid} ORDER BY s.kid ASC
     </select>
 
     <!-- 移除区域信息,移除删除用户区域数据 -->
