@@ -57,9 +57,9 @@ public final class ConfigFile implements Serializable{
 	public final static int code204 = 204;
 	/**系统出现错误*/
 	public final static String msg204 = "系统出现错误";
-	/**未登录或登录超时*/
+	/**未登录或登录超时或token已失效*/
 	public final static int code205 = 205;
-	/**未登录或登录超时*/
+	/**未登录或登录超时或token已失效*/
 	public final static String msg205 = "未登录或登录超时!";
 	/**账号或密码不正确*/
 	public final static int code206 = 206;
