@@ -38,11 +38,12 @@ public class ApiManageLocationService{
         final String p_site_name = "site_name";
         final String p_site_type = "site_type";
         final String p_linkman = "linkman";
+        final String p_mobile = "mobile";
         final String p_address = "address";
         final String p_freeze = "freeze";
         final String p_entrance = "entrance";
         final String p_risk = "risk";
-        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_area_id,p_city_id,p_county_id,p_entrance,p_freeze,p_linkman,p_province_id,p_risk,p_site_letter,p_site_name,p_site_type);
+        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_area_id,p_city_id,p_county_id,p_entrance,p_freeze,p_linkman,p_mobile,p_province_id,p_risk,p_site_letter,p_site_name,p_site_type);
         if(validate != null)return validate;
         final String userId = LocalUserId.get();
         formData.put("kid",ToolString.getIdsChar32());

@@ -37,7 +37,7 @@ public class ManagerLocation implements Serializable{
     private String site_type;
     @ApiModelProperty(notes = "联系人",required = true,value = "联系人姓名")
     private String linkman;
-    @ApiModelProperty(notes = "联系电话",required = false,value = "联系人联系电话")
+    @ApiModelProperty(notes = "联系电话",required = true,value = "联系人联系电话")
     private String mobile;
     @ApiModelProperty(notes = "经营场所的地址",required = true,value = "经营场所的位置地址")
     private String address;
