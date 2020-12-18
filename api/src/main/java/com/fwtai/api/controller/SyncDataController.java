@@ -1,6 +1,5 @@
 package com.fwtai.api.controller;
 
-import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.service.api.ApiSyncDataService;
 import com.fwtai.tool.ToolClient;
@@ -56,5 +55,12 @@ public class SyncDataController{
     })
     public void getManagerArea(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getManagerArea(ToolClient.getFormData(request)),response);
+    }
+
+    @ApiOperation(value = "获取经营场所类型数据", notes = "经营场所类型数据,数据来自于数据字典")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getManagerLocation")
+    public void getManagerLocation(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getManagerLocation(ToolClient.getFormData(request)),response);
     }
 }

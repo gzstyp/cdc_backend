@@ -37,4 +37,9 @@ public class ApiSyncDataDao{
     public List<HashMap<String,Object>> getManagerArea(final PageFormData formData){
         return dao.queryForListHashMap("api_sync_data.getManagerArea",formData);
     }
+
+    /**获取经营场所类型数据*/
+    public List<HashMap<String,Object>> getManagerLocation(final PageFormData formData){
+        return dao.queryForListHashMap("bs_manage.getManagerLocation");
+    }
 }

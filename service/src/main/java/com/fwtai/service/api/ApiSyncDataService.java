@@ -38,4 +38,9 @@ public class ApiSyncDataService{
         if(areaId == null) return ToolClient.jsonValidateField();
         return ToolClient.queryJson(apiSyncDataDao.getManagerArea(formData));
     }
+
+    /** 获取经营场所类型数据 */
+    public String getManagerLocation(final PageFormData formData){
+        return ToolClient.queryJson(apiSyncDataDao.getManagerLocation(formData));
+    }
 }
