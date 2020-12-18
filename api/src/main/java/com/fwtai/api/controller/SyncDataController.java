@@ -47,7 +47,7 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getCrowdType(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "获取经营场所数据", notes = "根据当前登录人的的区域主键area_id所绑定区域来同步基础数据")
+    @ApiOperation(value = "获取场所类型数据", notes = "经营场所|从业场所|监测场所都属于场所类型,根据当前登录人的的区域主键area_id所绑定区域来同步基础数据")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerArea")
     @ApiImplicitParams({
