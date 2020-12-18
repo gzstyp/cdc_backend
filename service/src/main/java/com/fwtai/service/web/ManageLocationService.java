@@ -90,9 +90,6 @@ public class ManageLocationService{
     public String edit(final HttpServletRequest request){
         final PageFormData formData = new PageFormData(request);
         final String p_kid = "kid";
-        final String p_province_id = "province_id";
-        final String p_city_id = "city_id";
-        final String p_county_id = "county_id";
         final String p_site_name = "site_name";
         final String p_site_letter = "site_letter";
         final String p_site_type = "site_type";
@@ -101,15 +98,15 @@ public class ManageLocationService{
         final String p_freeze = "freeze";
         final String p_entrance = "entrance";
         final String p_risk = "risk";
-        final String validate = ToolClient.validateField(formData,p_province_id,p_city_id,p_county_id,p_site_name,p_site_letter,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk,p_kid);
+        final String validate = ToolClient.validateField(formData,p_site_name,p_site_letter,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk,p_kid);
         if(validate != null)return validate;
         final String exist_key = managelocationDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
         }
-        final Long provinceId = formData.getLong(p_province_id);
-        final Long city_id = formData.getLong(p_city_id);
-        final Long county_id = formData.getLong(p_county_id);
+        final Long provinceId = formData.getLong("province_id");
+        final Long city_id = formData.getLong("city_id");
+        final Long county_id = formData.getLong("county_id");
         final Long towns_id = formData.getLong("towns_id");
         final Long vallage_id = formData.getLong("vallage_id");
         Long area_id = provinceId;
@@ -126,10 +123,12 @@ public class ManageLocationService{
             area_id = vallage_id;
         }
         final String userId = LocalUserId.get();
-        formData.put("area_id",area_id);
+        if(area_id != null){
+            formData.put("area_id",area_id);
+            final HashMap<String,Object> map = getAreaLevel(area_id);
+            formData.put("area_level",map.get("level"));
+        }
         formData.put("modify_userid",userId);
-        final HashMap<String,Object> map = getAreaLevel(area_id);
-        formData.put("area_level",map.get("level"));
         return ToolClient.executeRows(managelocationDao.edit(formData));
     }
 

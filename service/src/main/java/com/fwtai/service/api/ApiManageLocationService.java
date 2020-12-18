@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * 经营场所业务层
@@ -59,25 +60,51 @@ public class ApiManageLocationService{
         final String p_address = "address";
         final String p_area_level = "area_level";
         final String p_audit_user = "audit_user";
-        final String p_city_id = "city_id";
-        final String p_county_id = "county_id";
         final String p_entrance = "entrance";
         final String p_freeze = "freeze";
         final String p_linkman = "linkman";
         final String p_mobile = "mobile";
-        final String p_province_id = "province_id";
         final String p_remark = "remark";
         final String p_risk = "risk";
         final String p_site_letter = "site_letter";
         final String p_site_name = "site_name";
         final String p_site_type = "site_type";
-        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_audit_user,p_city_id,p_county_id,p_entrance,p_freeze,p_linkman,p_mobile,p_province_id,p_remark,p_risk,p_site_letter,p_site_name,p_site_type,p_kid);
+        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_audit_user,p_entrance,p_freeze,p_linkman,p_mobile,p_remark,p_risk,p_site_letter,p_site_name,p_site_type,p_kid);
         if(validate != null)return validate;
         final String exist_key = apiManageLocationDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
         }
+        final Long provinceId = formData.getLong("province_id");
+        final Long city_id = formData.getLong("city_id");
+        final Long county_id = formData.getLong("county_id");
+        final Long towns_id = formData.getLong("towns_id");
+        final Long vallage_id = formData.getLong("vallage_id");
+        Long area_id = provinceId;
+        if(city_id != null){
+            area_id = city_id;
+        }
+        if(county_id != null){
+            area_id = county_id;
+        }
+        if(towns_id != null){
+            area_id = towns_id;
+        }
+        if(vallage_id != null){
+            area_id = vallage_id;
+        }
+        final String userId = LocalUserId.get();
+        if(area_id != null){
+            formData.put("area_id",area_id);
+            final HashMap<String,Object> map = getAreaLevel(area_id);
+            formData.put("area_level",map.get("level"));
+        }
         return ToolClient.executeRows(apiManageLocationDao.edit(formData));
+    }
+
+    //获取级别1-5,省市县镇村
+    protected HashMap<String,Object> getAreaLevel(final long kid){
+        return apiManageLocationDao.getAreaLevel(kid);
     }
 
     public String queryById(final PageFormData pageFormData){

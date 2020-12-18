@@ -5,7 +5,6 @@ import com.fwtai.datasource.DaoHandle;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,5 +54,10 @@ public class ApiManageLocationDao{
 
     public List<HashMap<String,Object>> listDataPage(final PageFormData formData){
         return dao.queryForListHashMap("api_bs_manage.listDataPage",formData);
+    }
+
+    /**获取级别1-5,省市县镇村*/
+    public HashMap<String,Object> getAreaLevel(final long kid){
+        return dao.queryForHashMap("sys_user.getAreaLevel",kid);
     }
 }
