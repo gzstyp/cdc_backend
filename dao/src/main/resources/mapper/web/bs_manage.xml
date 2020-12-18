@@ -434,6 +434,8 @@
             bm.kid,
             bm.site_name,
             bm.linkman,
+            city.name city,
+            county.name county,
             bm.mobile,
             bm.address,
             bm.area_id,
@@ -444,10 +446,12 @@
             sd.NAME site_type_label,
             bm.risk,
             bm.remark
-            FROM BS_MANAGE bm
+        FROM BS_MANAGE bm
         LEFT JOIN sys_dict sd on sd.KID = bm.site_type
         LEFT JOIN sys_area sa on sa.KID = bm.area_id
         LEFT JOIN sys_user su on su.KID = bm.craete_userid
+        LEFT JOIN sys_area city on city.KID = bm.city_id
+        LEFT JOIN sys_area county on county.KID = bm.county_id
         <include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
