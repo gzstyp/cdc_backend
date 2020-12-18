@@ -39,7 +39,22 @@ public class ApiSyncDataDao{
     }
 
     /**获取经营场所类型数据*/
-    public List<HashMap<String,Object>> getManagerLocation(final PageFormData formData){
-        return dao.queryForListHashMap("bs_manage.getManagerLocation");
+    public List<HashMap<String,Object>> getManagerLocation(){
+        return dao.queryForListHashMap("api_sync_data.getManagerLocation");
+    }
+
+    //冷库类型,用于环境监测或从业人员监测
+    public List<HashMap<String,Object>> getFreezeType(){
+        return dao.queryForListHashMap("api_sync_data.getFreezeType");
+    }
+
+    //标本类型(用于环境监测)
+    public List<HashMap<String,Object>> getSpecimenType(){
+        return dao.queryForListHashMap("api_sync_data.getSpecimenType");
+    }
+
+    //样本类型(用于从业人员)
+    public List<HashMap<String,Object>> getSampleType(){
+        return dao.queryForListHashMap("api_sync_data.getSampleType");
     }
 }

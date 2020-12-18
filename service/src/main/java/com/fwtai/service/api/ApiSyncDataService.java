@@ -40,7 +40,23 @@ public class ApiSyncDataService{
     }
 
     /** 获取经营场所类型数据 */
-    public String getManagerLocation(final PageFormData formData){
-        return ToolClient.queryJson(apiSyncDataDao.getManagerLocation(formData));
+    public String getManagerLocation(){
+        return ToolClient.queryJson(apiSyncDataDao.getManagerLocation());
     }
+
+    //冷库类型,用于环境监测或从业人员监测
+    public String getFreezeType(){
+        return ToolClient.queryJson(apiSyncDataDao.getFreezeType());
+    }
+
+    //标本类型(用于环境监测)
+    public String getSpecimenType(){
+        return ToolClient.queryJson(apiSyncDataDao.getSpecimenType());
+    }
+
+    //样本类型(用于从业人员)
+    public String getSampleType(){
+        return ToolClient.queryJson(apiSyncDataDao.getSampleType());
+    }
+
 }

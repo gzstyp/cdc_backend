@@ -60,7 +60,29 @@ public class SyncDataController{
     @ApiOperation(value = "获取经营场所类型数据", notes = "经营场所类型数据,数据来自于数据字典")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerLocation")
-    public void getManagerLocation(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiSyncDataService.getManagerLocation(ToolClient.getFormData(request)),response);
+    public void getManagerLocation(final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getManagerLocation(),response);
+    }
+
+    @ApiOperation(value = "获取冷库类型数据", notes = "冷库类型,用于环境监测或从业人员监测")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getFreezeType")
+    public void getFreezeType(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getFreezeType(),response);
+    }
+
+
+    @ApiOperation(value = "标本类型(用于环境监测)", notes = "标本类型(用于环境监测)")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getSpecimenType")
+    public void getSpecimenType(final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getSpecimenType(),response);
+    }
+
+    @ApiOperation(value = "样本类型(用于从业人员)", notes = "样本类型(用于从业人员)")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getSampleType")
+    public void getSampleType(final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getSampleType(),response);
     }
 }
