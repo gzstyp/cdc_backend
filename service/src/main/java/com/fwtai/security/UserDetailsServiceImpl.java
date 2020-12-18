@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final HashMap<String,Object> data = new HashMap<>(6);
         data.put("kid",user.getAreaId());//区域的id
         data.put("province_id",user.getProvinceId());//省级id
-        data.put("county_id",user.getCityId());//县（区）[sys_area的kid]
+        data.put("county_id",user.getCountyId());//县（区）[sys_area的kid]
         data.put("city_id",user.getCityId());//市级id主键
         data.put("name",user.getAreaName());//区域名称
         data.put("area_level",user.getAreaLevel());//区域级别1-5,省市县镇村
