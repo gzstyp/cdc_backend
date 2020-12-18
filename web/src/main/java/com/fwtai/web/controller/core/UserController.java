@@ -130,7 +130,7 @@ public class UserController{
         ToolClient.responseJson(userService.getMenuData(ToolClient.getFormData(request)).replaceAll("\"false\"","false").replaceAll("\"true\"","true"),response);
     }
 
-    /**获取区域数据,用于绑定人员区域划分*/
+    /**获取区域数据,用于绑定人员区域划分(ztree版)*/
     @PreAuthorize("hasAuthority('user_row_queryTreeArea')")
     @GetMapping("/queryTreeArea")
     public void queryTreeArea(final HttpServletRequest request,final HttpServletResponse response){
@@ -143,7 +143,9 @@ public class UserController{
         ToolClient.responseJson(userService.saveUserArea(ToolClient.getFormData(request)),response);
     }
 
-    @GetMapping("/queryArea")
+    /**获取区域数据,用于绑定人员区域划分(原生select下拉列表版)*/
+    @PreAuthorize("hasAuthority('user_row_queryAreaSelect')")
+    @GetMapping("/queryAreaSelect")
     public void queryArea(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(userService.queryArea(ToolClient.getFormData(request)),response);
     }

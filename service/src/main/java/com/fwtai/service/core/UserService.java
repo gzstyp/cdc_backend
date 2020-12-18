@@ -289,7 +289,7 @@ public class UserService{
     }
 
     //获取级别1-5,省市县镇村
-    private HashMap<String,Object> getAreaLevel(final long kid){
+    protected HashMap<String,Object> getAreaLevel(final long kid){
         return userDao.getAreaLevel(kid);
     }
 

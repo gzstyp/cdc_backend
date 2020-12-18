@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="api_bs_manage">
+<mapper namespace="bs_manage">
 
     <sql id="sql_select">
         <if test="address != null">address,</if>
-        <if test="area_level != null">area_level,</if>
         <if test="area_id != null">area_id,</if>
+        <if test="area_level != null">area_level,</if>
         <if test="audit_user != null">audit_user,</if>
         <if test="city_id != null">city_id,</if>
         <if test="county_id != null">county_id,</if>
@@ -29,8 +29,8 @@
 
     <sql id="sql_column">
         address,
-        area_level,
         area_id,
+        area_level,
         audit_user,
         city_id,
         county_id,
@@ -57,8 +57,8 @@
         INSERT IGNORE INTO BS_MANAGE (
         <trim suffixOverrides=",">
             <if test="address != null">address,</if>
-            <if test="area_level != null">area_level,</if>
             <if test="area_id != null">area_id,</if>
+            <if test="area_level != null">area_level,</if>
             <if test="audit_user != null">audit_user,</if>
             <if test="city_id != null">city_id,</if>
             <if test="county_id != null">county_id,</if>
@@ -82,8 +82,8 @@
         ) VALUES (
         <trim suffixOverrides=",">
 			<if test="address != null">#{address},</if>
-			<if test="area_level != null">#{area_level},</if>
 			<if test="area_id != null">#{area_id},</if>
+			<if test="area_level != null">#{area_level},</if>
 			<if test="audit_user != null">#{audit_user},</if>
 			<if test="city_id != null">#{city_id},</if>
 			<if test="county_id != null">#{county_id},</if>
@@ -116,8 +116,8 @@
         INSERT IGNORE INTO BS_MANAGE (
         <trim suffixOverrides=",">
             <if test="address != null">address,</if>
-            <if test="area_level != null">area_level,</if>
             <if test="area_id != null">area_id,</if>
+            <if test="area_level != null">area_level,</if>
             <if test="audit_user != null">audit_user,</if>
             <if test="city_id != null">city_id,</if>
             <if test="county_id != null">county_id,</if>
@@ -141,8 +141,8 @@
         ) VALUES (
         <trim suffixOverrides=",">
             <if test="address != null">#{address},</if>
-            <if test="area_level != null">#{area_level},</if>
             <if test="area_id != null">#{area_id},</if>
+            <if test="area_level != null">#{area_level},</if>
             <if test="audit_user != null">#{audit_user},</if>
             <if test="city_id != null">#{city_id},</if>
             <if test="county_id != null">#{county_id},</if>
@@ -167,8 +167,8 @@
         ON DUPLICATE KEY UPDATE
         <trim suffixOverrides=",">
             <if test="address != null">address = #{address},</if>
-            <if test="area_level != null">area_level = #{area_level},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
             <if test="audit_user != null">audit_user = #{audit_user},</if>
             <if test="city_id != null">city_id = #{city_id},</if>
             <if test="county_id != null">county_id = #{county_id},</if>
@@ -197,8 +197,8 @@
             <trim suffixOverrides=",">
                 <if test="index==0">
                     <if test="item.address != null">address,</if>
-                    <if test="item.area_level != null">area_level,</if>
                     <if test="item.area_id != null">area_id,</if>
+                    <if test="item.area_level != null">area_level,</if>
                     <if test="item.audit_user != null">audit_user,</if>
                     <if test="item.city_id != null">city_id,</if>
                     <if test="item.county_id != null">county_id,</if>
@@ -226,8 +226,8 @@
             (
             <trim suffixOverrides=",">
                 <if test="item.address != null">#{item.address},</if>
-                <if test="item.area_level != null">#{item.area_level},</if>
                 <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
                 <if test="item.audit_user != null">#{item.audit_user},</if>
                 <if test="item.city_id != null">#{item.city_id},</if>
                 <if test="item.county_id != null">#{item.county_id},</if>
@@ -255,8 +255,8 @@
             <trim suffixOverrides=",">
                 <if test="index==0">
                 <if test="item.address != null">address = values(address),</if>
-                <if test="item.area_level != null">area_level = values(area_level),</if>
                 <if test="item.area_id != null">area_id = values(area_id),</if>
+                <if test="item.area_level != null">area_level = values(area_level),</if>
                 <if test="item.audit_user != null">audit_user = values(audit_user),</if>
                 <if test="item.city_id != null">city_id = values(city_id),</if>
                 <if test="item.county_id != null">county_id = values(county_id),</if>
@@ -288,8 +288,8 @@
                 <trim suffixOverrides=",">
                     <if test="index==0">
                         <if test="item.address != null">address,</if>
-                        <if test="item.area_level != null">area_level,</if>
                         <if test="item.area_id != null">area_id,</if>
+                        <if test="item.area_level != null">area_level,</if>
                         <if test="item.audit_user != null">audit_user,</if>
                         <if test="item.city_id != null">city_id,</if>
                         <if test="item.county_id != null">county_id,</if>
@@ -317,8 +317,8 @@
             (
             <trim suffixOverrides=",">
                 <if test="item.address != null">#{item.address},</if>
-                <if test="item.area_level != null">#{item.area_level},</if>
                 <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
                 <if test="item.audit_user != null">#{item.audit_user},</if>
                 <if test="item.city_id != null">#{item.city_id},</if>
                 <if test="item.county_id != null">#{item.county_id},</if>
@@ -348,8 +348,8 @@
 		UPDATE IGNORE BS_MANAGE
 		<trim prefix="SET" suffixOverrides=",">
             <if test="address != null">address = #{address},</if>
-            <if test="area_level != null">area_level = #{area_level},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
             <if test="audit_user != null">audit_user = #{audit_user},</if>
             <if test="city_id != null">city_id = #{city_id},</if>
             <if test="county_id != null">county_id = #{county_id},</if>
@@ -376,8 +376,8 @@
     <select id="queryById" parameterType="String" resultType="HashMap">
         SELECT
             address,
-            area_level,
             area_id,
+            area_level,
             audit_user,
             city_id,
             county_id,
@@ -417,35 +417,38 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="site_letter != null">
-                AND site_letter LIKE CONCAT('%',#{site_letter},'%')
+                AND bm.site_letter LIKE CONCAT('%',#{site_letter},'%')
+            </if>
+            <if test="linkman != null">
+                AND bm.linkman LIKE CONCAT('%',#{linkman},'%')
+            </if>
+            <if test="craete_userid != null">
+                AND su.user_name LIKE CONCAT('%',#{craete_userid},'%')
             </if>
 		</trim>
 	</sql>
 	
 	<!-- 列表数据 -->
 	<select id="listData" parameterType="HashMap" resultType="HashMap">
-		SELECT
-            kid,
-			address,
-            area_level,
-            area_id,
-			audit_user,
-			craete_userid,
-			create_date,
-			entrance,
-			freeze,
-			linkman,
-			mobile,
-			modify_userid,
-			province_id,
-			remark,
-			risk,
-			site_letter,
-            site_type,
-			site_name,
-			flag
-		FROM BS_MANAGE
-		<include refid="sql_where_listData"/>
+        SELECT
+            bm.kid,
+            bm.site_name,
+            bm.linkman,
+            bm.mobile,
+            bm.address,
+            bm.area_id,
+            sa.name area_id_label,
+            su.user_name,
+            bm.entrance,
+            bm.site_type,
+            sd.NAME site_type_label,
+            bm.risk,
+            bm.remark
+            FROM BS_MANAGE bm
+        LEFT JOIN sys_dict sd on sd.KID = bm.site_type
+        LEFT JOIN sys_area sa on sa.KID = bm.area_id
+        LEFT JOIN sys_user su on su.KID = bm.craete_userid
+        <include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
     		ORDER BY ${column} ${order}
@@ -460,20 +463,16 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_MANAGE
+		SELECT COUNT(bm.kid) TOTAL FROM BS_MANAGE bm
+        LEFT JOIN sys_dict sd on sd.KID = bm.site_type
+        LEFT JOIN sys_area sa on sa.KID = bm.area_id
+        LEFT JOIN sys_user su on su.KID = bm.craete_userid
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
 
-    <!-- 用于实时查询经营场所名称 -->
-    <select id="listDataPage" resultType="HashMap" parameterType="HashMap">
-        <choose>
-            <when test="site_letter != null">
-                select kid,site_name from bs_manage where site_letter LIKE CONCAT(#{site_letter},'%') order by site_letter LIMIT 20
-            </when>
-            <otherwise>
-                select kid,site_name from bs_manage order by site_letter LIMIT 20
-            </otherwise>
-        </choose>
+    <!-- 获取经营场所 -->
+    <select id="getManagerLocation" resultType="HashMap" parameterType="HashMap">
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'fffffffffd06f648ffffffff98c8eec6' ORDER BY SORT ASC
     </select>
 </mapper>

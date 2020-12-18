@@ -33,6 +33,8 @@ public class ManagerLocation implements Serializable{
     private String site_letter;
     @ApiModelProperty(notes = "经营场所名称",required = true,value = "经营场所名称")
     private String site_name;
+    @ApiModelProperty(notes = "经营场所类型",required = true,value = "经营场所类型")
+    private String site_type;
     @ApiModelProperty(notes = "联系人",required = true,value = "联系人姓名")
     private String linkman;
     @ApiModelProperty(notes = "联系电话",required = false,value = "联系人联系电话")
@@ -118,6 +120,14 @@ public class ManagerLocation implements Serializable{
 
     public void setSite_name(String site_name){
         this.site_name = site_name;
+    }
+
+    public String getSite_type(){
+        return site_type;
+    }
+
+    public void setSite_type(String site_type){
+        this.site_type = site_type;
     }
 
     public String getLinkman(){
