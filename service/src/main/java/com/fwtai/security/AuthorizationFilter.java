@@ -20,11 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * 鉴权操作
- * 验证成功当然就是进行鉴权,鉴权操作,无token时会提示'统一处理,需要认证才能访问'
- * 登录成功之后走此类进行鉴权操作
-*/
 public class AuthorizationFilter extends BasicAuthenticationFilter{
 
     public AuthorizationFilter(final AuthenticationManager authenticationManager){
@@ -41,7 +36,6 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
         final String refresh = refresh_token == null ? url_refresh_token : refresh_token;
         final String access = access_token == null ? url_access_token : access_token;
         if(access != null){
-            //判断令牌是否过期，默认是一周,比较好的解决方案是：登录成功获得token后，将token存储到数据库（redis）
             try {
                 ToolJWT.parser(refresh);
             } catch (final Exception e) {
@@ -50,20 +44,15 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
                 }
             }
             try {
-                //通过令牌获取用户名称
                 final String userId = ToolJWT.extractUserId(access);
-                // todo 根据userId 从 redis ，获取用户 authentication 角色权限信息
-                //判断用户不为空，且SecurityContextHolder授权信息还是空的
                 LocalUserId.set(userId);
-                //通过用户信息得到UserDetails
                 final JwtUser jwtUser = ToolBean.getBean(request,UserDetailsServiceImpl.class).getUserById(userId,uri.startsWith("/") ? uri.substring(1) : uri);
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(jwtUser.getUsername(),null,jwtUser.getAuthorities()));
                 super.doFilterInternal(request,response,chain);
             } catch (final Exception exception){
                 RenewalToken.remove();
                 FlagToken.set(2);
-                //todo 勿删,走这里因为没有角色权限信息,所以要被 AuthenticationEntryPoint 的实现类拦截下来并执行
-                chain.doFilter(request,response);//报错是否因为这个???,若是不加的话，则请求没有返回值
+                chain.doFilter(request,response);
             }
         }else{
             chain.doFilter(request,response);

@@ -11,15 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
-/**
- * 未登录认证处理或鉴权失败
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/11/23 23:42
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 public class AuthFailureEntryPoint implements AuthenticationEntryPoint {
 
     public void commence(final HttpServletRequest request,final HttpServletResponse response,final AuthenticationException authException) throws IOException, ServletException {

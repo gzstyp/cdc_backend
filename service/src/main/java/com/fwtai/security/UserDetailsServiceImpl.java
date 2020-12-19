@@ -47,13 +47,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new JwtUser(user.getKid(),user.getUserName(),user.getUserPassword(),enabled,user.getAudit(),areaData);
     }
 
-    /**
-     * 通过userId动态获取用户的全部角色和权限的信息
-     * @param
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2020/5/1 0:49
-     */
     public JwtUser getUserById(final String userId,String url){
         final SysUser user = userService.getUserById(userId);
         if(user != null){

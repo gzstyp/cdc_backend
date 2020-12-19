@@ -27,9 +27,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 登录认证
-*/
 public class LoginAuthentication extends UsernamePasswordAuthenticationFilter{
 
     private final AuthenticationManager authenticationManager;
@@ -103,14 +100,13 @@ public class LoginAuthentication extends UsernamePasswordAuthenticationFilter{
         final String type = request.getParameter("type");//除了PC端之外都要这个参数,登录类型1 为android ; 2 ios;3 小程序
         //取得账号信息
         final JwtUser jwtUser = (JwtUser) authResult.getPrincipal();
-        //取token,先去缓存中找,好的解决方案,登录成功后token存储到缓存数据库中,只要token还在过期内，不需要每次重新生成
         final String userId = jwtUser.getUserId();
         //加载前端菜单
         final Map<String,Object> map = new HashMap<>(6);
         if(type == null || type.isEmpty()){
             map.put(ConfigFile.REFRESH_TOKEN,ToolJWT.expireRefreshToken(userId));
             map.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId));
-            map.put("menuData",ToolBean.getBean(request,MenuService.class).getMenuData(userId));//前端通过判断是否有这个key值是否再跳转页面
+            map.put("menuData",ToolBean.getBean(request,MenuService.class).getMenuData(userId));
             map.put("userName",jwtUser.getUsername());
         }else{
             map.put(ConfigFile.REFRESH_TOKEN,ToolJWT.buildRefreshToken(userId));
@@ -123,7 +119,6 @@ public class LoginAuthentication extends UsernamePasswordAuthenticationFilter{
         ToolClient.responseJson(ToolClient.queryJson(map),response);
     }
 
-    //登录认证失败调用,比如账号已被冻结会条调用本方法
     @Override
     protected void unsuccessfulAuthentication(final HttpServletRequest request,final HttpServletResponse response,final AuthenticationException e) throws IOException, ServletException{
         String msg = ToolClient.invalidUserInfo();
