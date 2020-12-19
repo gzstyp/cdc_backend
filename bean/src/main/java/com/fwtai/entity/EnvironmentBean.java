@@ -62,7 +62,7 @@ public final class EnvironmentBean implements Serializable{
     @ApiModelProperty(notes = "新冠核酸检测结果",required = true,value = "新冠核酸检测结果(1未检测;2阴性;3阳性)")
     private Integer result;
     @ApiModelProperty(notes = "备注说明",required = false,value = "备注说明")
-    private Integer remark;
+    private String remark;
 
     public String getKid(){
         return kid;
@@ -240,11 +240,11 @@ public final class EnvironmentBean implements Serializable{
         this.result = result;
     }
 
-    public Integer getRemark(){
+    public String getRemark(){
         return remark;
     }
 
-    public void setRemark(Integer remark){
+    public void setRemark(String remark){
         this.remark = remark;
     }
 }
