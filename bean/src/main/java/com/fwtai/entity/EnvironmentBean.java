@@ -46,7 +46,7 @@ public final class EnvironmentBean implements Serializable{
     @ApiModelProperty(notes = "摊位编号",required = true,value = "产品来源地（填写至国家、省、市）")
     private String source;
     @ApiModelProperty(notes = "是否为进口产品",required = true,value = "是否为进口产品(0否;1是)")
-    private String Integer;
+    private String entrance;
     @ApiModelProperty(notes = "若为进口产品请填写批号",required = false,value = "若为进口产品请填写批号")
     private String entrance_serial;
     @ApiModelProperty(notes = "标本名称",required = true,value = "标本名称（写明具体标本名称，如三文鱼涂抹物）")
@@ -176,12 +176,12 @@ public final class EnvironmentBean implements Serializable{
         this.source = source;
     }
 
-    public String getInteger(){
-        return Integer;
+    public String getEntrance(){
+        return entrance;
     }
 
-    public void setInteger(String integer){
-        Integer = integer;
+    public void setEntrance(String entrance){
+        this.entrance = entrance;
     }
 
     public String getEntrance_serial(){
@@ -200,11 +200,11 @@ public final class EnvironmentBean implements Serializable{
         this.sample_name = sample_name;
     }
 
-    public java.lang.Integer getFreeze_related(){
+    public Integer getFreeze_related(){
         return freeze_related;
     }
 
-    public void setFreeze_related(java.lang.Integer freeze_related){
+    public void setFreeze_related(Integer freeze_related){
         this.freeze_related = freeze_related;
     }
 
@@ -232,19 +232,19 @@ public final class EnvironmentBean implements Serializable{
         this.detection_date = detection_date;
     }
 
-    public java.lang.Integer getResult(){
+    public Integer getResult(){
         return result;
     }
 
-    public void setResult(java.lang.Integer result){
+    public void setResult(Integer result){
         this.result = result;
     }
 
-    public java.lang.Integer getRemark(){
+    public Integer getRemark(){
         return remark;
     }
 
-    public void setRemark(java.lang.Integer remark){
+    public void setRemark(Integer remark){
         this.remark = remark;
     }
 }
