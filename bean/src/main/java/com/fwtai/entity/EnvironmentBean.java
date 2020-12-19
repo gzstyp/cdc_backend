@@ -35,7 +35,7 @@ public final class EnvironmentBean implements Serializable{
     private String site_type;
     @ApiModelProperty(notes = "冷库类型",required = false,value = "冷库类型[若监测场所类型为冷库请选择[经营场所类型]数据的kid的值")
     private String freeze_type;
-    @ApiModelProperty(notes = "市场名称",required = true,value = "冷库类型[若为冷库请选择类型]的kid的值")
+    @ApiModelProperty(notes = "市场名称",required = true,value = "冷库类型[若为冷库请选择类型]的某个kid的值")
     private String market_name;
     @ApiModelProperty(notes = "摊主姓名",required = true,value = "摊主姓名")
     private String vendor_name;
@@ -53,7 +53,7 @@ public final class EnvironmentBean implements Serializable{
     private String sample_name;
     @ApiModelProperty(notes = "是否冷链相关",required = true,value = "是否冷链相关(0否;1是)")
     private Integer freeze_related;
-    @ApiModelProperty(notes = "标本类型",required = true,value = "标本类型(用于环境监测)的kid的值,取值来自于基础数据的'标本类型(用于环境监测)'的kid值")
+    @ApiModelProperty(notes = "标本类型",required = true,value = "标本类型[取值来自于基础数据的'标本类型(用于环境监测)'的某个kid值]")
     private String sample_type;
     @ApiModelProperty(notes = "采样日期",required = true,value = "字符串,采样日期,格式:2019-10-22")
     private String sampling_date;
