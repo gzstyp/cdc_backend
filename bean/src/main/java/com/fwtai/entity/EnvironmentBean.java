@@ -43,7 +43,7 @@ public final class EnvironmentBean implements Serializable{
     private String phone;
     @ApiModelProperty(notes = "摊位编号",required = true,value = "摊位编号")
     private String vendor_code;
-    @ApiModelProperty(notes = "摊位编号",required = true,value = "产品来源地（填写至国家、省、市）")
+    @ApiModelProperty(notes = "产品来源地",required = true,value = "产品来源地（填写至国家、省、市）")
     private String source;
     @ApiModelProperty(notes = "是否为进口产品",required = true,value = "是否为进口产品(0否;1是)")
     private String entrance;
