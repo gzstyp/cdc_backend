@@ -33,7 +33,7 @@ public final class EnvironmentBean implements Serializable{
     private Long area_level;
     @ApiModelProperty(notes = "监测场所类型(场所类型)",required = true,value = "传递的值是列表场所类型取值是(经营场所类型数据)的kid的值")
     private String site_type;
-    @ApiModelProperty(notes = "监测场所类型(场所类型)",required = false,value = "冷库类型[若为冷库请选择类型]的kid的值")
+    @ApiModelProperty(notes = "冷库类型",required = false,value = "冷库类型[若监测场所类型为冷库请选择[经营场所类型]数据的kid的值")
     private String freeze_type;
     @ApiModelProperty(notes = "市场名称",required = true,value = "冷库类型[若为冷库请选择类型]的kid的值")
     private String market_name;
