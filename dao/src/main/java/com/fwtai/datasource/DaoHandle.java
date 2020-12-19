@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**dao底层操作处理工具类*/
 @Repository
 public class DaoHandle{
 

@@ -28,16 +28,14 @@ import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement(order = 2)
-@MapperScan(basePackages = {"com.fwtai.mapper"})//xml扫描
+@MapperScan(basePackages = {"com.fwtai.mapper"})
 public class DataSourceConfig implements TransactionManagementConfigurer, ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    /**写库数据源*/
     @javax.annotation.Resource
     private DataSource dataSource;
 
-    /**读数据源数量*/
     @Value("${spring.db.slavesize}")
     private Integer slavesize;
 
@@ -62,7 +60,7 @@ public class DataSourceConfig implements TransactionManagementConfigurer, Applic
         final SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(routingDataSouceProxy());
         bean.setVfs(SpringBootVFS.class);
-        bean.setTypeAliasesPackage("com.fwtai.bean;com.fwtai.entity");//扫描实体别名
+        bean.setTypeAliasesPackage("com.fwtai.bean;com.fwtai.entity");
         Resource configResource = new ClassPathResource("/mybatis-config.xml");
         bean.setConfigLocation(configResource);
         final ResourcePatternResolver mapperResource = new PathMatchingResourcePatternResolver();
@@ -70,7 +68,6 @@ public class DataSourceConfig implements TransactionManagementConfigurer, Applic
         return bean.getObject();
     }
 
-    //设置事务,事务需要知道当前使用的是哪个数据源才能进行事务处理
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(routingDataSouceProxy());
@@ -83,7 +80,7 @@ public class DataSourceConfig implements TransactionManagementConfigurer, Applic
         }
     }
 
-    @Bean("sqlSessionHandle")//支持 SqlSessionTemplate
+    @Bean("sqlSessionHandle")
     public SqlSessionTemplate getSqlSessionTemplate(final SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }

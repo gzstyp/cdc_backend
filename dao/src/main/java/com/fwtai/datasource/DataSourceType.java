@@ -1,14 +1,5 @@
 package com.fwtai.datasource;
 
-/**
- * 写库|读库
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/4/7 23:14
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 public enum DataSourceType {
 
     READ("read", "读库"), WRITE("write", "写库");

@@ -20,15 +20,6 @@ import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-/**
- * swagger2配置,注意扫描的包名!!!
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/3/23 18:00
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 @Configuration
 @EnableSwagger2
 public class Swagger2{

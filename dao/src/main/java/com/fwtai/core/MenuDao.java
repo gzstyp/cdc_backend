@@ -11,15 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 菜单维护管理
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020-04-08 23:30
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 @Repository
 public class MenuDao{
 

@@ -10,15 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * 角色管理
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/4/9 13:43
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 @Repository
 public class RoleDao{
 

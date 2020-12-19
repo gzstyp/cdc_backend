@@ -12,15 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * 用户账号管理
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/4/9 13:43
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 @Repository
 public class UserDao{
 
@@ -138,24 +129,10 @@ public class UserDao{
         return dao.queryListEntity("sys_user.getRolePermissions",params);
     }
 
-    /**
-     * 通过userName查询用户信息,用户登录
-     * @param username
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2020/5/1 0:54
-     */
     public SysUser getUserByUserName(final String username){
         return dao.queryForEntity("sys_user.getUserByUserName",username);
     }
 
-    /**
-     * 通过userId查询用户的全部角色和权限的信息
-     * @param userId
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2020/5/1 0:53
-    */
     public SysUser getUserById(final String userId){
         return dao.queryForEntity("sys_user.getUserById",userId);
     }

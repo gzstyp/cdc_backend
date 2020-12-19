@@ -5,15 +5,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-/**
- * 拦截数据库读写
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/4/8 23:10
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
 @Aspect
 @Component
 @Order(1)

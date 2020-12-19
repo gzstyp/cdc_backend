@@ -3,9 +3,6 @@ package com.fwtai.datasource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 全局数据源
-*/
 public class DataSourceContextHolder {
 
     private static Logger logger = LoggerFactory.getLogger(DataSourceContextHolder.class);
