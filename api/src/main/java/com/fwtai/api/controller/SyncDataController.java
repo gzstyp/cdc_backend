@@ -47,7 +47,7 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getCrowdType(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "获取场所类型数据", notes = "经营场所|从业场所|监测场所都属于场所类型,根据当前登录人的的区域主键area_id所绑定区域来同步基础数据")
+    @ApiOperation(value = "获取经营场所数据", notes = "获取经营场所数据,根据当前登录人的areaData的区域主键area_id所绑定区域来同步基础数据")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerArea")
     @ApiImplicitParams({
@@ -57,7 +57,7 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getManagerArea(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "获取经营场所类型数据", notes = "经营场所类型数据,数据来自于数据字典")
+    @ApiOperation(value = "获取经营场所|从业场所|监测场所类型数据", notes = "经营场所|从业场所|监测场所都属于场所类型数据,供下拉列表选择")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerLocation")
     public void getManagerLocation(final HttpServletResponse response){
@@ -84,5 +84,12 @@ public class SyncDataController{
     @GetMapping("/getSampleType")
     public void getSampleType(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getSampleType(),response);
+    }
+
+    @ApiOperation(value = "工种", notes = "工种(用于从业人员)")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getProfession")
+    public void getProfession(final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getProfession(),response);
     }
 }

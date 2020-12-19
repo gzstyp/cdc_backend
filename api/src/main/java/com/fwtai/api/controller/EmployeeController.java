@@ -1,9 +1,9 @@
 package com.fwtai.api.controller;
 
 import com.fwtai.config.ConfigFile;
-import com.fwtai.entity.EnvironmentBean;
+import com.fwtai.entity.EmployeeBean;
 import com.fwtai.entity.ReqPage;
-import com.fwtai.service.api.ApiEnvironmentService;
+import com.fwtai.service.api.ApiEmployeeService;
 import com.fwtai.tool.ToolClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,49 +20,48 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 环境监测控制层|路由层[api]
+ * 从业人员控制层|路由层[api]
  * @作者 田应平
  * @版本 v1.0
  * @QQ号码 444141300
- * @创建日期 2020-12-18 17:32:36
+ * @创建日期 2020-12-19 14:48:44
  * @官网 <url>http://www.yinlz.com</url>
 */
 @RestController
-@Api(tags = "环境监测")
-@RequestMapping(ConfigFile.api_v10 +"environment")
-public class EnvironmentController{
+@Api(tags = "从业人员")
+@RequestMapping(ConfigFile.api_v10 +"employee")
+public class EmployeeController{
 
     @Resource
-	private ApiEnvironmentService apiEnvironmentService;
+	private ApiEmployeeService apiEmployeeService;
 
     /**添加*/
     @ApiOperation(value = "添加操作", notes = "新建|新增|添加操作,bean实体form表单方式非json格式提交")
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/add")
-    public void add(final EnvironmentBean environmentBean,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.add(environmentBean),response);
+    public void add(final EmployeeBean employeeBean,final HttpServletResponse response){
+        ToolClient.responseJson(apiEmployeeService.add(employeeBean),response);
     }
 
     /**编辑*/
     @ApiOperation(value = "编辑操作", notes = "通过主键kid编辑|修改数据,字段的参照表结构，主键的字段可能不是id或kid,请参考表结构")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true),
-        @ApiImplicitParam(name = "flag", value = "是否已审核(0未审核;1已审核)", dataType = "int", paramType = "query", required = true)
+        @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true)
     })
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/edit")
-    public void edit(final EnvironmentBean environmentBean,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.edit(environmentBean),response);
+    public void edit(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiEmployeeService.edit(request),response);
     }
 
-    /**根据id查询对应的数据*/
-    @ApiOperation(value = "获取详细信息", notes = "通过id获取详细信息")
+    /**根据主键kid查询对应的数据*/
+    @ApiOperation(value = "获取详细信息", notes = "通过kid获取详细信息")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "被查看的id", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "id", value = "被查看的kid", dataType = "String", paramType = "query", required = true)
     })
     @GetMapping("/queryById")
     public void queryById(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.queryById(ToolClient.getFormData(request)),response);
+        ToolClient.responseJson(apiEmployeeService.queryById(ToolClient.getFormData(request)),response);
     }
 
     /**删除-单行*/
@@ -73,26 +72,26 @@ public class EnvironmentController{
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/delById")
     public void delById(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.delById(ToolClient.getFormData(request)),response);
+        ToolClient.responseJson(apiEmployeeService.delById(ToolClient.getFormData(request)),response);
     }
 
     /**批量删除*/
-    @ApiOperation(value = "批量删除", notes = "通过ids删除对应数据,ids是字符串,每个值主键id以英文逗号,隔开;如10001,10002,10003")
+    @ApiOperation(value = "批量删除", notes = "通过ids删除对应数据,ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true)
     })
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/delByKeys")
     public void delByKeys(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.delByKeys(ToolClient.getFormData(request)),response);
+        ToolClient.responseJson(apiEmployeeService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    /**获取分页数据*/
+    /**获取分页数据,请勿删除ReqPage否则swagger不显示参数*/
     @ApiOperation(value = "获取分页数据", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/listDataPage")
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.listDataPage(request),response);
+        ToolClient.responseJson(apiEmployeeService.listDataPage(request),response);
     }
 
     @ApiOperation(value = "审批审核且提交更新为已审核状态", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
@@ -100,8 +99,8 @@ public class EnvironmentController{
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })
     @PreAuthorize("hasRole('ROLE_APP_SUPER')")
-    @PostMapping("/updateBatchAudit")
-    public void updateBatchAudit(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.updateBatchAudit(ToolClient.getFormData(request)),response);
+    @PostMapping("/updateEmployeeAudit")
+    public void updateEmployeeAudit(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiEmployeeService.updateEmployeeAudit(ToolClient.getFormData(request)),response);
     }
 }

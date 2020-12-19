@@ -319,7 +319,7 @@
 		</foreach>
 	</delete>
 
-    <!-- 审批审核后提交更新 -->
+    <!-- 审批审核且提交更新为已审核状态 -->
     <update id="editBatchAudit" parameterType="HashMap">
         update bs_crowd_total set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
         <foreach item="item" index="index" collection="listIds" open="(" separator="," close=")">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="api_bs_environment">
+<mapper namespace="api_bs_employee">
 
     <sql id="sql_select">
         <if test="kid != null">kid,</if>
@@ -13,17 +13,15 @@
         <if test="city_id != null">city_id,</if>
         <if test="county_id != null">county_id,</if>
         <if test="area_level != null">area_level,</if>
-        <if test="site_type != null">site_type,</if>
-        <if test="freeze_type != null">freeze_type,</if>
-        <if test="market_name != null">market_name,</if>
-        <if test="vendor_name != null">vendor_name,</if>
+        <if test="real_name != null">real_name,</if>
         <if test="phone != null">phone,</if>
-        <if test="vendor_code != null">vendor_code,</if>
-        <if test="source != null">source,</if>
-        <if test="entrance != null">entrance,</if>
-        <if test="entrance_serial != null">entrance_serial,</if>
-        <if test="sample_name != null">sample_name,</if>
-        <if test="freeze_related != null">freeze_related,</if>
+        <if test="gender != null">gender,</if>
+        <if test="age != null">age,</if>
+        <if test="work_site != null">work_site,</if>
+        <if test="work_type != null">work_type,</if>
+        <if test="freeze_type != null">freeze_type,</if>
+        <if test="profession != null">profession,</if>
+        <if test="cold_chain != null">cold_chain,</if>
         <if test="sample_type != null">sample_type,</if>
         <if test="sampling_date != null">sampling_date,</if>
         <if test="detection_date != null">detection_date,</if>
@@ -45,17 +43,15 @@
         city_id,
         county_id,
         area_level,
-        site_type,
-        freeze_type,
-        market_name,
-        vendor_name,
+        real_name,
         phone,
-        vendor_code,
-        source,
-        entrance,
-        entrance_serial,
-        sample_name,
-        freeze_related,
+        gender,
+        age,
+        work_site,
+        work_type,
+        freeze_type,
+        profession,
+        cold_chain,
         sample_type,
         sampling_date,
         detection_date,
@@ -68,7 +64,7 @@
 
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_ENVIRONMENT (
+        INSERT IGNORE INTO BS_EMPLOYEE (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
             <if test="flag != null">flag,</if>
@@ -80,17 +76,15 @@
             <if test="city_id != null">city_id,</if>
             <if test="county_id != null">county_id,</if>
             <if test="area_level != null">area_level,</if>
-            <if test="site_type != null">site_type,</if>
-            <if test="freeze_type != null">freeze_type,</if>
-            <if test="market_name != null">market_name,</if>
-            <if test="vendor_name != null">vendor_name,</if>
+            <if test="real_name != null">real_name,</if>
             <if test="phone != null">phone,</if>
-            <if test="vendor_code != null">vendor_code,</if>
-            <if test="source != null">source,</if>
-            <if test="entrance != null">entrance,</if>
-            <if test="entrance_serial != null">entrance_serial,</if>
-            <if test="sample_name != null">sample_name,</if>
-            <if test="freeze_related != null">freeze_related,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="work_site != null">work_site,</if>
+            <if test="work_type != null">work_type,</if>
+            <if test="freeze_type != null">freeze_type,</if>
+            <if test="profession != null">profession,</if>
+            <if test="cold_chain != null">cold_chain,</if>
             <if test="sample_type != null">sample_type,</if>
             <if test="sampling_date != null">sampling_date,</if>
             <if test="detection_date != null">detection_date,</if>
@@ -110,36 +104,32 @@
 			<if test="city_id != null">#{city_id},</if>
 			<if test="county_id != null">#{county_id},</if>
 			<if test="area_level != null">#{area_level},</if>
-			<if test="site_type != null">#{site_type},</if>
-			<if test="freeze_type != null">#{freeze_type},</if>
-			<if test="market_name != null">#{market_name},</if>
-			<if test="vendor_name != null">#{vendor_name},</if>
+			<if test="real_name != null">#{real_name},</if>
 			<if test="phone != null">#{phone},</if>
-			<if test="vendor_code != null">#{vendor_code},</if>
-			<if test="source != null">#{source},</if>
-			<if test="entrance != null">#{entrance},</if>
-			<if test="entrance_serial != null">#{entrance_serial},</if>
-			<if test="sample_name != null">#{sample_name},</if>
-			<if test="freeze_related != null">#{freeze_related},</if>
+			<if test="gender != null">#{gender},</if>
+			<if test="age != null">#{age},</if>
+			<if test="work_site != null">#{work_site},</if>
+			<if test="work_type != null">#{work_type},</if>
+			<if test="freeze_type != null">#{freeze_type},</if>
+			<if test="profession != null">#{profession},</if>
+			<if test="cold_chain != null">#{cold_chain},</if>
 			<if test="sample_type != null">#{sample_type},</if>
-			<if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
-			<if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
+			<if test="sampling_date != null">#{sampling_date},</if>
+			<if test="detection_date != null">#{detection_date},</if>
 			<if test="result != null">#{result},</if>
 			<if test="remark != null">#{remark},</if>
-			<if test="modify_userid != null">#{modify_userid},</if>
-			<if test="create_date != null">#{create_date},</if>
-			<if test="modify_date != null">#{modify_date}</if>
+			<if test="modify_userid != null">#{modify_userid}</if>
         </trim>
         )
     </update>
 
     <select id="queryExistById" resultType="String" parameterType="String">
-        SELECT kid FROM BS_ENVIRONMENT WHERE kid = #{kid} LIMIT 1
+        SELECT kid FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
     </select>
-
+	
     <!-- 基于主键kid的存在就更新,否则新增操作 -->
     <update id="updateOrEdit" parameterType="HashMap">
-        INSERT IGNORE INTO BS_ENVIRONMENT (
+        INSERT IGNORE INTO BS_EMPLOYEE (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
             <if test="flag != null">flag,</if>
@@ -151,25 +141,21 @@
             <if test="city_id != null">city_id,</if>
             <if test="county_id != null">county_id,</if>
             <if test="area_level != null">area_level,</if>
-            <if test="site_type != null">site_type,</if>
-            <if test="freeze_type != null">freeze_type,</if>
-            <if test="market_name != null">market_name,</if>
-            <if test="vendor_name != null">vendor_name,</if>
+            <if test="real_name != null">real_name,</if>
             <if test="phone != null">phone,</if>
-            <if test="vendor_code != null">vendor_code,</if>
-            <if test="source != null">source,</if>
-            <if test="entrance != null">entrance,</if>
-            <if test="entrance_serial != null">entrance_serial,</if>
-            <if test="sample_name != null">sample_name,</if>
-            <if test="freeze_related != null">freeze_related,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="work_site != null">work_site,</if>
+            <if test="work_type != null">work_type,</if>
+            <if test="freeze_type != null">freeze_type,</if>
+            <if test="profession != null">profession,</if>
+            <if test="cold_chain != null">cold_chain,</if>
             <if test="sample_type != null">sample_type,</if>
             <if test="sampling_date != null">sampling_date,</if>
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
-            <if test="modify_userid != null">modify_userid,</if>
-            <if test="create_date != null">create_date,</if>
-            <if test="modify_date != null">modify_date</if>
+            <if test="modify_userid != null">modify_userid</if>
         </trim>
         ) VALUES (
         <trim suffixOverrides=",">
@@ -183,25 +169,21 @@
             <if test="city_id != null">#{city_id},</if>
             <if test="county_id != null">#{county_id},</if>
             <if test="area_level != null">#{area_level},</if>
-            <if test="site_type != null">#{site_type},</if>
-            <if test="freeze_type != null">#{freeze_type},</if>
-            <if test="market_name != null">#{market_name},</if>
-            <if test="vendor_name != null">#{vendor_name},</if>
+            <if test="real_name != null">#{real_name},</if>
             <if test="phone != null">#{phone},</if>
-            <if test="vendor_code != null">#{vendor_code},</if>
-            <if test="source != null">#{source},</if>
-            <if test="entrance != null">#{entrance},</if>
-            <if test="entrance_serial != null">#{entrance_serial},</if>
-            <if test="sample_name != null">#{sample_name},</if>
-            <if test="freeze_related != null">#{freeze_related},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="work_site != null">#{work_site},</if>
+            <if test="work_type != null">#{work_type},</if>
+            <if test="freeze_type != null">#{freeze_type},</if>
+            <if test="profession != null">#{profession},</if>
+            <if test="cold_chain != null">#{cold_chain},</if>
             <if test="sample_type != null">#{sample_type},</if>
-            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
-            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
+            <if test="sampling_date != null">#{sampling_date},</if>
+            <if test="detection_date != null">#{detection_date},</if>
             <if test="result != null">#{result},</if>
             <if test="remark != null">#{remark},</if>
-            <if test="modify_userid != null">#{modify_userid},</if>
-            <if test="create_date != null">#{create_date},</if>
-            <if test="modify_date != null">#{modify_date}</if>
+            <if test="modify_userid != null">#{modify_userid}</if>
         </trim>
         )
         ON DUPLICATE KEY UPDATE
@@ -215,31 +197,27 @@
             <if test="city_id != null">city_id = #{city_id},</if>
             <if test="county_id != null">county_id = #{county_id},</if>
             <if test="area_level != null">area_level = #{area_level},</if>
-            <if test="site_type != null">site_type = #{site_type},</if>
-            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
-            <if test="market_name != null">market_name = #{market_name},</if>
-            <if test="vendor_name != null">vendor_name = #{vendor_name},</if>
+            <if test="real_name != null">real_name = #{real_name},</if>
             <if test="phone != null">phone = #{phone},</if>
-            <if test="vendor_code != null">vendor_code = #{vendor_code},</if>
-            <if test="source != null">source = #{source},</if>
-            <if test="entrance != null">entrance = #{entrance},</if>
-            <if test="entrance_serial != null">entrance_serial = #{entrance_serial},</if>
-            <if test="sample_name != null">sample_name = #{sample_name},</if>
-            <if test="freeze_related != null">freeze_related = #{freeze_related},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="work_site != null">work_site = #{work_site},</if>
+            <if test="work_type != null">work_type = #{work_type},</if>
+            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
+            <if test="profession != null">profession = #{profession},</if>
+            <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
-            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
+            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
+            <if test="detection_date != null">detection_date = #{detection_date},</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
-            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
-            <if test="create_date != null">create_date = #{create_date},</if>
-            <if test="modify_date != null">modify_date = #{modify_date}</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid}</if>
         </trim>
     </update>
 
     <!-- 基于主键kid的批量插入还是批量更新操作 VALUES (字段) VALUES内是数据库的字段，而不是实体的字段或map的key -->
     <update id="updateEditBatch" parameterType="ArrayList">
-        INSERT IGNORE INTO BS_ENVIRONMENT (
+        INSERT IGNORE INTO BS_EMPLOYEE (
         <foreach collection="list" item="item" index="index">
             <trim suffixOverrides=",">
                 <if test="index==0">
@@ -253,25 +231,21 @@
                     <if test="item.city_id != null">city_id,</if>
                     <if test="item.county_id != null">county_id,</if>
                     <if test="item.area_level != null">area_level,</if>
-                    <if test="item.site_type != null">site_type,</if>
-                    <if test="item.freeze_type != null">freeze_type,</if>
-                    <if test="item.market_name != null">market_name,</if>
-                    <if test="item.vendor_name != null">vendor_name,</if>
+                    <if test="item.real_name != null">real_name,</if>
                     <if test="item.phone != null">phone,</if>
-                    <if test="item.vendor_code != null">vendor_code,</if>
-                    <if test="item.source != null">source,</if>
-                    <if test="item.entrance != null">entrance,</if>
-                    <if test="item.entrance_serial != null">entrance_serial,</if>
-                    <if test="item.sample_name != null">sample_name,</if>
-                    <if test="item.freeze_related != null">freeze_related,</if>
+                    <if test="item.gender != null">gender,</if>
+                    <if test="item.age != null">age,</if>
+                    <if test="item.work_site != null">work_site,</if>
+                    <if test="item.work_type != null">work_type,</if>
+                    <if test="item.freeze_type != null">freeze_type,</if>
+                    <if test="item.profession != null">profession,</if>
+                    <if test="item.cold_chain != null">cold_chain,</if>
                     <if test="item.sample_type != null">sample_type,</if>
                     <if test="item.sampling_date != null">sampling_date,</if>
                     <if test="item.detection_date != null">detection_date,</if>
                     <if test="item.result != null">result,</if>
                     <if test="item.remark != null">remark,</if>
-                    <if test="item.modify_userid != null">modify_userid,</if>
-                    <if test="item.create_date != null">create_date,</if>
-                    <if test="item.modify_date != null">modify_date</if>
+                    <if test="item.modify_userid != null">modify_userid</if>
                 </if>
             </trim>
         </foreach>
@@ -289,25 +263,21 @@
                 <if test="item.city_id != null">#{item.city_id},</if>
                 <if test="item.county_id != null">#{item.county_id},</if>
                 <if test="item.area_level != null">#{item.area_level},</if>
-                <if test="item.site_type != null">#{item.site_type},</if>
-                <if test="item.freeze_type != null">#{item.freeze_type},</if>
-                <if test="item.market_name != null">#{item.market_name},</if>
-                <if test="item.vendor_name != null">#{item.vendor_name},</if>
+                <if test="item.real_name != null">#{item.real_name},</if>
                 <if test="item.phone != null">#{item.phone},</if>
-                <if test="item.vendor_code != null">#{item.vendor_code},</if>
-                <if test="item.source != null">#{item.source},</if>
-                <if test="item.entrance != null">#{item.entrance},</if>
-                <if test="item.entrance_serial != null">#{item.entrance_serial},</if>
-                <if test="item.sample_name != null">#{item.sample_name},</if>
-                <if test="item.freeze_related != null">#{item.freeze_related},</if>
+                <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.age != null">#{item.age},</if>
+                <if test="item.work_site != null">#{item.work_site},</if>
+                <if test="item.work_type != null">#{item.work_type},</if>
+                <if test="item.freeze_type != null">#{item.freeze_type},</if>
+                <if test="item.profession != null">#{item.profession},</if>
+                <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
-                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
+                <if test="item.sampling_date != null">#{item.sampling_date},</if>
+                <if test="item.detection_date != null">#{item.detection_date},</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
-                <if test="item.modify_userid != null">#{item.modify_userid},</if>
-                <if test="item.create_date != null">#{item.create_date},</if>
-                <if test="item.modify_date != null">#{item.modify_date}</if>
+                <if test="item.modify_userid != null">#{item.modify_userid}</if>
             </trim>
             )
         </foreach>
@@ -325,25 +295,21 @@
                 <if test="item.city_id != null">city_id = values(city_id),</if>
                 <if test="item.county_id != null">county_id = values(county_id),</if>
                 <if test="item.area_level != null">area_level = values(area_level),</if>
-                <if test="item.site_type != null">site_type = values(site_type),</if>
-                <if test="item.freeze_type != null">freeze_type = values(freeze_type),</if>
-                <if test="item.market_name != null">market_name = values(market_name),</if>
-                <if test="item.vendor_name != null">vendor_name = values(vendor_name),</if>
+                <if test="item.real_name != null">real_name = values(real_name),</if>
                 <if test="item.phone != null">phone = values(phone),</if>
-                <if test="item.vendor_code != null">vendor_code = values(vendor_code),</if>
-                <if test="item.source != null">source = values(source),</if>
-                <if test="item.entrance != null">entrance = values(entrance),</if>
-                <if test="item.entrance_serial != null">entrance_serial = values(entrance_serial),</if>
-                <if test="item.sample_name != null">sample_name = values(sample_name),</if>
-                <if test="item.freeze_related != null">freeze_related = values(freeze_related),</if>
+                <if test="item.gender != null">gender = values(gender),</if>
+                <if test="item.age != null">age = values(age),</if>
+                <if test="item.work_site != null">work_site = values(work_site),</if>
+                <if test="item.work_type != null">work_type = values(work_type),</if>
+                <if test="item.freeze_type != null">freeze_type = values(freeze_type),</if>
+                <if test="item.profession != null">profession = values(profession),</if>
+                <if test="item.cold_chain != null">cold_chain = values(cold_chain),</if>
                 <if test="item.sample_type != null">sample_type = values(sample_type),</if>
                 <if test="item.sampling_date != null">sampling_date = values(sampling_date),</if>
                 <if test="item.detection_date != null">detection_date = values(detection_date),</if>
                 <if test="item.result != null">result = values(result),</if>
                 <if test="item.remark != null">remark = values(remark),</if>
-                <if test="item.modify_userid != null">modify_userid = values(modify_userid),</if>
-                <if test="item.create_date != null">create_date = values(create_date),</if>
-                <if test="item.modify_date != null">modify_date = values(modify_date)</if>
+                <if test="item.modify_userid != null">modify_userid = values(modify_userid)</if>
                 </if>
             </trim>
         </foreach>
@@ -351,7 +317,7 @@
 
     <!-- 批量添加|插入-->
     <update id="batchAdd" parameterType="ArrayList">
-        INSERT IGNORE INTO BS_ENVIRONMENT (
+        INSERT IGNORE INTO BS_EMPLOYEE (
             <foreach collection="list" item="item" index="index">
                 <trim suffixOverrides=",">
                     <if test="index==0">
@@ -365,25 +331,21 @@
                         <if test="item.city_id != null">city_id,</if>
                         <if test="item.county_id != null">county_id,</if>
                         <if test="item.area_level != null">area_level,</if>
-                        <if test="item.site_type != null">site_type,</if>
-                        <if test="item.freeze_type != null">freeze_type,</if>
-                        <if test="item.market_name != null">market_name,</if>
-                        <if test="item.vendor_name != null">vendor_name,</if>
+                        <if test="item.real_name != null">real_name,</if>
                         <if test="item.phone != null">phone,</if>
-                        <if test="item.vendor_code != null">vendor_code,</if>
-                        <if test="item.source != null">source,</if>
-                        <if test="item.entrance != null">entrance,</if>
-                        <if test="item.entrance_serial != null">entrance_serial,</if>
-                        <if test="item.sample_name != null">sample_name,</if>
-                        <if test="item.freeze_related != null">freeze_related,</if>
+                        <if test="item.gender != null">gender,</if>
+                        <if test="item.age != null">age,</if>
+                        <if test="item.work_site != null">work_site,</if>
+                        <if test="item.work_type != null">work_type,</if>
+                        <if test="item.freeze_type != null">freeze_type,</if>
+                        <if test="item.profession != null">profession,</if>
+                        <if test="item.cold_chain != null">cold_chain,</if>
                         <if test="item.sample_type != null">sample_type,</if>
                         <if test="item.sampling_date != null">sampling_date,</if>
                         <if test="item.detection_date != null">detection_date,</if>
                         <if test="item.result != null">result,</if>
                         <if test="item.remark != null">remark,</if>
-                        <if test="item.modify_userid != null">modify_userid,</if>
-                        <if test="item.create_date != null">create_date,</if>
-                        <if test="item.modify_date != null">modify_date</if>
+                        <if test="item.modify_userid != null">modify_userid</if>
                     </if>
                 </trim>
             </foreach>
@@ -401,25 +363,21 @@
                 <if test="item.city_id != null">#{item.city_id},</if>
                 <if test="item.county_id != null">#{item.county_id},</if>
                 <if test="item.area_level != null">#{item.area_level},</if>
-                <if test="item.site_type != null">#{item.site_type},</if>
-                <if test="item.freeze_type != null">#{item.freeze_type},</if>
-                <if test="item.market_name != null">#{item.market_name},</if>
-                <if test="item.vendor_name != null">#{item.vendor_name},</if>
+                <if test="item.real_name != null">#{item.real_name},</if>
                 <if test="item.phone != null">#{item.phone},</if>
-                <if test="item.vendor_code != null">#{item.vendor_code},</if>
-                <if test="item.source != null">#{item.source},</if>
-                <if test="item.entrance != null">#{item.entrance},</if>
-                <if test="item.entrance_serial != null">#{item.entrance_serial},</if>
-                <if test="item.sample_name != null">#{item.sample_name},</if>
-                <if test="item.freeze_related != null">#{item.freeze_related},</if>
+                <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.age != null">#{item.age},</if>
+                <if test="item.work_site != null">#{item.work_site},</if>
+                <if test="item.work_type != null">#{item.work_type},</if>
+                <if test="item.freeze_type != null">#{item.freeze_type},</if>
+                <if test="item.profession != null">#{item.profession},</if>
+                <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
-                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
+                <if test="item.sampling_date != null">#{item.sampling_date},</if>
+                <if test="item.detection_date != null">#{item.detection_date},</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
-                <if test="item.modify_userid != null">#{item.modify_userid},</if>
-                <if test="item.create_date != null">#{item.create_date},</if>
-                <if test="item.modify_date != null">#{item.modify_date}</if>
+                <if test="item.modify_userid != null">#{item.modify_userid}</if>
             </trim>
             )
         </foreach>
@@ -427,30 +385,26 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_ENVIRONMENT
+		UPDATE IGNORE BS_EMPLOYEE
 		<trim prefix="SET" suffixOverrides=",">
-            <if test="flag != null">flag = #{flag},</if>
-            <if test="audit_user != null">audit_user = #{audit_user},</if>
             <if test="sample_code != null">sample_code = #{sample_code},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
             <if test="province_id != null">province_id = #{province_id},</if>
             <if test="city_id != null">city_id = #{city_id},</if>
             <if test="county_id != null">county_id = #{county_id},</if>
             <if test="area_level != null">area_level = #{area_level},</if>
-            <if test="site_type != null">site_type = #{site_type},</if>
-            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
-            <if test="market_name != null">market_name = #{market_name},</if>
-            <if test="vendor_name != null">vendor_name = #{vendor_name},</if>
+            <if test="real_name != null">real_name = #{real_name},</if>
             <if test="phone != null">phone = #{phone},</if>
-            <if test="vendor_code != null">vendor_code = #{vendor_code},</if>
-            <if test="source != null">source = #{source},</if>
-            <if test="entrance != null">entrance = #{entrance},</if>
-            <if test="entrance_serial != null">entrance_serial = #{entrance_serial},</if>
-            <if test="sample_name != null">sample_name = #{sample_name},</if>
-            <if test="freeze_related != null">freeze_related = #{freeze_related},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="work_site != null">work_site = #{work_site},</if>
+            <if test="work_type != null">work_type = #{work_type},</if>
+            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
+            <if test="profession != null">profession = #{profession},</if>
+            <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
-            <if test="detection_date != null">detection_date = STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
+            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
+            <if test="detection_date != null">detection_date = #{detection_date},</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
@@ -471,17 +425,15 @@
             city_id,
             county_id,
             area_level,
-            site_type,
-            freeze_type,
-            market_name,
-            vendor_name,
+            real_name,
             phone,
-            vendor_code,
-            source,
-            entrance,
-            entrance_serial,
-            sample_name,
-            freeze_related,
+            gender,
+            age,
+            work_site,
+            work_type,
+            freeze_type,
+            profession,
+            cold_chain,
             sample_type,
             sampling_date,
             detection_date,
@@ -490,17 +442,17 @@
             modify_userid,
             create_date,
             modify_date
-        FROM BS_ENVIRONMENT WHERE kid = #{kid} LIMIT 1
+        FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
     </select>
 	
 	<!-- 行删除 -->
 	<delete id="delById" parameterType="String">
-		DELETE FROM BS_ENVIRONMENT WHERE kid = #{kid} LIMIT 1
+		DELETE FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
 	</delete>
 	
 	<!-- 删除|批量删除-->
 	<delete id="delByKeys" parameterType="ArrayList">
-		DELETE FROM BS_ENVIRONMENT WHERE 
+		DELETE FROM BS_EMPLOYEE WHERE 
 			kid IN
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
@@ -510,20 +462,8 @@
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
-            <if test="flag != null">
-                AND flag LIKE CONCAT('%',#{flag},'%')
-            </if>
-            <if test="sample_code != null">
-                AND sample_code LIKE CONCAT('%',#{sample_code},'%')
-            </if>
-            <if test="site_type != null">
-                AND site_type LIKE CONCAT('%',#{site_type},'%')
-            </if>
-            <if test="market_name != null">
-                AND market_name LIKE CONCAT('%',#{market_name},'%')
-            </if>
-            <if test="result != null">
-                AND result LIKE CONCAT('%',#{result},'%')
+            <if test="real_name != null">
+                AND real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
 		</trim>
 	</sql>
@@ -536,27 +476,29 @@
 			audit_user,
 			craete_userid,
 			sample_code,
+			area_id,
+			province_id,
 			city_id,
 			county_id,
-			site_type,
-			freeze_type,
-			market_name,
-			vendor_name,
+			area_level,
+			real_name,
 			phone,
-			vendor_code,
-			source,
-			entrance,
-			entrance_serial,
-			sample_name,
-			freeze_related,
+			gender,
+			age,
+			work_site,
+			work_type,
+			freeze_type,
+			profession,
+			cold_chain,
 			sample_type,
 			sampling_date,
 			detection_date,
 			result,
 			remark,
-			create_date,
-			modify_date
-		FROM BS_ENVIRONMENT
+			modify_userid,
+			modify_date,
+			create_date
+		FROM BS_EMPLOYEE
 		<include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
@@ -572,17 +514,16 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_ENVIRONMENT
+		SELECT COUNT(kid) TOTAL FROM BS_EMPLOYEE
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
 
     <!-- 审批审核且提交更新为已审核状态 -->
-    <update id="updateBatchAudit" parameterType="HashMap">
-        update BS_ENVIRONMENT set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
+    <update id="updateEmployeeAudit" parameterType="HashMap">
+        update BS_EMPLOYEE set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
         <foreach item="item" index="index" collection="listIds" open="(" separator="," close=")">
             #{item}
         </foreach>
     </update>
-
 </mapper>

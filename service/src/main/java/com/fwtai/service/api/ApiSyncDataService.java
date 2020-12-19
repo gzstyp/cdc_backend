@@ -59,4 +59,8 @@ public class ApiSyncDataService{
         return ToolClient.queryJson(apiSyncDataDao.getSampleType());
     }
 
+    //工种(用于从业人员)
+    public String getProfession(){
+        return ToolClient.queryJson(apiSyncDataDao.getProfession());
+    }
 }

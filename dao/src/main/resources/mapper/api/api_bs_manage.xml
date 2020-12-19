@@ -476,4 +476,12 @@
             </otherwise>
         </choose>
     </select>
+
+    <!-- 审批审核且提交更新为已审核状态 -->
+    <update id="updateManageAudit" parameterType="HashMap">
+        update BS_MANAGE set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
+        <foreach item="item" index="index" collection="listIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

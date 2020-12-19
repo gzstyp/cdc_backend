@@ -57,4 +57,8 @@ public class ApiSyncDataDao{
     public List<HashMap<String,Object>> getSampleType(){
         return dao.queryForListHashMap("api_sync_data.getSampleType");
     }
+
+    public List<HashMap<String,Object>> getProfession(){
+        return dao.queryForListHashMap("api_sync_data.getProfession");
+    }
 }
