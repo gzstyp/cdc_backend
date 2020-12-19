@@ -442,6 +442,7 @@
             sa.name area_id_label,
             su.user_name,
             bm.entrance,
+            bm.freeze,
             bm.site_type,
             sd.NAME site_type_label,
             bm.risk,
