@@ -61,4 +61,9 @@ public class ApiSyncDataDao{
     public List<HashMap<String,Object>> getProfession(){
         return dao.queryForListHashMap("api_sync_data.getProfession");
     }
+
+    //根据父级id获取字典数据(通用字段查询)
+    public List<HashMap<String,Object>> getDictByPid(final String pid){
+        return dao.queryForListHashMap("api_sync_data.getDictByPid",pid);
+    }
 }

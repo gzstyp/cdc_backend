@@ -63,4 +63,9 @@ public class ApiSyncDataService{
     public String getProfession(){
         return ToolClient.queryJson(apiSyncDataDao.getProfession());
     }
+
+    //根据父级id获取字典数据(通用字段查询)
+    public String getDictByPid(final String pid){
+        return ToolClient.queryJson(apiSyncDataDao.getDictByPid(pid));
+    }
 }

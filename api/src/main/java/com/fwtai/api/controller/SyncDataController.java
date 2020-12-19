@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 基础数据同步
+ * 基础数据同步,要求当天的数据必须上传完
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2020-12-16 18:42
@@ -71,7 +71,6 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getFreezeType(),response);
     }
 
-
     @ApiOperation(value = "标本类型(用于环境监测)", notes = "标本类型(用于环境监测)")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getSpecimenType")
@@ -91,5 +90,15 @@ public class SyncDataController{
     @GetMapping("/getProfession")
     public void getProfession(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getProfession(),response);
+    }
+
+    @ApiOperation(value = "根据父级id获取字典数据(基础数据)", notes = "根据父级id获取字典数据(基础数据)")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/getDictByPid")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "pid", value = "父级字典id", dataType = "String", paramType = "query", required = true)
+    })
+    public void getDictByPid(final String pid,final HttpServletResponse response){
+        ToolClient.responseJson(apiSyncDataService.getDictByPid(pid),response);
     }
 }

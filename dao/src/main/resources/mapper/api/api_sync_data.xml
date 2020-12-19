@@ -41,4 +41,7 @@
         SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = '0000000071e57be5ffffffffd5c23562' ORDER BY SORT ASC
     </select>
 
+    <select id="getDictByPid" resultType="HashMap" parameterType="HashMap">
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = #{pid} ORDER BY SORT ASC
+    </select>
 </mapper>
