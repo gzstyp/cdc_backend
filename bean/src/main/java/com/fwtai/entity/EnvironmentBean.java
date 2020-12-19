@@ -53,7 +53,7 @@ public final class EnvironmentBean implements Serializable{
     private String sample_name;
     @ApiModelProperty(notes = "是否冷链相关",required = true,value = "是否冷链相关(0否;1是)")
     private Integer freeze_related;
-    @ApiModelProperty(notes = "标本类型",required = true,value = "标本类型(用于环境监测)的kid的值")
+    @ApiModelProperty(notes = "标本类型",required = true,value = "标本类型(用于环境监测)的kid的值,取值来自于基础数据的'标本类型(用于环境监测)'的kid值")
     private String sample_type;
     @ApiModelProperty(notes = "采样日期",required = true,value = "字符串,采样日期,格式:2019-10-22")
     private String sampling_date;
