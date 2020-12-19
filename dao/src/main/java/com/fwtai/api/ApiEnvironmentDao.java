@@ -50,4 +50,8 @@ public class ApiEnvironmentDao{
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"api_bs_environment.listData","api_bs_environment.listTotal");
     }
+
+    public int updateBatchAudit(final HashMap<String,Object> map){
+        return dao.execute("api_bs_environment.updateBatchAudit",map);
+    }
 }

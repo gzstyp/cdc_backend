@@ -106,7 +106,7 @@ public class CrowdTotalController{
         ToolClient.responseJson(apiCrowdTotalService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "审批审核后提交更新", notes = "ids是字符串,每个值主键id以英文逗号,隔开;如10001,10002,10003")
+    @ApiOperation(value = "审批审核后提交后且更新为已审核", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
         @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })

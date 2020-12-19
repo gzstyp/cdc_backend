@@ -96,9 +96,7 @@
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
-            <if test="modify_userid != null">modify_userid,</if>
-            <if test="create_date != null">create_date,</if>
-            <if test="modify_date != null">modify_date</if>
+            <if test="modify_userid != null">modify_userid</if>
         </trim>
         ) VALUES (
         <trim suffixOverrides=",">
@@ -124,8 +122,8 @@
 			<if test="sample_name != null">#{sample_name},</if>
 			<if test="freeze_related != null">#{freeze_related},</if>
 			<if test="sample_type != null">#{sample_type},</if>
-			<if test="sampling_date != null">#{sampling_date},</if>
-			<if test="detection_date != null">#{detection_date},</if>
+			<if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+			<if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
 			<if test="result != null">#{result},</if>
 			<if test="remark != null">#{remark},</if>
 			<if test="modify_userid != null">#{modify_userid},</if>
@@ -138,7 +136,7 @@
     <select id="queryExistById" resultType="String" parameterType="String">
         SELECT kid FROM BS_ENVIRONMENT WHERE kid = #{kid} LIMIT 1
     </select>
-	
+
     <!-- 基于主键kid的存在就更新,否则新增操作 -->
     <update id="updateOrEdit" parameterType="HashMap">
         INSERT IGNORE INTO BS_ENVIRONMENT (
@@ -197,8 +195,8 @@
             <if test="sample_name != null">#{sample_name},</if>
             <if test="freeze_related != null">#{freeze_related},</if>
             <if test="sample_type != null">#{sample_type},</if>
-            <if test="sampling_date != null">#{sampling_date},</if>
-            <if test="detection_date != null">#{detection_date},</if>
+            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">#{result},</if>
             <if test="remark != null">#{remark},</if>
             <if test="modify_userid != null">#{modify_userid},</if>
@@ -229,8 +227,8 @@
             <if test="sample_name != null">sample_name = #{sample_name},</if>
             <if test="freeze_related != null">freeze_related = #{freeze_related},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
-            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
@@ -303,8 +301,8 @@
                 <if test="item.sample_name != null">#{item.sample_name},</if>
                 <if test="item.freeze_related != null">#{item.freeze_related},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">#{item.sampling_date},</if>
-                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid},</if>
@@ -415,8 +413,8 @@
                 <if test="item.sample_name != null">#{item.sample_name},</if>
                 <if test="item.freeze_related != null">#{item.freeze_related},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">#{item.sampling_date},</if>
-                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid},</if>
@@ -433,7 +431,6 @@
 		<trim prefix="SET" suffixOverrides=",">
             <if test="flag != null">flag = #{flag},</if>
             <if test="audit_user != null">audit_user = #{audit_user},</if>
-            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
             <if test="sample_code != null">sample_code = #{sample_code},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
             <if test="province_id != null">province_id = #{province_id},</if>
@@ -452,13 +449,12 @@
             <if test="sample_name != null">sample_name = #{sample_name},</if>
             <if test="freeze_related != null">freeze_related = #{freeze_related},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
-            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="sampling_date != null">sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">detection_date = STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
-            <if test="create_date != null">create_date = #{create_date},</if>
-            <if test="modify_date != null">modify_date = #{modify_date}</if>
+            modify_date = now()
 		</trim>
 		WHERE kid = #{kid} LIMIT 1
 	</update>
@@ -580,5 +576,13 @@
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
+
+    <!-- 审批审核后提交更新 -->
+    <update id="updateBatchAudit" parameterType="HashMap">
+        update BS_ENVIRONMENT set flag = 1,audit_user = #{audit_user} where flag = 0 and kid IN
+        <foreach item="item" index="index" collection="listIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

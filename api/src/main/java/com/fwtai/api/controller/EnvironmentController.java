@@ -1,6 +1,7 @@
 package com.fwtai.api.controller;
 
 import com.fwtai.config.ConfigFile;
+import com.fwtai.entity.EnvironmentBean;
 import com.fwtai.entity.ReqPage;
 import com.fwtai.service.api.ApiEnvironmentService;
 import com.fwtai.tool.ToolClient;
@@ -35,22 +36,23 @@ public class EnvironmentController{
 	private ApiEnvironmentService apiEnvironmentService;
 
     /**添加*/
-    @ApiOperation(value = "post请求,添加操作", notes = "添加操作")
+    @ApiOperation(value = "添加操作", notes = "新建|新增|添加操作,bean实体form表单方式非json格式提交")
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/add")
-    public void add(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.add(request),response);
+    public void add(final EnvironmentBean environmentBean,final HttpServletResponse response){
+        ToolClient.responseJson(apiEnvironmentService.add(environmentBean),response);
     }
 
     /**编辑*/
     @ApiOperation(value = "编辑操作", notes = "通过主键kid编辑|修改数据,字段的参照表结构，主键的字段可能不是id或kid,请参考表结构")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "flag", value = "是否已审核(0未审核;1已审核)", dataType = "int", paramType = "query", required = true)
     })
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/edit")
-    public void edit(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.edit(request),response);
+    public void edit(final EnvironmentBean environmentBean,final HttpServletResponse response){
+        ToolClient.responseJson(apiEnvironmentService.edit(environmentBean),response);
     }
 
     /**根据id查询对应的数据*/
@@ -91,5 +93,15 @@ public class EnvironmentController{
     @GetMapping("/listDataPage")
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEnvironmentService.listDataPage(request),response);
+    }
+
+    @ApiOperation(value = "审批审核且提交更新为已审核状态", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
+    })
+    @PreAuthorize("hasRole('ROLE_APP_SUPER')")
+    @PostMapping("/updateBatchAudit")
+    public void updateBatchAudit(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiEnvironmentService.updateBatchAudit(ToolClient.getFormData(request)),response);
     }
 }

@@ -3,10 +3,10 @@ package com.fwtai.service.api;
 import com.fwtai.api.ApiEnvironmentDao;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.config.LocalUserId;
+import com.fwtai.entity.EnvironmentBean;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,67 +26,73 @@ import java.util.List;
 @Service
 public class ApiEnvironmentService{
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Resource
     private ApiEnvironmentDao apiEnvironmentDao;
 
-    public String add(final HttpServletRequest request){
-        final PageFormData formData = new PageFormData(request);
+    public String add(final EnvironmentBean environmentBean){
+        final PageFormData formData = ToolClient.beanToPageFormData(environmentBean);
         final String p_sample_code = "sample_code";
         final String p_province_id = "province_id";
         final String p_city_id = "city_id";
         final String p_county_id = "county_id";
+        final String p_area_id = "area_id";
+        final String p_area_level = "area_level";
         final String p_site_type = "site_type";
-        final String p_freeze_type = "freeze_type";
         final String p_market_name = "market_name";
         final String p_vendor_name = "vendor_name";
         final String p_phone = "phone";
         final String p_vendor_code = "vendor_code";
         final String p_source = "source";
         final String p_entrance = "entrance";
-        final String p_entrance_serial = "entrance_serial";
         final String p_sample_name = "sample_name";
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_site_type,p_freeze_type,p_market_name,p_vendor_name,p_phone,p_vendor_code,p_source,p_entrance,p_entrance_serial,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_vendor_code,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result);
         if(validate != null)return validate;
+        final String userId = LocalUserId.get();
         formData.put("kid",ToolString.getIdsChar32());
+        formData.put("audit_user",userId);
+        formData.put("craete_userid",userId);
+        formData.put("modify_userid",userId);
         return ToolClient.executeRows(apiEnvironmentDao.add(formData));
     }
 
-    public String edit(final HttpServletRequest request){
-        final PageFormData formData = new PageFormData(request);
+    public String edit(final EnvironmentBean environmentBean){
+        final PageFormData formData = ToolClient.beanToPageFormData(environmentBean);
         final String p_kid = "kid";
         final String p_sample_code = "sample_code";
         final String p_province_id = "province_id";
         final String p_city_id = "city_id";
         final String p_county_id = "county_id";
         final String p_site_type = "site_type";
-        final String p_freeze_type = "freeze_type";
         final String p_market_name = "market_name";
         final String p_vendor_name = "vendor_name";
         final String p_phone = "phone";
         final String p_vendor_code = "vendor_code";
         final String p_source = "source";
         final String p_entrance = "entrance";
-        final String p_entrance_serial = "entrance_serial";
         final String p_sample_name = "sample_name";
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_site_type,p_freeze_type,p_market_name,p_vendor_name,p_phone,p_vendor_code,p_source,p_entrance,p_entrance_serial,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result,p_kid);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_site_type,p_market_name,p_vendor_name,p_phone,p_vendor_code,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result,p_kid);
         if(validate != null)return validate;
         final String exist_key = apiEnvironmentDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
         }
+        final String userId = LocalUserId.get();
+        formData.put("audit_user",userId);
         return ToolClient.executeRows(apiEnvironmentDao.edit(formData));
+    }
+
+    public String updateAudit(final String ids){
+        return null;
     }
 
     public String queryById(final PageFormData pageFormData){
@@ -123,5 +129,20 @@ public class ApiEnvironmentService{
         if(formData == null) return ToolClient.jsonValidateField();
         final HashMap<String,Object> map = apiEnvironmentDao.listData(formData);
         return ToolClient.jsonPage((List<?>) map.get(ConfigFile.rows),(Integer) map.get(ConfigFile.total));
+    }
+
+    public String updateBatchAudit(final PageFormData formData){
+        final String p_ids = "ids";
+        final String validate = ToolClient.validateField(formData,p_ids);
+        if(validate != null)return validate;
+        final String ids = formData.getString(p_ids);
+        final String userId = LocalUserId.get();
+        final ArrayList<String> lists = ToolString.keysToList(ids);
+        final HashMap<String,Object> map = new HashMap<>(2);
+        map.put("audit_user",userId);
+        map.put("listIds",lists);
+        final int rows = apiEnvironmentDao.updateBatchAudit(map);
+        final String msg = (rows == lists.size()) ? "操作成功" : "操作成功"+rows+"条数,失败"+(lists.size()-rows)+"条数";
+        return ToolClient.executeRows(rows,msg,"数据已不存在,刷新重试");
     }
 }

@@ -18,13 +18,13 @@ public final class ReqPage{
     @ApiModelProperty(notes = "请求的第几页的数据,当前页",required = true,value = "当前页,默认为1")
     private Integer current = 1;
 
-    @ApiModelProperty(notes = "每页大小,每页显示的数据量",required = true,value = "每页大小,每页显示的数据量,最大不能超过50")
+    @ApiModelProperty(notes = "每页大小,每页显示的数据量",required = true,value = "每页大小,默认为10,每页显示的数据量,最大不能超过50")
     private Integer pageSize = 10;
 
-    @ApiModelProperty(notes = "排序关键字,升序ASC或降序DESC",required = false,value = "没有默认值,不填时不排序")
+    @ApiModelProperty(notes = "排序关键字,升序ASC或降序DESC",required = false,value = "排序关键字,升序ASC或降序DESC,没有默认值,不填时不排序")
     private String order;
 
-    @ApiModelProperty(notes = "排序字段|排序的列",required = false,value = "不填时不排序")
+    @ApiModelProperty(notes = "排序字段|排序的列",required = false,value = "排序字段|排序的列,不填时不排序")
     private String column;
 
     public Integer getCurrent(){
