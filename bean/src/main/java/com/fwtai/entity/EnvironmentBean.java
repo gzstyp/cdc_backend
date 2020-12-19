@@ -61,7 +61,7 @@ public final class EnvironmentBean implements Serializable{
     private String detection_date;
     @ApiModelProperty(notes = "新冠核酸检测结果",required = true,value = "新冠核酸检测结果(1未检测;2阴性;3阳性)")
     private Integer result;
-    @ApiModelProperty(notes = "备注说明",required = true,value = "备注说明")
+    @ApiModelProperty(notes = "备注说明",required = false,value = "备注说明")
     private Integer remark;
 
     public String getKid(){
