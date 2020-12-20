@@ -19,29 +19,29 @@
 
     <!-- 获取经营场所 -->
     <select id="getManagerLocation" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'fffffffffd06f648ffffffff98c8eec6' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'fffffffffd06f648ffffffff98c8eec6' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 
     <!-- 冷库类型,用于环境监测或从业人员监测 -->
     <select id="getFreezeType" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = '000000002663b1d8ffffffff8f0dccc2' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = '000000002663b1d8ffffffff8f0dccc2' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 
     <!-- 标本类型(用于环境监测) -->
     <select id="getSpecimenType" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'ffffffff85295a4c000000007b3ad237' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'ffffffff85295a4c000000007b3ad237' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 
     <!-- 样本类型(用于从业人员) -->
     <select id="getSampleType" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'ffffffffad139f4a00000000587661ec' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'ffffffffad139f4a00000000587661ec' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 
     <select id="getProfession" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = '0000000071e57be5ffffffffd5c23562' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = '0000000071e57be5ffffffffd5c23562' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 
     <select id="getDictByPid" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = #{pid} ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = #{pid} AND DELETED = 0 ORDER BY SORT ASC
     </select>
 </mapper>
