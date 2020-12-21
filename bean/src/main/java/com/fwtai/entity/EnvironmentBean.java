@@ -21,8 +21,6 @@ public final class EnvironmentBean implements Serializable{
     private Integer flag;
     @ApiModelProperty(notes = "",required = false,value = "审核人的userId,默认为登记人")
     private String audit_user;
-    @ApiModelProperty(notes = "",required = false,value = "登记人id")
-    private String craete_userid;
     @ApiModelProperty(notes = "标本实验编号",required = true,value = "标本实验编号")
     private String sample_code;
     @ApiModelProperty(notes = "区域的主键kid",required = true,value = "取值是用当前登录成功后返回的areaData里的kid值")
@@ -90,14 +88,6 @@ public final class EnvironmentBean implements Serializable{
 
     public void setAudit_user(String audit_user){
         this.audit_user = audit_user;
-    }
-
-    public String getCraete_userid(){
-        return craete_userid;
-    }
-
-    public void setCraete_userid(String craete_userid){
-        this.craete_userid = craete_userid;
     }
 
     public String getSample_code(){
