@@ -33,7 +33,6 @@ public class CrowdCategoryController{
 	private ApiCrowdCategoryService apiCrowdCategoryService;
 
     /**获取分页数据*/
-    //@ApiOperation(value = "获取人群分类带分页", notes = "current表示当前页，默认为1;pageSize表示每页大小,默认为10,最大不能超过20")
     @PreAuthorize("hasRole('ROLE_APP')")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "current", value = "表示当前页", dataType = "int", paramType = "query", required = true),

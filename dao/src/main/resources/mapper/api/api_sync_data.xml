@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="api_sync_data">
 
+    <!-- 获取最新的版本号 -->
+    <select id="getVersion" resultType="HashMap">
+        SELECT url,description,version_code FROM app_version ORDER BY version_code DESC LIMIT 1
+    </select>
+
     <!-- 获取人群分类基础数据 -->
     <select id="getCrowdCategory" resultType="HashMap" parameterType="HashMap">
         select kid,name from bs_crowd order by name
