@@ -515,57 +515,64 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="sample_code != null">
-                AND sample_code LIKE CONCAT('%',#{sample_code},'%')
+                AND bet.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
             <if test="province_id != null">
-                AND province_id LIKE CONCAT('%',#{province_id},'%')
+                AND bet.province_id = #{province_id}
             </if>
             <if test="city_id != null">
-                AND city_id LIKE CONCAT('%',#{city_id},'%')
+                AND bet.city_id = #{city_id}
             </if>
             <if test="county_id != null">
-                AND county_id LIKE CONCAT('%',#{county_id},'%')
+                AND bet.county_id = #{county_id}
             </if>
             <if test="market_name != null">
-                AND market_name LIKE CONCAT('%',#{market_name},'%')
+                AND bet.market_name LIKE CONCAT('%',#{market_name},'%')
             </if>
             <if test="sampling_date != null">
-                AND sampling_date LIKE CONCAT('%',#{sampling_date},'%')
+                AND bet.sampling_date LIKE CONCAT('%',#{sampling_date},'%')
+            </if>
+            <if test="detection_date != null">
+                AND bet.detection_date LIKE CONCAT('%',#{detection_date},'%')
             </if>
             <if test="result != null">
-                AND result LIKE CONCAT('%',#{result},'%')
+                AND bet.result = #{result}
             </if>
             <if test="site_type != null">
-                AND site_type LIKE CONCAT('%',#{site_type},'%')
+                AND bet.site_type = #{site_type}
             </if>
 		</trim>
 	</sql>
 	
 	<!-- 列表数据 -->
 	<select id="listData" parameterType="HashMap" resultType="HashMap">
-		SELECT
-            kid,
-			sample_code,
-			province_id,
-			city_id,
-			county_id,
-			site_type,
-			freeze_type,
-			market_name,
-			vendor_name,
-			vendor_code,
-			source,
-			entrance,
-			entrance_serial,
-			sample_name,
-			freeze_related,
-			sample_type,
-			sampling_date,
-			detection_date,
-			result,
-			remark
-		FROM BS_ENVIRONMENT
-		<include refid="sql_where_listData"/>
+        SELECT
+            bet.kid,
+            bet.sample_code,
+            city.name city_id,
+            county.name county_id,
+            sd.NAME site_type,
+            sd2.NAME freeze_type,
+            bet.market_name,
+            bet.vendor_name,
+            bet.vendor_code,
+            bet.source,
+            bet.entrance,
+            bet.entrance_serial,
+            bet.sample_name,
+            bet.freeze_related,
+            bb.NAME sample_type,
+            DATE_FORMAT(bet.sampling_date,'%Y-%m-%d') sampling_date,
+            DATE_FORMAT(bet.detection_date,'%Y-%m-%d') detection_date,
+            bet.result,
+            bet.remark
+        FROM BS_ENVIRONMENT bet
+        LEFT JOIN sys_area city on city.kid = bet.city_id
+        LEFT JOIN sys_area county on county.kid = bet.county_id
+        LEFT JOIN sys_dict sd on sd.kid = bet.site_type
+        LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
+        LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        <include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
     		ORDER BY ${column} ${order}
@@ -580,7 +587,12 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_ENVIRONMENT
+		SELECT COUNT(bet.kid) TOTAL FROM BS_ENVIRONMENT bet
+        LEFT JOIN sys_area city on city.kid = bet.city_id
+        LEFT JOIN sys_area county on county.kid = bet.county_id
+        LEFT JOIN sys_dict sd on sd.kid = bet.site_type
+        LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
+        LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
