@@ -478,6 +478,6 @@
 
     <!-- 获取经营场所 -->
     <select id="getManagerLocation" resultType="HashMap" parameterType="HashMap">
-        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'fffffffffd06f648ffffffff98c8eec6' ORDER BY SORT ASC
+        SELECT kid VALUE,name LABEL FROM sys_dict WHERE PID = 'fffffffffd06f648ffffffff98c8eec6' AND DELETED = 0 ORDER BY SORT ASC
     </select>
 </mapper>
