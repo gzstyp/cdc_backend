@@ -47,10 +47,15 @@ public class ApiEnvironmentService{
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
-        final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result);
         if(validate != null)return validate;
+        final String validateInteger = ToolClient.validateInteger(formData,p_entrance,p_freeze_related,p_result);
+        if(validateInteger != null)return validateInteger;
+        final boolean b = ToolString.checkDate(formData.getString(p_sampling_date));
+        if(!b){
+            return ToolClient.createJsonFail("日期格式不对");
+        }
         final String userId = LocalUserId.get();
         formData.put("kid",ToolString.getIdsChar32());
         formData.put("audit_user",userId);
@@ -73,10 +78,15 @@ public class ApiEnvironmentService{
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
-        final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_site_type,p_market_name,p_vendor_name,p_phone,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_detection_date,p_result,p_kid);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_site_type,p_market_name,p_vendor_name,p_phone,p_source,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result,p_kid);
         if(validate != null)return validate;
+        final String validateInteger = ToolClient.validateInteger(formData,p_entrance,p_freeze_related,p_result);
+        if(validateInteger != null)return validateInteger;
+        final boolean b = ToolString.checkDate(formData.getString(p_sampling_date));
+        if(!b){
+            return ToolClient.createJsonFail("日期格式不对");
+        }
         final String exist_key = apiEnvironmentDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
