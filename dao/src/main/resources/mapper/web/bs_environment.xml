@@ -529,11 +529,17 @@
             <if test="market_name != null">
                 AND bet.market_name LIKE CONCAT('%',#{market_name},'%')
             </if>
-            <if test="sampling_date != null">
-                AND bet.sampling_date LIKE CONCAT('%',#{sampling_date},'%')
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND bet.sampling_date >= #{sampling_date_start} ]]>
             </if>
-            <if test="detection_date != null">
-                AND bet.detection_date LIKE CONCAT('%',#{detection_date},'%')
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND bet.sampling_date <= #{sampling_date_end} ]]>
+            </if>
+            <if test="detection_date_start != null">
+                <![CDATA[ AND bet.detection_date >= #{detection_date_start} ]]>
+            </if>
+            <if test="detection_date_end != null">
+                <![CDATA[ AND bet.detection_date <= #{detection_date_end} ]]>
             </if>
             <if test="result != null">
                 AND bet.result = #{result}
