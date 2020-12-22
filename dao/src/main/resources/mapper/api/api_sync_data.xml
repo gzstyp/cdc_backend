@@ -4,7 +4,7 @@
 
     <!-- 获取最新的版本号 -->
     <select id="getVersion" resultType="HashMap">
-        SELECT url,description,version_code FROM app_version ORDER BY version_code DESC LIMIT 1
+        SELECT url,description,version_code,version_name FROM app_version ORDER BY version_code DESC LIMIT 1
     </select>
 
     <!-- 获取人群分类基础数据 -->
