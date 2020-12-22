@@ -86,7 +86,7 @@ public class ManageLocationController{
         ToolClient.responseJson(apiManageLocationService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    /**获取分页数据,todo 参数reqPage用不到请删除,否则swagger看不到请求的参数*/
+    /**获取分页数据*/
     @ApiOperation(value = "获取分页数据", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值,添加字段site_letter=经营场所首字母即可查询")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/listDataPage")

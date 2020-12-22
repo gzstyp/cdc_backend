@@ -63,7 +63,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 if(!roles.isEmpty())
                     Permissions.set(roles);
             }
-            // todo 将 userId 把 authentication 存入 redis,方便后续获取用户信息
             return new JwtUser(user.getUserName(),authorities);
         }
         throw new RuntimeException("账号信息不存在");

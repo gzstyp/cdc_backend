@@ -36,6 +36,5 @@ public class AuthFailureEntryPoint implements AuthenticationEntryPoint {
         }
         System.out.println("++++++++++++++未登录认证处理或token无效++++++++++++++");
         ToolClient.responseJson(json,response);
-        // todo 处理 ThreadLocal
     }
 }
