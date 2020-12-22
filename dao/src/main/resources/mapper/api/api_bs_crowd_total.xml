@@ -331,13 +331,22 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="crowd_type_id != null">
-                AND crowd_type_id LIKE CONCAT('%',#{crowd_type_id},'%')
+                AND crowd_type_id = #{crowd_type_id}
             </if>
             <if test="crowd_id != null">
-                AND crowd_id LIKE CONCAT('%',#{crowd_id},'%')
+                AND crowd_id = #{crowd_id}
             </if>
             <if test="craete_userid != null">
-                AND craete_userid LIKE CONCAT('%',#{craete_userid},'%')
+                AND craete_userid = #{craete_userid}
+            </if>
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
             </if>
 		</trim>
 	</sql>

@@ -463,6 +463,15 @@
             <if test="real_name != null">
                 AND real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
 		</trim>
 	</sql>
 	
