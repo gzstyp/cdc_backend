@@ -84,8 +84,4 @@ public class EnvironmentController{
     public void getDicts(final String pid,final HttpServletResponse response){
         ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
     }
-
-    //市场名称
-    //var urlQueryMarkeName = urlRoute + 'queryMarkeName';
-
 }

@@ -91,7 +91,10 @@ public class ManageLocationController{
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/listDataPage")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "site_letter", value = "经营场所首字母,仅返回前20个", dataType = "String", paramType = "query", required = false)
+        @ApiImplicitParam(name = "site_letter", value = "经营场所首字母,仅返回前20个", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "province_id", value = "登录返回的areaData里的province_id值", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "city_id", value = "登录返回的areaData里的city_id值", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "county_id", value = "登录返回的areaData里的county_id值", dataType = "String", paramType = "query", required = true)
     })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiManageLocationService.listDataPage(request),response);

@@ -599,4 +599,9 @@
         LIMIT 1
 	</select>
 
+    <!-- 用于实时查询经营场所名称,未使用 -->
+    <select id="queryManageList" resultType="HashMap" parameterType="HashMap">
+        select kid,site_name name from bs_manage where site_letter LIKE CONCAT(#{siteLetter},'%') order by site_letter LIMIT 20
+    </select>
+
 </mapper>
