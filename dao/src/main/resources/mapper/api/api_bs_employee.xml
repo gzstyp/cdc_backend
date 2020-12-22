@@ -67,7 +67,6 @@
         INSERT IGNORE INTO BS_EMPLOYEE (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
-            <if test="flag != null">flag,</if>
             <if test="audit_user != null">audit_user,</if>
             <if test="craete_userid != null">craete_userid,</if>
             <if test="sample_code != null">sample_code,</if>
@@ -95,7 +94,6 @@
         ) VALUES (
         <trim suffixOverrides=",">
 			<if test="kid != null">#{kid},</if>
-			<if test="flag != null">#{flag},</if>
 			<if test="audit_user != null">#{audit_user},</if>
 			<if test="craete_userid != null">#{craete_userid},</if>
 			<if test="sample_code != null">#{sample_code},</if>

@@ -513,7 +513,7 @@
 	
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
-		<trim prefix="WHERE" prefixOverrides="AND">
+		<trim prefix="AND" prefixOverrides="AND">
             <if test="sample_code != null">
                 AND bet.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
@@ -572,6 +572,7 @@
         LEFT JOIN sys_dict sd on sd.kid = bet.site_type
         LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
         LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        where bet.flag = 1
         <include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
@@ -593,6 +594,7 @@
         LEFT JOIN sys_dict sd on sd.kid = bet.site_type
         LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
         LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        where bet.flag = 1
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
