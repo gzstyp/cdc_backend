@@ -57,11 +57,20 @@ public class ApiEmployeeService{
             return ToolClient.createJsonFail("日期格式不对");
         }
         final String userId = LocalUserId.get();
-        formData.put("kid",ToolString.getIdsChar32());
+        final String kid = ToolString.getIdsChar32();
+        formData.put("kid",kid);
         formData.put("craete_userid",userId);
         formData.put("audit_user",userId);
         formData.put("modify_userid",userId);
-        return ToolClient.executeRows(apiEmployeeDao.add(formData));
+        final int rows = apiEmployeeDao.add(formData);
+        if(rows > 0){
+            final HashMap<String,Object> result = new HashMap<>();
+            result.put("kid",kid);
+            result.put("rows",rows);
+            return ToolClient.queryJson(result);
+        }else{
+            return ToolClient.createJsonFail("操作失败");
+        }
     }
 
     public String edit(final HttpServletRequest request){
