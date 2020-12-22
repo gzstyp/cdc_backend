@@ -16,7 +16,6 @@ public class DataSourceAop{
       "|| execution(* com.fwtai..*.*Dao.get*(..))" +
       "|| execution(* com.fwtai..*.*Dao.select*(..))")
     public void setReadDataSourceType(){
-        System.err.println("拦截[read]方法");
         DataSourceContextHolder.read();
     }
 
@@ -26,8 +25,7 @@ public class DataSourceAop{
       "|| execution(* com.fwtai..*.*Dao.edit*(..))" +
       "|| execution(* com.fwtai..*.*Dao.update*(..))" +
       "|| execution(* com.fwtai..*.*Dao.del*(..))")
-    public void setWriteDataSourceType() {
-        System.err.println("拦截[write]操作");
+    public void setWriteDataSourceType(){
         DataSourceContextHolder.write();
     }
 }
