@@ -33,6 +33,7 @@ public class ApiEmployeeService{
         final PageFormData formData = ToolClient.beanToPageFormData(employeeBean);
         final String p_sample_code = "sample_code";
         final String p_area_id = "area_id";
+        final String p_appid = "appid";
         final String p_province_id = "province_id";
         final String p_city_id = "city_id";
         final String p_county_id = "county_id";
@@ -48,7 +49,7 @@ public class ApiEmployeeService{
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_phone,p_gender,p_age,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_sampling_date,p_result);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_appid,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_phone,p_gender,p_age,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_sampling_date,p_result);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_gender,p_cold_chain,p_result);
         if(validateInteger != null)return validateInteger;
@@ -66,6 +67,7 @@ public class ApiEmployeeService{
         if(rows > 0){
             final HashMap<String,Object> result = new HashMap<>();
             result.put("kid",kid);
+            result.put("appid",formData.get(p_appid));
             result.put("rows",rows);
             return ToolClient.queryJson(result);
         }else{

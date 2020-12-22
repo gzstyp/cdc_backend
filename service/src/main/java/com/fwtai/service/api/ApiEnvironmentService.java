@@ -31,6 +31,7 @@ public class ApiEnvironmentService{
 
     public String add(final EnvironmentBean environmentBean){
         final PageFormData formData = ToolClient.beanToPageFormData(environmentBean);
+        final String p_appid = "appid";
         final String p_sample_code = "sample_code";
         final String p_province_id = "province_id";
         final String p_city_id = "city_id";
@@ -47,7 +48,7 @@ public class ApiEnvironmentService{
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result);
+        final String validate = ToolClient.validateField(formData,p_appid,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_entrance,p_freeze_related,p_result);
         if(validateInteger != null)return validateInteger;
@@ -65,6 +66,7 @@ public class ApiEnvironmentService{
         if(rows > 0){
             final HashMap<String,Object> result = new HashMap<>();
             result.put("kid",kid);
+            result.put("appid",formData.get(p_appid));
             result.put("rows",rows);
             return ToolClient.queryJson(result);
         }else{

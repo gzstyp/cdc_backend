@@ -8,6 +8,8 @@ public final class EmployeeBean implements Serializable{
 
     @ApiModelProperty(notes = "主键",required = false,value = "kid主键,添加时有后端生成,编辑时必填项")
     private String kid;
+    @ApiModelProperty(notes = "手机端的appid",required = true,value = "手机端的appid,用于标识手机端")
+    private String appid;
     @ApiModelProperty(notes = "是否已审核",required = false,value = "是否已审核(0未审核;1已审核),默认为0未审核")
     private Integer flag;
     @ApiModelProperty(required = false,value = "审核人的userId,默认为登记人")
@@ -59,6 +61,14 @@ public final class EmployeeBean implements Serializable{
 
     public void setKid(String kid){
         this.kid = kid;
+    }
+
+    public String getAppid(){
+        return appid;
+    }
+
+    public void setAppid(String appid){
+        this.appid = appid;
     }
 
     public Integer getFlag(){
