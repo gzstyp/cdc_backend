@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bs_employee">
+
+    <sql id="sql_select">
+        <if test="age != null">age,</if>
+        <if test="appid != null">appid,</if>
+        <if test="area_id != null">area_id,</if>
+        <if test="area_level != null">area_level,</if>
+        <if test="audit_user != null">audit_user,</if>
+        <if test="city_id != null">city_id,</if>
+        <if test="cold_chain != null">cold_chain,</if>
+        <if test="county_id != null">county_id,</if>
+        <if test="craete_userid != null">craete_userid,</if>
+        <if test="create_date != null">create_date,</if>
+        <if test="detection_date != null">detection_date,</if>
+        <if test="flag != null">flag,</if>
+        <if test="freeze_type != null">freeze_type,</if>
+        <if test="gender != null">gender,</if>
+        <if test="kid != null">kid,</if>
+        <if test="modify_date != null">modify_date,</if>
+        <if test="modify_userid != null">modify_userid,</if>
+        <if test="phone != null">phone,</if>
+        <if test="profession != null">profession,</if>
+        <if test="province_id != null">province_id,</if>
+        <if test="real_name != null">real_name,</if>
+        <if test="remark != null">remark,</if>
+        <if test="result != null">result,</if>
+        <if test="sample_code != null">sample_code,</if>
+        <if test="sample_type != null">sample_type,</if>
+        <if test="sampling_date != null">sampling_date,</if>
+        <if test="work_site != null">work_site,</if>
+        <if test="work_type != null">work_type</if>
+    </sql>
+
+    <sql id="sql_column">
+        age,
+        appid,
+        area_id,
+        area_level,
+        audit_user,
+        city_id,
+        cold_chain,
+        county_id,
+        craete_userid,
+        create_date,
+        detection_date,
+        flag,
+        freeze_type,
+        gender,
+        kid,
+        modify_date,
+        modify_userid,
+        phone,
+        profession,
+        province_id,
+        real_name,
+        remark,
+        result,
+        sample_code,
+        sample_type,
+        sampling_date,
+        work_site,
+        work_type
+    </sql>
+
+    <!-- 添加数据 -->
+    <update id="add" parameterType="HashMap">
+        INSERT IGNORE INTO BS_EMPLOYEE (
+        <trim suffixOverrides=",">
+            <if test="age != null">age,</if>
+            <if test="appid != null">appid,</if>
+            <if test="area_id != null">area_id,</if>
+            <if test="area_level != null">area_level,</if>
+            <if test="audit_user != null">audit_user,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="cold_chain != null">cold_chain,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="detection_date != null">detection_date,</if>
+            <if test="flag != null">flag,</if>
+            <if test="freeze_type != null">freeze_type,</if>
+            <if test="gender != null">gender,</if>
+            <if test="kid != null">kid,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="phone != null">phone,</if>
+            <if test="profession != null">profession,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="real_name != null">real_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="result != null">result,</if>
+            <if test="sample_code != null">sample_code,</if>
+            <if test="sample_type != null">sample_type,</if>
+            <if test="sampling_date != null">sampling_date,</if>
+            <if test="work_site != null">work_site,</if>
+            <if test="work_type != null">work_type</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+			<if test="age != null">#{age},</if>
+			<if test="appid != null">#{appid},</if>
+			<if test="area_id != null">#{area_id},</if>
+			<if test="area_level != null">#{area_level},</if>
+			<if test="audit_user != null">#{audit_user},</if>
+			<if test="city_id != null">#{city_id},</if>
+			<if test="cold_chain != null">#{cold_chain},</if>
+			<if test="county_id != null">#{county_id},</if>
+			<if test="craete_userid != null">#{craete_userid},</if>
+			<if test="create_date != null">#{create_date},</if>
+			<if test="detection_date != null">#{detection_date},</if>
+			<if test="flag != null">#{flag},</if>
+			<if test="freeze_type != null">#{freeze_type},</if>
+			<if test="gender != null">#{gender},</if>
+			<if test="kid != null">#{kid},</if>
+			<if test="modify_date != null">#{modify_date},</if>
+			<if test="modify_userid != null">#{modify_userid},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="profession != null">#{profession},</if>
+			<if test="province_id != null">#{province_id},</if>
+			<if test="real_name != null">#{real_name},</if>
+			<if test="remark != null">#{remark},</if>
+			<if test="result != null">#{result},</if>
+			<if test="sample_code != null">#{sample_code},</if>
+			<if test="sample_type != null">#{sample_type},</if>
+			<if test="sampling_date != null">#{sampling_date},</if>
+			<if test="work_site != null">#{work_site},</if>
+			<if test="work_type != null">#{work_type}</if>
+        </trim>
+        )
+    </update>
+
+    <select id="queryExistById" resultType="String" parameterType="String">
+        SELECT kid FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+    <!-- 基于主键kid的存在就更新,否则新增操作 -->
+    <update id="updateOrEdit" parameterType="HashMap">
+        INSERT IGNORE INTO BS_EMPLOYEE (
+        <trim suffixOverrides=",">
+            <if test="age != null">age,</if>
+            <if test="appid != null">appid,</if>
+            <if test="area_id != null">area_id,</if>
+            <if test="area_level != null">area_level,</if>
+            <if test="audit_user != null">audit_user,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="cold_chain != null">cold_chain,</if>
+            <if test="county_id != null">county_id,</if>
+            <if test="craete_userid != null">craete_userid,</if>
+            <if test="create_date != null">create_date,</if>
+            <if test="detection_date != null">detection_date,</if>
+            <if test="flag != null">flag,</if>
+            <if test="freeze_type != null">freeze_type,</if>
+            <if test="gender != null">gender,</if>
+            <if test="kid != null">kid,</if>
+            <if test="modify_date != null">modify_date,</if>
+            <if test="modify_userid != null">modify_userid,</if>
+            <if test="phone != null">phone,</if>
+            <if test="profession != null">profession,</if>
+            <if test="province_id != null">province_id,</if>
+            <if test="real_name != null">real_name,</if>
+            <if test="remark != null">remark,</if>
+            <if test="result != null">result,</if>
+            <if test="sample_code != null">sample_code,</if>
+            <if test="sample_type != null">sample_type,</if>
+            <if test="sampling_date != null">sampling_date,</if>
+            <if test="work_site != null">work_site,</if>
+            <if test="work_type != null">work_type</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="age != null">#{age},</if>
+            <if test="appid != null">#{appid},</if>
+            <if test="area_id != null">#{area_id},</if>
+            <if test="area_level != null">#{area_level},</if>
+            <if test="audit_user != null">#{audit_user},</if>
+            <if test="city_id != null">#{city_id},</if>
+            <if test="cold_chain != null">#{cold_chain},</if>
+            <if test="county_id != null">#{county_id},</if>
+            <if test="craete_userid != null">#{craete_userid},</if>
+            <if test="create_date != null">#{create_date},</if>
+            <if test="detection_date != null">#{detection_date},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="freeze_type != null">#{freeze_type},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="modify_date != null">#{modify_date},</if>
+            <if test="modify_userid != null">#{modify_userid},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="profession != null">#{profession},</if>
+            <if test="province_id != null">#{province_id},</if>
+            <if test="real_name != null">#{real_name},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="result != null">#{result},</if>
+            <if test="sample_code != null">#{sample_code},</if>
+            <if test="sample_type != null">#{sample_type},</if>
+            <if test="sampling_date != null">#{sampling_date},</if>
+            <if test="work_site != null">#{work_site},</if>
+            <if test="work_type != null">#{work_type}</if>
+        </trim>
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="age != null">age = #{age},</if>
+            <if test="appid != null">appid = #{appid},</if>
+            <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="audit_user != null">audit_user = #{audit_user},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
+            <if test="create_date != null">create_date = #{create_date},</if>
+            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="modify_date != null">modify_date = #{modify_date},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="profession != null">profession = #{profession},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="real_name != null">real_name = #{real_name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="sample_code != null">sample_code = #{sample_code},</if>
+            <if test="sample_type != null">sample_type = #{sample_type},</if>
+            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
+            <if test="work_site != null">work_site = #{work_site},</if>
+            <if test="work_type != null">work_type = #{work_type}</if>
+        </trim>
+    </update>
+
+    <!-- 基于主键kid的批量插入还是批量更新操作 VALUES (字段) VALUES内是数据库的字段，而不是实体的字段或map的key -->
+    <update id="updateEditBatch" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_EMPLOYEE (
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                    <if test="item.age != null">age,</if>
+                    <if test="item.appid != null">appid,</if>
+                    <if test="item.area_id != null">area_id,</if>
+                    <if test="item.area_level != null">area_level,</if>
+                    <if test="item.audit_user != null">audit_user,</if>
+                    <if test="item.city_id != null">city_id,</if>
+                    <if test="item.cold_chain != null">cold_chain,</if>
+                    <if test="item.county_id != null">county_id,</if>
+                    <if test="item.craete_userid != null">craete_userid,</if>
+                    <if test="item.create_date != null">create_date,</if>
+                    <if test="item.detection_date != null">detection_date,</if>
+                    <if test="item.flag != null">flag,</if>
+                    <if test="item.freeze_type != null">freeze_type,</if>
+                    <if test="item.gender != null">gender,</if>
+                    <if test="item.kid != null">kid,</if>
+                    <if test="item.modify_date != null">modify_date,</if>
+                    <if test="item.modify_userid != null">modify_userid,</if>
+                    <if test="item.phone != null">phone,</if>
+                    <if test="item.profession != null">profession,</if>
+                    <if test="item.province_id != null">province_id,</if>
+                    <if test="item.real_name != null">real_name,</if>
+                    <if test="item.remark != null">remark,</if>
+                    <if test="item.result != null">result,</if>
+                    <if test="item.sample_code != null">sample_code,</if>
+                    <if test="item.sample_type != null">sample_type,</if>
+                    <if test="item.sampling_date != null">sampling_date,</if>
+                    <if test="item.work_site != null">work_site,</if>
+                    <if test="item.work_type != null">work_type</if>
+                </if>
+            </trim>
+        </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.age != null">#{item.age},</if>
+                <if test="item.appid != null">#{item.appid},</if>
+                <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.audit_user != null">#{item.audit_user},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.cold_chain != null">#{item.cold_chain},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.flag != null">#{item.flag},</if>
+                <if test="item.freeze_type != null">#{item.freeze_type},</if>
+                <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.modify_date != null">#{item.modify_date},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.phone != null">#{item.phone},</if>
+                <if test="item.profession != null">#{item.profession},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.real_name != null">#{item.real_name},</if>
+                <if test="item.remark != null">#{item.remark},</if>
+                <if test="item.result != null">#{item.result},</if>
+                <if test="item.sample_code != null">#{item.sample_code},</if>
+                <if test="item.sample_type != null">#{item.sample_type},</if>
+                <if test="item.sampling_date != null">#{item.sampling_date},</if>
+                <if test="item.work_site != null">#{item.work_site},</if>
+                <if test="item.work_type != null">#{item.work_type}</if>
+            </trim>
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <foreach collection="list" item="item" index="index">
+            <trim suffixOverrides=",">
+                <if test="index==0">
+                <if test="item.age != null">age = values(age),</if>
+                <if test="item.appid != null">appid = values(appid),</if>
+                <if test="item.area_id != null">area_id = values(area_id),</if>
+                <if test="item.area_level != null">area_level = values(area_level),</if>
+                <if test="item.audit_user != null">audit_user = values(audit_user),</if>
+                <if test="item.city_id != null">city_id = values(city_id),</if>
+                <if test="item.cold_chain != null">cold_chain = values(cold_chain),</if>
+                <if test="item.county_id != null">county_id = values(county_id),</if>
+                <if test="item.craete_userid != null">craete_userid = values(craete_userid),</if>
+                <if test="item.create_date != null">create_date = values(create_date),</if>
+                <if test="item.detection_date != null">detection_date = values(detection_date),</if>
+                <if test="item.flag != null">flag = values(flag),</if>
+                <if test="item.freeze_type != null">freeze_type = values(freeze_type),</if>
+                <if test="item.gender != null">gender = values(gender),</if>
+                <if test="item.kid != null">kid = values(kid),</if>
+                <if test="item.modify_date != null">modify_date = values(modify_date),</if>
+                <if test="item.modify_userid != null">modify_userid = values(modify_userid),</if>
+                <if test="item.phone != null">phone = values(phone),</if>
+                <if test="item.profession != null">profession = values(profession),</if>
+                <if test="item.province_id != null">province_id = values(province_id),</if>
+                <if test="item.real_name != null">real_name = values(real_name),</if>
+                <if test="item.remark != null">remark = values(remark),</if>
+                <if test="item.result != null">result = values(result),</if>
+                <if test="item.sample_code != null">sample_code = values(sample_code),</if>
+                <if test="item.sample_type != null">sample_type = values(sample_type),</if>
+                <if test="item.sampling_date != null">sampling_date = values(sampling_date),</if>
+                <if test="item.work_site != null">work_site = values(work_site),</if>
+                <if test="item.work_type != null">work_type = values(work_type)</if>
+                </if>
+            </trim>
+        </foreach>
+    </update>
+
+    <!-- 批量添加|插入-->
+    <update id="batchAdd" parameterType="ArrayList">
+        INSERT IGNORE INTO BS_EMPLOYEE (
+            <foreach collection="list" item="item" index="index">
+                <trim suffixOverrides=",">
+                    <if test="index==0">
+                        <if test="item.age != null">age,</if>
+                        <if test="item.appid != null">appid,</if>
+                        <if test="item.area_id != null">area_id,</if>
+                        <if test="item.area_level != null">area_level,</if>
+                        <if test="item.audit_user != null">audit_user,</if>
+                        <if test="item.city_id != null">city_id,</if>
+                        <if test="item.cold_chain != null">cold_chain,</if>
+                        <if test="item.county_id != null">county_id,</if>
+                        <if test="item.craete_userid != null">craete_userid,</if>
+                        <if test="item.create_date != null">create_date,</if>
+                        <if test="item.detection_date != null">detection_date,</if>
+                        <if test="item.flag != null">flag,</if>
+                        <if test="item.freeze_type != null">freeze_type,</if>
+                        <if test="item.gender != null">gender,</if>
+                        <if test="item.kid != null">kid,</if>
+                        <if test="item.modify_date != null">modify_date,</if>
+                        <if test="item.modify_userid != null">modify_userid,</if>
+                        <if test="item.phone != null">phone,</if>
+                        <if test="item.profession != null">profession,</if>
+                        <if test="item.province_id != null">province_id,</if>
+                        <if test="item.real_name != null">real_name,</if>
+                        <if test="item.remark != null">remark,</if>
+                        <if test="item.result != null">result,</if>
+                        <if test="item.sample_code != null">sample_code,</if>
+                        <if test="item.sample_type != null">sample_type,</if>
+                        <if test="item.sampling_date != null">sampling_date,</if>
+                        <if test="item.work_site != null">work_site,</if>
+                        <if test="item.work_type != null">work_type</if>
+                    </if>
+                </trim>
+            </foreach>
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            <trim suffixOverrides=",">
+                <if test="item.age != null">#{item.age},</if>
+                <if test="item.appid != null">#{item.appid},</if>
+                <if test="item.area_id != null">#{item.area_id},</if>
+                <if test="item.area_level != null">#{item.area_level},</if>
+                <if test="item.audit_user != null">#{item.audit_user},</if>
+                <if test="item.city_id != null">#{item.city_id},</if>
+                <if test="item.cold_chain != null">#{item.cold_chain},</if>
+                <if test="item.county_id != null">#{item.county_id},</if>
+                <if test="item.craete_userid != null">#{item.craete_userid},</if>
+                <if test="item.create_date != null">#{item.create_date},</if>
+                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.flag != null">#{item.flag},</if>
+                <if test="item.freeze_type != null">#{item.freeze_type},</if>
+                <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.kid != null">#{item.kid},</if>
+                <if test="item.modify_date != null">#{item.modify_date},</if>
+                <if test="item.modify_userid != null">#{item.modify_userid},</if>
+                <if test="item.phone != null">#{item.phone},</if>
+                <if test="item.profession != null">#{item.profession},</if>
+                <if test="item.province_id != null">#{item.province_id},</if>
+                <if test="item.real_name != null">#{item.real_name},</if>
+                <if test="item.remark != null">#{item.remark},</if>
+                <if test="item.result != null">#{item.result},</if>
+                <if test="item.sample_code != null">#{item.sample_code},</if>
+                <if test="item.sample_type != null">#{item.sample_type},</if>
+                <if test="item.sampling_date != null">#{item.sampling_date},</if>
+                <if test="item.work_site != null">#{item.work_site},</if>
+                <if test="item.work_type != null">#{item.work_type}</if>
+            </trim>
+            )
+        </foreach>
+    </update>
+
+	<!-- 编辑数据 -->
+	<update id="edit" parameterType="HashMap">
+		UPDATE IGNORE BS_EMPLOYEE
+		<trim prefix="SET" suffixOverrides=",">
+            <if test="age != null">age = #{age},</if>
+            <if test="appid != null">appid = #{appid},</if>
+            <if test="area_id != null">area_id = #{area_id},</if>
+            <if test="area_level != null">area_level = #{area_level},</if>
+            <if test="audit_user != null">audit_user = #{audit_user},</if>
+            <if test="city_id != null">city_id = #{city_id},</if>
+            <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
+            <if test="county_id != null">county_id = #{county_id},</if>
+            <if test="craete_userid != null">craete_userid = #{craete_userid},</if>
+            <if test="create_date != null">create_date = #{create_date},</if>
+            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="modify_date != null">modify_date = #{modify_date},</if>
+            <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="profession != null">profession = #{profession},</if>
+            <if test="province_id != null">province_id = #{province_id},</if>
+            <if test="real_name != null">real_name = #{real_name},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="sample_code != null">sample_code = #{sample_code},</if>
+            <if test="sample_type != null">sample_type = #{sample_type},</if>
+            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
+            <if test="work_site != null">work_site = #{work_site},</if>
+            <if test="work_type != null">work_type = #{work_type}</if>
+		</trim>
+		WHERE kid = #{kid} LIMIT 1
+	</update>
+
+    <!-- 根据id查询对应的数据 -->
+    <select id="queryById" parameterType="String" resultType="HashMap">
+        SELECT
+            age,
+            appid,
+            area_id,
+            area_level,
+            audit_user,
+            city_id,
+            cold_chain,
+            county_id,
+            craete_userid,
+            create_date,
+            detection_date,
+            flag,
+            freeze_type,
+            gender,
+            modify_date,
+            modify_userid,
+            phone,
+            profession,
+            province_id,
+            real_name,
+            remark,
+            result,
+            sample_code,
+            sample_type,
+            sampling_date,
+            work_site,
+            work_type
+        FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
+    </select>
+	
+	<!-- 行删除 -->
+	<delete id="delById" parameterType="String">
+		DELETE FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
+	</delete>
+	
+	<!-- 删除|批量删除-->
+	<delete id="delByKeys" parameterType="ArrayList">
+		DELETE FROM BS_EMPLOYEE WHERE 
+			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
+	
+	<!-- listData条件查询 -->
+	<sql id="sql_where_listData">
+		<trim prefix="WHERE" prefixOverrides="AND">
+            <if test="sample_code != null">
+                AND bee.sample_code LIKE CONCAT('%',#{sample_code},'%')
+            </if>
+            <if test="work_site != null">
+                AND bee.work_site LIKE CONCAT('%',#{work_site},'%')
+            </if>
+            <if test="province_id != null">
+                AND bee.province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND bee.city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND bee.county_id = #{county_id}
+            </if>
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND bee.sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND bee.sampling_date <= #{sampling_date_end} ]]>
+            </if>
+            <if test="detection_date_start != null">
+                <![CDATA[ AND bee.detection_date >= #{detection_date_start} ]]>
+            </if>
+            <if test="detection_date_end != null">
+                <![CDATA[ AND bee.detection_date <= #{detection_date_end} ]]>
+            </if>
+            <if test="result != null">
+                AND bee.result = #{result}
+            </if>
+            <if test="profession != null">
+                AND bee.profession = #{profession}
+            </if>
+            <if test="real_name != null">
+                AND bee.real_name LIKE CONCAT('%',#{real_name},'%')
+            </if>
+            <if test="work_type != null">
+                AND bee.work_type = #{work_type}
+            </if>
+		</trim>
+	</sql>
+	
+	<!-- 列表数据 -->
+	<select id="listData" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        bee.kid,
+        bee.sample_code,
+        city.name city_id,
+        county.name county_id,
+        bee.real_name,
+        bee.gender,
+        bee.age,
+        bee.work_site,
+        wte.name work_type,
+        fte.name freeze_type,
+        pn.name profession,
+        bee.cold_chain,
+        ste.name sample_type,
+        DATE_FORMAT(bee.sampling_date,'%Y-%m-%d') sampling_date,
+        DATE_FORMAT(bee.detection_date,'%Y-%m-%d') detection_date,
+        bee.result
+        FROM BS_EMPLOYEE bee
+        LEFT JOIN sys_area city on city.kid = bee.city_id
+        LEFT JOIN sys_area county on county.kid = bee.county_id
+        LEFT JOIN sys_dict wte on wte.kid = bee.work_type
+        LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
+        LEFT JOIN sys_dict pn on pn.kid = bee.profession
+        LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        <include refid="sql_where_listData"/>
+		<choose>
+    	<when test="order != null and column != null">
+    		ORDER BY ${column} ${order}
+    	</when>
+    	<otherwise>
+        </otherwise>
+        </choose>
+        <if test="section != null and pageSize != null">
+        	LIMIT #{section},#{pageSize}
+		</if>
+	</select>
+	
+	<!-- 总条数总记录数 -->
+	<select id="listTotal" parameterType="HashMap" resultType="Integer">
+		SELECT COUNT(bee.kid) TOTAL FROM BS_EMPLOYEE bee
+        LEFT JOIN sys_area city on city.kid = bee.city_id
+        LEFT JOIN sys_area county on county.kid = bee.county_id
+        LEFT JOIN sys_dict wte on wte.kid = bee.work_type
+        LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
+        LEFT JOIN sys_dict pn on pn.kid = bee.profession
+        LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+		<include refid="sql_where_listData"/>
+        LIMIT 1
+	</select>
+
+</mapper>
