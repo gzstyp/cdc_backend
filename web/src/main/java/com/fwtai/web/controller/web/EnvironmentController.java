@@ -1,6 +1,7 @@
 package com.fwtai.web.controller.web;
 
 import com.fwtai.service.core.DictionaryService;
+import com.fwtai.service.core.UserService;
 import com.fwtai.service.web.EnvironmentService;
 import com.fwtai.tool.ToolClient;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +31,9 @@ public class EnvironmentController{
 
     @Resource
     private DictionaryService dictionaryService;
+
+    @Resource
+    private UserService userService;
 
     /**添加*/
     @PreAuthorize("hasAuthority('environment_btn_add')")
@@ -83,5 +87,12 @@ public class EnvironmentController{
     @GetMapping("/getDicts")
     public void getDicts(final String pid,final HttpServletResponse response){
         ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
+    }
+
+    /**获取区域数据*/
+    @PreAuthorize("hasAuthority('environment_btn_row_areaSelect')")
+    @GetMapping("/queryAreaSelect")
+    public void queryArea(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(userService.queryArea(ToolClient.getFormData(request)),response);
     }
 }
