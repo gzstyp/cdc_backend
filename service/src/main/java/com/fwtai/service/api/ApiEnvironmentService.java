@@ -64,7 +64,7 @@ public class ApiEnvironmentService{
         formData.put("modify_userid",userId);
         final int rows = apiEnvironmentDao.add(formData);
         if(rows > 0){
-            final HashMap<String,Object> result = new HashMap<>();
+            final HashMap<String,Object> result = new HashMap<>(3);
             result.put("kid",kid);
             result.put("appid",formData.get(p_appid));
             result.put("rows",rows);

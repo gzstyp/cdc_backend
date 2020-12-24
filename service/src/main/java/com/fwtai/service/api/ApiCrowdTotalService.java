@@ -58,9 +58,12 @@ public class ApiCrowdTotalService{
         formData.put("modify_userid",userId);
         final int rows = apiCrowdTotalDao.add(formData);
         if(rows > 0){
-            final HashMap<String,Object> result = new HashMap<>();
+            final HashMap<String,Object> result = new HashMap<>(3);
             result.put("kid",kid);
-            result.put("appid",formData.get(p_appid));
+            final String appid = formData.getString(p_appid);
+            if(appid != null){
+                result.put("appid",appid);
+            }
             result.put("rows",rows);
             return ToolClient.queryJson(result);
         }else{
