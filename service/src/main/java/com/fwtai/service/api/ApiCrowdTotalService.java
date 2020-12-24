@@ -40,6 +40,7 @@ public class ApiCrowdTotalService{
         final String p_masculine_total = "masculine_total";
         final String p_province_id = "province_id";
         final String p_sampling_total = "sampling_total";
+        final String p_appid = "appid";
         final String validate = ToolClient.validateField(formData,p_area_level,p_city_id,p_county_id,p_crowd_id,p_crowd_type_id,p_detection_total,p_masculine_total,p_province_id,p_sampling_total);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_detection_total,p_masculine_total,p_sampling_total);
@@ -50,11 +51,21 @@ public class ApiCrowdTotalService{
         if((detection + masculine) > sampling){
             return ToolClient.createJsonFail("检测数和阳性数大于采样人数");
         }
-        formData.put("kid",ToolString.getIdsChar32());
+        final String kid = ToolString.getIdsChar32();
+        formData.put("kid",kid);
         final String userId = LocalUserId.get();
         formData.put("craete_userid",userId);
         formData.put("modify_userid",userId);
-        return ToolClient.executeRows(apiCrowdTotalDao.add(formData));
+        final int rows = apiCrowdTotalDao.add(formData);
+        if(rows > 0){
+            final HashMap<String,Object> result = new HashMap<>();
+            result.put("kid",kid);
+            result.put("appid",formData.get(p_appid));
+            result.put("rows",rows);
+            return ToolClient.queryJson(result);
+        }else{
+            return ToolClient.createJsonFail("操作失败");
+        }
     }
 
     public String edit(final CrowdTotal crowdTotal){

@@ -10,6 +10,8 @@ public class CrowdTotal implements Serializable{
 
     @ApiModelProperty(notes = "主键",required = false,value = "人群类型统计主键,添加时有后端生成,编辑时必填项")
     private String kid;
+    @ApiModelProperty(notes = "手机端的appid",required = false,value = "手机端的appid,用于标识手机端,若需要添加后返回这appid则传参即可")
+    private String appid;
     @ApiModelProperty(notes = "区域级别1-5,省市县镇村",required = true,value = "1-5分别对应省市县镇村")
     private Integer area_level;
     @ApiModelProperty(notes = "省级id[sys_area的kid]",required = true,value = "当前登录人所绑定的省级id[sys_area的kid]")
@@ -37,6 +39,14 @@ public class CrowdTotal implements Serializable{
 
     public void setKid(String kid){
         this.kid = kid;
+    }
+
+    public String getAppid(){
+        return appid;
+    }
+
+    public void setAppid(String appid){
+        this.appid = appid;
     }
 
     public Integer getArea_level(){
