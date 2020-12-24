@@ -67,7 +67,7 @@ public class Swagger2{
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("api接口服务").description("<br />©2020 Copyright. 驼峰科技有限责任公司<br /><span style=\"color:#f00;font-size:20px;\">文档说明:</span><br />返回json格式数据 {\"code\":200,\"msg\":\"操作成功\",\"total\" : 128,\"record\":10,\"data\":{}或[{}]} ,其中<br />code:200时说明请求操作成功;<br />code:201表示暂无数据;<br />code:时表示token无效或过期重新需要登录;<br />code:401表示表示没有操作权限;<br />total 是返回总条数总记录数<br />record 是返回本次请求的条数<br />msg 表示返回提示信息<br />注意:total|record仅在返回列表时有,其它操作不一定存在")
+        return new ApiInfoBuilder().title("api接口服务").description("<br />©2020 Copyright. 驼峰科技有限责任公司<br /><span style=\"color:#f00;font-size:20px;\">文档说明:</span><br />返回json格式数据 {\"code\":200,\"msg\":\"操作成功\",\"total\" : 128,\"record\":10,\"data\":{}或[{}]} ,其中<br />code:200时说明请求操作成功;<br />code:201表示暂无数据;<br />code:205时表示token无效或过期重新需要登录;<br />code:401表示表示没有操作权限;<br />total 是返回总条数总记录数<br />record 是返回本次请求的条数<br />msg 表示返回提示信息<br />注意:total|record仅在返回列表时有,其它操作不一定存在")
           .termsOfServiceUrl("http://www.yinlz.com")
           .contact(new Contact("api接口文档","","444141300@qq.com")).license("保密版本")
           .licenseUrl("http://www.dwz.cloud").version("v1.0").build();
