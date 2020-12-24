@@ -7,8 +7,6 @@ import com.fwtai.config.LocalUserId;
 import com.fwtai.entity.CrowdTotal;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,8 +25,6 @@ import java.util.List;
 */
 @Service
 public class ApiCrowdTotalService{
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Resource
     private ApiCrowdTotalDao apiCrowdTotalDao;
