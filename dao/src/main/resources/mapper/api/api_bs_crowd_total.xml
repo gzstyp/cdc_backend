@@ -47,7 +47,7 @@
             <if test="county_id != null">county_id,</if>
             <if test="craete_userid != null">craete_userid,</if>
             <if test="create_date != null">create_date,</if>
-            <if test="crowd_date != null">crowd_date,</if>
+            crowd_date,
             <if test="crowd_id != null">crowd_id,</if>
             <if test="crowd_type_id != null">crowd_type_id,</if>
             <if test="detection_total != null">detection_total,</if>
@@ -65,7 +65,7 @@
 			<if test="county_id != null">#{county_id},</if>
 			<if test="craete_userid != null">#{craete_userid},</if>
 			<if test="create_date != null">#{create_date},</if>
-			<if test="crowd_date != null">#{crowd_date},</if>
+            date_format(now(),'%Y-%m-%d'),
 			<if test="crowd_id != null">#{crowd_id},</if>
 			<if test="crowd_type_id != null">#{crowd_type_id},</if>
 			<if test="detection_total != null">#{detection_total},</if>
