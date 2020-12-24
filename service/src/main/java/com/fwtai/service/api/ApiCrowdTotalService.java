@@ -46,6 +46,14 @@ public class ApiCrowdTotalService{
         final String p_sampling_total = "sampling_total";
         final String validate = ToolClient.validateField(formData,p_area_level,p_city_id,p_county_id,p_crowd_id,p_crowd_type_id,p_detection_total,p_masculine_total,p_province_id,p_sampling_total);
         if(validate != null)return validate;
+        final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_detection_total,p_masculine_total,p_sampling_total);
+        if(validateInteger != null)return validateInteger;
+        final int detection = formData.getInteger(p_detection_total);
+        final int masculine = formData.getInteger(p_masculine_total);
+        final int sampling = formData.getInteger(p_sampling_total);
+        if((detection + masculine) > sampling){
+            return ToolClient.createJsonFail("检测数和阳性数大于采样人数");
+        }
         formData.put("kid",ToolString.getIdsChar32());
         final String userId = LocalUserId.get();
         formData.put("craete_userid",userId);
@@ -67,6 +75,14 @@ public class ApiCrowdTotalService{
         final String p_sampling_total = "sampling_total";
         final String validate = ToolClient.validateField(formData,p_area_level,p_city_id,p_county_id,p_crowd_id,p_crowd_type_id,p_detection_total,p_masculine_total,p_province_id,p_sampling_total,p_kid);
         if(validate != null)return validate;
+        final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_detection_total,p_masculine_total,p_sampling_total);
+        if(validateInteger != null)return validateInteger;
+        final int detection = formData.getInteger(p_detection_total);
+        final int masculine = formData.getInteger(p_masculine_total);
+        final int sampling = formData.getInteger(p_sampling_total);
+        if((detection + masculine) > sampling){
+            return ToolClient.createJsonFail("检测数和阳性数大于采样人数");
+        }
         final String exist_key = apiCrowdTotalDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
