@@ -105,10 +105,6 @@ public class ApiEnvironmentService{
         return ToolClient.executeRows(apiEnvironmentDao.edit(formData));
     }
 
-    public String updateAudit(final String ids){
-        return null;
-    }
-
     public String queryById(final PageFormData pageFormData){
         final String p_id = "id";
         final String validate = ToolClient.validateField(pageFormData,p_id);

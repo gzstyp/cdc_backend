@@ -19,7 +19,13 @@
 
     <!-- 获取经营场所数据 -->
     <select id="getManagerArea" resultType="HashMap" parameterType="HashMap">
-        select kid,site_name,site_letter from bs_manage where area_id = #{areaId} order by site_letter
+        select kid,site_name,site_letter from bs_manage where area_id = #{areaId}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="site_letter != null">
+                AND site_letter LIKE CONCAT(#{site_letter},'%')
+            </if>
+        </trim>
+         order by site_letter
     </select>
 
     <!-- 获取经营场所 -->

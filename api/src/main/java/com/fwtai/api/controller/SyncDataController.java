@@ -51,7 +51,8 @@ public class SyncDataController{
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerArea")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "areaId", value = "当前登录人的区域字段area_id的值获取,即登录成功后返回的areaData里的kid主键值", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "areaId", value = "当前登录人的区域字段area_id的值获取,即登录成功后返回的areaData里的kid主键值", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "site_letter", value = "经营场所首字母，通过经营场所首字母获取'经营场所'", dataType = "String", paramType = "query", required = false)
     })
     public void getManagerArea(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getManagerArea(ToolClient.getFormData(request)),response);
