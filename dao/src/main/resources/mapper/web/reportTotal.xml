@@ -3,7 +3,7 @@
 <mapper namespace="reportTotal">
 
     <select id="getView" resultType="HashMap" parameterType="HashMap">
-        select lt.crowd_type_id,lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
+        select lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
         from (select crowd_type_id,crowd_id,
            SUM(masculine_total) masculine,
            SUM(detection_total) detection,
