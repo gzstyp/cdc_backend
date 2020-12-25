@@ -4,6 +4,7 @@ import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.core.UserDao;
+import com.fwtai.tool.ToolChinese;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.ManageLocationDao;
@@ -45,9 +46,12 @@ public class ManageLocationService{
         final String p_freeze = "freeze";
         final String p_entrance = "entrance";
         final String p_risk = "risk";
-        final String validate = ToolClient.validateField(formData,p_province_id,p_city_id,p_county_id,p_site_name,p_site_letter,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk);
+        final String validate = ToolClient.validateField(formData,p_province_id,p_city_id,p_county_id,p_site_name,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk);
         if(validate != null)return validate;
-
+        String site_letter = formData.getString(p_site_letter);
+        if(site_letter == null){
+            site_letter = ToolChinese.getPinYinHeadChar(formData.getString(p_site_name));
+        }
         final Long provinceId = formData.getLong(p_province_id);
         final Long city_id = formData.getLong(p_city_id);
         final Long county_id = formData.getLong(p_county_id);
@@ -73,6 +77,7 @@ public class ManageLocationService{
         formData.put("audit_user",userId);
         formData.put("craete_userid",userId);
         formData.put("modify_userid",userId);
+        formData.put("site_letter",site_letter);
         final HashMap<String,Object> map = getAreaLevel(area_id);
         formData.put("area_level",map.get("level"));
         return ToolClient.executeRows(managelocationDao.add(formData));
@@ -94,7 +99,7 @@ public class ManageLocationService{
         final String p_freeze = "freeze";
         final String p_entrance = "entrance";
         final String p_risk = "risk";
-        final String validate = ToolClient.validateField(formData,p_site_name,p_site_letter,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk,p_kid);
+        final String validate = ToolClient.validateField(formData,p_site_name,p_site_type,p_linkman,p_address,p_freeze,p_entrance,p_risk,p_kid);
         if(validate != null)return validate;
         final String exist_key = managelocationDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
@@ -124,6 +129,11 @@ public class ManageLocationService{
             final HashMap<String,Object> map = getAreaLevel(area_id);
             formData.put("area_level",map.get("level"));
         }
+        String site_letter = formData.getString(p_site_letter);
+        if(site_letter == null){
+            site_letter = ToolChinese.getPinYinHeadChar(formData.getString(p_site_name));
+        }
+        formData.put("site_letter",site_letter);
         formData.put("modify_userid",userId);
         return ToolClient.executeRows(managelocationDao.edit(formData));
     }
