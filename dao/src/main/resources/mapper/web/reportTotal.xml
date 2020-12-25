@@ -3,7 +3,7 @@
 <mapper namespace="reportTotal">
 
     <select id="getView" resultType="HashMap" parameterType="HashMap">
-        select lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
+        select masculine,detection,sampling,crowdName,crowdType from (select lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
         from (select crowd_type_id,crowd_id,
            SUM(masculine_total) masculine,
            SUM(detection_total) detection,
@@ -23,7 +23,7 @@
         </trim>
         group by crowd_type_id,crowd_id) lt
         left join bs_crowd bc on bc.kid = lt.crowd_id
-        left join bs_crowd_type bct on bct.kid = lt.crowd_type_id
+        left join bs_crowd_type bct on bct.kid = lt.crowd_type_id)t order by crowdType asc
     </select>
 
 </mapper>
