@@ -70,7 +70,6 @@ public class ManageLocationService{
         if(vallage_id != null){
             area_id = vallage_id;
         }
-
         final String userId = LocalUserId.get();
         formData.put("kid",ToolString.getIdsChar32());
         formData.put("area_id",area_id);

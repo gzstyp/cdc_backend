@@ -5,6 +5,7 @@ import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.entity.ManagerLocation;
+import com.fwtai.tool.ToolChinese;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class ApiManageLocationService{
         final String p_freeze = "freeze";
         final String p_entrance = "entrance";
         final String p_risk = "risk";
-        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_area_id,p_city_id,p_county_id,p_entrance,p_freeze,p_linkman,p_mobile,p_province_id,p_risk,p_site_letter,p_site_name,p_site_type);
+        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_area_id,p_city_id,p_county_id,p_entrance,p_freeze,p_linkman,p_mobile,p_province_id,p_risk,p_site_name,p_site_type);
         if(validate != null)return validate;
         final String userId = LocalUserId.get();
         final String kid = ToolString.getIdsChar32();
@@ -52,6 +53,11 @@ public class ApiManageLocationService{
         formData.put("craete_userid",userId);
         formData.put("modify_userid",userId);
         formData.put("audit_user",userId);
+        String site_letter = formData.getString(p_site_letter);
+        if(site_letter == null){
+            site_letter = ToolChinese.getPinYinHeadChar(formData.getString(p_site_name));
+        }
+        formData.put("site_letter",site_letter);
         final int rows = apiManageLocationDao.add(formData);
         if(rows > 0){
             final HashMap<String,Object> result = new HashMap<>();
@@ -78,7 +84,7 @@ public class ApiManageLocationService{
         final String p_site_letter = "site_letter";
         final String p_site_name = "site_name";
         final String p_site_type = "site_type";
-        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_audit_user,p_entrance,p_freeze,p_linkman,p_mobile,p_remark,p_risk,p_site_letter,p_site_name,p_site_type,p_kid);
+        final String validate = ToolClient.validateField(formData,p_address,p_area_level,p_audit_user,p_entrance,p_freeze,p_linkman,p_mobile,p_remark,p_risk,p_site_name,p_site_type,p_kid);
         if(validate != null)return validate;
         final String exist_key = apiManageLocationDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
@@ -108,6 +114,12 @@ public class ApiManageLocationService{
             final HashMap<String,Object> map = getAreaLevel(area_id);
             formData.put("area_level",map.get("level"));
         }
+        String site_letter = formData.getString(p_site_letter);
+        if(site_letter == null){
+            site_letter = ToolChinese.getPinYinHeadChar(formData.getString(p_site_name));
+        }
+        formData.put("site_letter",site_letter);
+        formData.put("modify_userid",userId);
         return ToolClient.executeRows(apiManageLocationDao.edit(formData));
     }
 
