@@ -417,7 +417,7 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="site_letter != null">
-                AND bm.site_letter LIKE CONCAT('%',#{site_letter},'%')
+                AND bm.site_letter LIKE CONCAT(#{site_letter},'%')
             </if>
             <if test="linkman != null">
                 AND bm.linkman LIKE CONCAT('%',#{linkman},'%')
