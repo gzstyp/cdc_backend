@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -151,6 +153,11 @@ public class ApiCrowdTotalService{
 
     public String getListData(final HttpServletRequest request){
         final PageFormData formData = ToolClient.getFormData(request);
+        String crowd_date = formData.getString("crowd_date");
+        if(crowd_date == null){
+            crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            formData.put("crowd_date",crowd_date);
+        }
         return ToolClient.queryJson(apiCrowdTotalDao.getListData(formData));
     }
 

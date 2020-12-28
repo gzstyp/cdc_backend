@@ -130,6 +130,7 @@ public class CrowdTotalController{
     @ApiOperation(value = "获取统计日报数据", notes = "获取统计日报数据,可以通过指定人群类型的kid获取对应的人员类型的详细信息,若不传crowd_id、crowd_type_id则获取全部的统计信息")
     @GetMapping("/getListData")
     @ApiImplicitParams({
+        @ApiImplicitParam(name = "crowd_id", value = "人群分类的kid,如‘应检尽检’的对应的kid", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "crowd_type_id", value = "人群类型的kid,如‘企业人员’的对应的kid", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "province_id", value = "当前登录者的返回areaData里的province_id", dataType = "long", paramType = "query", required = false),
         @ApiImplicitParam(name = "city_id", value = "当前登录者的返回areaData里的city_id", dataType = "long", paramType = "query", required = false),
