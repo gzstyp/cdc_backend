@@ -279,11 +279,10 @@
             <if test="masculine_total != null">masculine_total = #{masculine_total},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
             <if test="province_id != null">province_id = #{province_id},</if>
-            <if test="flag != null">flag = #{flag},</if>
             <if test="sampling_total != null">sampling_total = #{sampling_total},</if>
             modify_date = now()
 		</trim>
-		WHERE kid = #{kid} LIMIT 1
+		WHERE kid = #{kid} and flag = 0 LIMIT 1
 	</update>
 
     <!-- 根据id查询对应的数据 -->
@@ -397,8 +396,8 @@
 	</select>
 
     <select id="getListData" resultType="HashMap" parameterType="HashMap">
-        select name,sum(sampling_total)sampling_total,sum(detection_total)detection_total,sum(masculine_total)masculine_total from (
-        select bct.sampling_total,bct.detection_total,bct.masculine_total,bct.crowd_id,bc.name
+        select name,crowd_type_id,sum(sampling_total)sampling_total,sum(detection_total)detection_total,sum(masculine_total)masculine_total from (
+        select bct.sampling_total,bct.detection_total,bct.masculine_total,bct.crowd_id,bc.name,bct.crowd_type_id
         from bs_crowd_total bct
         left join bs_crowd_type bc on bc.kid = bct.crowd_type_id
         <trim prefix="WHERE" prefixOverrides="AND">
@@ -421,7 +420,7 @@
                 AND bct.crowd_date = #{crowd_date}
             </if>
         </trim>
-        ) lt group by crowd_id,name
+        ) lt group by crowd_id,name,crowd_type_id
     </select>
 
     <select id="getListType" resultType="HashMap" parameterType="HashMap">

@@ -117,7 +117,7 @@ public class CrowdTotalController{
     }
 
     /**获取分页数据,todo 参数reqPage用不到请删除,否则swagger看不到请求的参数*/
-    @ApiOperation(value = "获取人群分类带分页", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
+    //@ApiOperation(value = "获取人群分类带分页", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
     @GetMapping("/listDataPage")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "crowd_date", value = "登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
