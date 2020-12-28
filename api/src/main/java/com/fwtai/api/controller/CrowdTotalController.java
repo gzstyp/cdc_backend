@@ -75,7 +75,7 @@ public class CrowdTotalController{
     }*/
 
     /**根据id查询对应的数据*/
-    @ApiOperation(value = "获取详细信息", notes = "通过id获取详细信息")
+    //@ApiOperation(value = "获取详细信息", notes = "通过id获取详细信息")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "被查看的id", dataType = "String", paramType = "query", required = true),
     })
@@ -85,7 +85,7 @@ public class CrowdTotalController{
     }
 
     /**删除-单行*/
-    @ApiOperation(value = "删除数据", notes = "通过id删除对应数据")
+    //@ApiOperation(value = "删除数据", notes = "通过id删除对应数据")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "删除数据的id", dataType = "String", paramType = "query", required = true),
     })
@@ -96,8 +96,8 @@ public class CrowdTotalController{
     }
 
     /**批量删除*/
-    @ApiOperation(value = "批量删除", notes = "ids是字符串,每个值主键id以英文逗号,隔开;如10001,10002,10003")
-        @ApiImplicitParams({
+    //@ApiOperation(value = "批量删除", notes = "ids是字符串,每个值主键id以英文逗号,隔开;如10001,10002,10003")
+    @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
@@ -107,7 +107,7 @@ public class CrowdTotalController{
     }
 
     @ApiOperation(value = "审批审核后提交后且更新为已审核", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
-        @ApiImplicitParams({
+    @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })
     @PreAuthorize("hasRole('ROLE_APP_SUPER')")
@@ -119,7 +119,38 @@ public class CrowdTotalController{
     /**获取分页数据,todo 参数reqPage用不到请删除,否则swagger看不到请求的参数*/
     @ApiOperation(value = "获取人群分类带分页", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
     @GetMapping("/listDataPage")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "crowd_date", value = "登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
+    })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiCrowdTotalService.listDataPage(request),response);
+    }
+
+    //当日统计
+    @ApiOperation(value = "获取统计日报数据", notes = "获取统计日报数据,可以通过指定人群类型的kid获取对应的人员类型的详细信息,若不传crowd_id、crowd_type_id则获取全部的统计信息")
+    @GetMapping("/getListData")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "crowd_type_id", value = "人群类型的kid,如‘企业人员’的对应的kid", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "province_id", value = "当前登录者的返回areaData里的province_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "city_id", value = "当前登录者的返回areaData里的city_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "county_id", value = "当前登录者的返回areaData里的county_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "crowd_date", value = "登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
+    })
+    public void getListData(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiCrowdTotalService.getListData(request),response);
+    }
+
+    @ApiOperation(value = "获取统计日报明细", notes = "获取统计日报明细,可以通过指定‘人群分类的kid’和人群类型的kid获取对应的人员类型的详细信息,若不传crowd_id、crowd_type_id则获取全部的统计信息")
+    @GetMapping("/getListType")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "crowd_type_id", value = "人群类型的kid,如‘企业人员’的对应的kid", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "province_id", value = "当前登录者的返回areaData里的province_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "city_id", value = "当前登录者的返回areaData里的city_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "county_id", value = "当前登录者的返回areaData里的county_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "crowd_date_start", value = "开始的登记日期,格式为:2020-12-27", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "crowd_date_end", value = "结束的登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
+    })
+    public void getListType(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiCrowdTotalService.getListType(request),response);
     }
 }

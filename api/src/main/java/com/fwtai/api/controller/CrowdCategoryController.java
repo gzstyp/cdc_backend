@@ -45,7 +45,7 @@ public class CrowdCategoryController{
 
     @ApiOperation(value = "获取人群分类", notes = "返回值kid表示主键,name是人群分类名称,对应的表 bs_crowd")
     @PreAuthorize("hasRole('ROLE_APP')")
-    @GetMapping("/getList")// http://192.168.3.108:801/api/v1.0/crowdCategory/listData
+    @GetMapping("/getList")
     public void getList(final HttpServletResponse response){
         ToolClient.responseJson(apiCrowdCategoryService.getList(),response);
     }

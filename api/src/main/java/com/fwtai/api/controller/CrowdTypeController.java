@@ -89,8 +89,11 @@ public class CrowdTypeController{
     @ApiOperation(value = "获取全部人群类型", notes = "返回值kid表示主键,name是人群分类名称,crowd_id是表'人群分类'的id主键,对应的表 bs_crowd_type")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getList")
-    public void getList(final HttpServletResponse response){
-        ToolClient.responseJson(apiCrowdTypeService.getList(),response);
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "crowd_id", value = "人群分类kid", dataType = "String", paramType = "query", required = false)
+    })
+    public void getList(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiCrowdTypeService.getList(ToolClient.getFormData(request)),response);
     }
 
     /**获取分页数据*/

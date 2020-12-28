@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 人群日报访问数据库
@@ -53,5 +54,13 @@ public class ApiCrowdTotalDao{
 
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"api_bs_crowd_total.listData","api_bs_crowd_total.listTotal");
+    }
+
+    public List<HashMap<String,Object>> getListData(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_crowd_total.getListData",formData);
+    }
+
+    public List<HashMap<String,Object>> getListType(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_crowd_total.getListType",formData);
     }
 }

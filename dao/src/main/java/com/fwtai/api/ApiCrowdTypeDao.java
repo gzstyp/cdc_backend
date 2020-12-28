@@ -53,7 +53,7 @@ public class ApiCrowdTypeDao{
     }
 
     //获取全部人群类型
-    public List<HashMap<String, Object>> getList(){
-        return dao.queryForListHashMap("api_bs_crowd_type.getList");
+    public List<HashMap<String, Object>> getList(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_crowd_type.getList",formData);
     }
 }

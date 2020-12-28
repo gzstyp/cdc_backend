@@ -100,7 +100,7 @@ public class ApiCrowdTypeService{
     }
 
     //获取全部人群类型
-    public String getList(){
-        return ToolClient.queryJson(apiCrowdTypeDao.getList());
+    public String getList(final PageFormData formData){
+        return ToolClient.queryJson(apiCrowdTypeDao.getList(formData));
     }
 }

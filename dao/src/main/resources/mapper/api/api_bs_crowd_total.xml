@@ -348,6 +348,9 @@
             <if test="county_id != null">
                 AND county_id = #{county_id}
             </if>
+            <if test="crowd_date != null">
+                AND crowd_date = #{crowd_date}
+            </if>
 		</trim>
 	</sql>
 	
@@ -391,4 +394,63 @@
         LIMIT 1
 	</select>
 
+    <select id="getListData" resultType="HashMap" parameterType="HashMap">
+        SELECT
+			sum(detection_total)detection_total,
+        sum(masculine_total)masculine_total,
+        sum(sampling_total)sampling_total
+		FROM BS_CROWD_TOTAL
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
+            <if test="crowd_type_id != null">
+                AND crowd_type_id = #{crowd_type_id}
+            </if>
+            <if test="crowd_date != null">
+                AND crowd_date = #{crowd_date}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getListType" resultType="HashMap" parameterType="HashMap">
+        select cityName,countyName,crowd_date,
+        sum(detection_total)detection_total,
+        sum(masculine_total)masculine_total,
+        sum(sampling_total)sampling_total from (
+        select bct.crowd_date,detection_total, masculine_total,sampling_total,
+        city.name cityName,
+        county.name countyName
+        from bs_crowd_total bct
+        left join sys_area province on province.kid = bct.province_id
+        left join sys_area city on city.kid = bct.city_id
+        left join sys_area county on county.kid = bct.county_id
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
+            <if test="crowd_type_id != null">
+                AND crowd_type_id = #{crowd_type_id}
+            </if>
+            <if test="crowd_date_start != null">
+                <![CDATA[ AND crowd_date >= #{crowd_date_start} ]]>
+            </if>
+            <if test="crowd_date_end != null">
+                <![CDATA[ AND crowd_date <= #{crowd_date_end} ]]>
+            </if>
+        </trim>
+        ) lt group by cityName,countyName,crowd_date;
+    </select>
 </mapper>

@@ -189,6 +189,11 @@
 			name,
 			crowd_id
 		FROM BS_CROWD_TYPE
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="crowd_id != null">
+                AND crowd_id = #{crowd_id}
+            </if>
+        </trim>
     </select>
 
 </mapper>

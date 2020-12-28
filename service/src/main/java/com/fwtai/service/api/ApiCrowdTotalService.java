@@ -144,6 +144,11 @@ public class ApiCrowdTotalService{
         return ToolClient.jsonPage((List<?>) map.get(ConfigFile.rows),(Integer) map.get(ConfigFile.total));
     }
 
+    public String getListData(final HttpServletRequest request){
+        final PageFormData formData = ToolClient.getFormData(request);
+        return ToolClient.queryJson(apiCrowdTotalDao.getListData(formData));
+    }
+
     /**人群统计审批审核后提交保存*/
     public String editBatchAudit(final PageFormData formData){
         final String p_ids = "ids";
@@ -158,5 +163,10 @@ public class ApiCrowdTotalService{
         final int rows = apiCrowdTotalDao.editBatchAudit(map);
         final String msg = (rows == lists.size()) ? "操作成功" : "操作成功"+rows+"条数,失败"+(lists.size()-rows)+"条数";
         return ToolClient.executeRows(rows,msg,"数据已不存在,刷新重试");
+    }
+
+    public String getListType(HttpServletRequest request){
+        final PageFormData formData = ToolClient.getFormData(request);
+        return ToolClient.queryJson(apiCrowdTotalDao.getListType(formData));
     }
 }
