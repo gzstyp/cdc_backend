@@ -40,10 +40,11 @@
 
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_CROWD_TOTAL (
+        INSERT INTO BS_CROWD_TOTAL (
         <trim suffixOverrides=",">
             <if test="area_level != null">area_level,</if>
             <if test="city_id != null">city_id,</if>
+            <if test="audit_user != null">audit_user,</if>
             <if test="county_id != null">county_id,</if>
             <if test="craete_userid != null">craete_userid,</if>
             <if test="create_date != null">create_date,</if>
@@ -62,6 +63,7 @@
         <trim suffixOverrides=",">
 			<if test="area_level != null">#{area_level},</if>
 			<if test="city_id != null">#{city_id},</if>
+			<if test="audit_user != null">#{audit_user},</if>
 			<if test="county_id != null">#{county_id},</if>
 			<if test="craete_userid != null">#{craete_userid},</if>
 			<if test="create_date != null">#{create_date},</if>

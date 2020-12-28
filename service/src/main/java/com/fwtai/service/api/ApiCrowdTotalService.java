@@ -59,18 +59,23 @@ public class ApiCrowdTotalService{
         final String userId = LocalUserId.get();
         formData.put("craete_userid",userId);
         formData.put("modify_userid",userId);
-        final int rows = apiCrowdTotalDao.add(formData);
-        if(rows > 0){
-            final HashMap<String,Object> result = new HashMap<>(3);
-            result.put("kid",kid);
-            final String appid = formData.getString(p_appid);
-            if(appid != null){
-                result.put("appid",appid);
+        formData.put("audit_user",userId);
+        try {
+            final int rows = apiCrowdTotalDao.add(formData);
+            if(rows > 0){
+                final HashMap<String,Object> result = new HashMap<>(3);
+                result.put("kid",kid);
+                final String appid = formData.getString(p_appid);
+                if(appid != null){
+                    result.put("appid",appid);
+                }
+                result.put("rows",rows);
+                return ToolClient.queryJson(result);
+            }else{
+                return ToolClient.createJsonFail("操作失败");
             }
-            result.put("rows",rows);
-            return ToolClient.queryJson(result);
-        }else{
-            return ToolClient.createJsonFail("操作失败");
+        } catch (final Exception e) {
+            return ToolClient.createJson(ConfigFile.code198,"已添加当日的统计,若有误请编辑");
         }
     }
 
