@@ -430,6 +430,7 @@
         ) lt group by cityName,countyName,crowd_date
     </select>
 
+    <!-- 查看数据 -->
     <select id="getListData" resultType="HashMap" parameterType="HashMap">
         SELECT a.kid typekid,a.`name`,'' datakid,
         sum(IF(sampling_total is null,0,sampling_total)) sampling_total,
@@ -456,6 +457,7 @@
         group by a.kid,a.name
     </select>
 
+    <!-- 录入数据 -->
     <select id="getList" resultType="HashMap" parameterType="HashMap">
         SELECT a.kid typekid,a.`name`,IF(b.kid is null,'',b.kid) datakid,
         IF(sampling_total is null,0,sampling_total) sampling_total,

@@ -128,9 +128,9 @@ public class CrowdTotalController{
         PageFormData formData = ToolClient.getFormData(request);
         final String county_id = formData.getString("county_id");
         if(county_id == null){
-            ToolClient.responseJson(apiCrowdTotalService.getListData(request),response);
+            ToolClient.responseJson(apiCrowdTotalService.getListData(request),response);//查看数据
         }else{
-            ToolClient.responseJson(apiCrowdTotalService.getList(request),response);
+            ToolClient.responseJson(apiCrowdTotalService.getList(request),response);//录入数据
         }
     }
 
