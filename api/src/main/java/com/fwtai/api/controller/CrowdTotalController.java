@@ -36,7 +36,7 @@ public class CrowdTotalController{
 	private ApiCrowdTotalService apiCrowdTotalService;
 
     /**添加*/
-    @ApiOperation(value = "post请求,添加操作", notes = "添加操作")
+    @ApiOperation(value = "post请求,添加操作", notes = "添加操作,若kid为空时执行添加方法;为不为空时编辑方法")
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/add")
     //public void add(@RequestBody final CrowdTotal crowdTotal,todo 添加@RequestBody注解时请求体就是json格式数据,否则就是表单的提交方式 final HttpServletRequest request,final HttpServletResponse response){
@@ -53,26 +53,13 @@ public class CrowdTotalController{
         } catch (final Exception e) {
             e.printStackTrace();
         }*/
-        ToolClient.responseJson(apiCrowdTotalService.add(crowdTotal),response);
+        String kid = crowdTotal.getKid();
+        if(kid == null){
+            ToolClient.responseJson(apiCrowdTotalService.add(crowdTotal),response);
+        }else{
+            ToolClient.responseJson(apiCrowdTotalService.edit(crowdTotal),response);
+        }
     }
-
-    /**编辑*/
-    @ApiOperation(value = "编辑操作", notes = "通过主键kid编辑|修改数据,字段的参照表结构，主键的字段可能不是id或kid,请参考表结构")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true)
-    })
-    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
-    @PostMapping("/edit")
-    public void edit(final CrowdTotal crowdTotal,final HttpServletResponse response){
-        ToolClient.responseJson(apiCrowdTotalService.edit(crowdTotal),response);
-    }
-
-    /*@ApiOperation(value = "审批审核后提交更新", notes = "人群统计审批审核后提交保存,提交后每条记录的flag已标识为1")
-    @PreAuthorize("hasRole('ROLE_APP_SUPER')")
-    @PostMapping("/editAudit")
-    public void editAudit(@RequestBody final List<CrowdTotal> crowdTotals,final HttpServletResponse response){//todo 接收的是json数据
-        ToolClient.responseJson(apiCrowdTotalService.editAudit(crowdTotals),response);
-    }*/
 
     /**根据id查询对应的数据*/
     //@ApiOperation(value = "获取详细信息", notes = "通过id获取详细信息")
@@ -106,12 +93,12 @@ public class CrowdTotalController{
         ToolClient.responseJson(apiCrowdTotalService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "审批审核后提交后且更新为已审核", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
+    @ApiOperation(value = "审批审核后提交后且更新为已审核", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003;审核后状态变为1,此时编辑是无效的")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })
     @PreAuthorize("hasRole('ROLE_APP_SUPER')")
-    @PostMapping("/editAudit")
+    @PostMapping("/editBatchAudit")
     public void editAudit(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiCrowdTotalService.editBatchAudit(ToolClient.getFormData(request)),response);
     }

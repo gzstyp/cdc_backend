@@ -47,14 +47,14 @@ public class ApiCrowdTotalService{
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_detection_total,p_masculine_total,p_sampling_total);
         if(validateInteger != null)return validateInteger;
-        final int sampling = formData.getInteger(p_sampling_total);
-        final int detection = formData.getInteger(p_detection_total);
-        final int masculine = formData.getInteger(p_masculine_total);
+        final int sampling = formData.getInteger(p_sampling_total);//已采样人数
+        final int detection = formData.getInteger(p_detection_total);//已检测人数
+        final int masculine = formData.getInteger(p_masculine_total);//检测阳性人数
         if(detection > sampling){
             return ToolClient.createJsonFail("检测人数大于采样人数");
         }
-        if(masculine > sampling){
-            return ToolClient.createJsonFail("阳性人数大于采样人数");
+        if(masculine > detection){
+            return ToolClient.createJsonFail("阳性人数大于检测人数");
         }
         final String kid = ToolString.getIdsChar32();
         formData.put("kid",kid);
@@ -103,8 +103,8 @@ public class ApiCrowdTotalService{
         if(detection > sampling){
             return ToolClient.createJsonFail("检测人数大于采样人数");
         }
-        if(masculine > sampling){
-            return ToolClient.createJsonFail("阳性人数大于采样人数");
+        if(masculine > detection){
+            return ToolClient.createJsonFail("阳性人数大于检测人数");
         }
         final String exist_key = apiCrowdTotalDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){

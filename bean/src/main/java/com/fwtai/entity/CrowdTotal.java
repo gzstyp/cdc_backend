@@ -20,13 +20,13 @@ public class CrowdTotal implements Serializable{
     private Long city_id;
     @ApiModelProperty(notes = "县（区）[sys_area的kid]",required = true,value = "当前登录人所绑定的县（区）[sys_area的kid]")
     private Long county_id;
-    @ApiModelProperty(notes = "人群分类id",required = true,value = "人群分类id,表bs_crowd的主键")
+    @ApiModelProperty(notes = "人群分类id",required = true,value = "人群分类id,表bs_crowd的kid主键")
     private String crowd_id;
-    @ApiModelProperty(notes = "人群类型id",required = true,value = "人群类型id,表bs_crowd_type的主键")
+    @ApiModelProperty(notes = "人群类型id",required = true,value = "人群类型id,表bs_crowd_type的kid主键")
     private String crowd_type_id;
-    @ApiModelProperty(notes = "已检测人数",required = true,value = "输入当前已检测人数,数目肯定是少于已采样人数")
+    @ApiModelProperty(notes = "已检测人数",required = true,value = "输入当前已检测人数,数目肯定是少于等于已采样人数")
     private Integer detection_total;
-    @ApiModelProperty(notes = "检测阳性人数",required = true,value = "检测阳性人数,数目肯定是少于已采样人数")
+    @ApiModelProperty(notes = "检测阳性人数",required = true,value = "检测阳性人数,数目肯定是少于等于已检测人数")
     private Integer masculine_total;
     @ApiModelProperty(notes = "已采样人数",required = true,value = "已采样人数")
     private Integer sampling_total;
