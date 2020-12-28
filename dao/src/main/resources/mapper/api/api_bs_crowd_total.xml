@@ -395,34 +395,6 @@
         LIMIT 1
 	</select>
 
-    <select id="getListData" resultType="HashMap" parameterType="HashMap">
-        select name,crowd_type_id,sum(sampling_total)sampling_total,sum(detection_total)detection_total,sum(masculine_total)masculine_total from (
-        select bct.sampling_total,bct.detection_total,bct.masculine_total,bct.crowd_id,bc.name,bct.crowd_type_id
-        from bs_crowd_total bct
-        left join bs_crowd_type bc on bc.kid = bct.crowd_type_id
-        <trim prefix="WHERE" prefixOverrides="AND">
-            <if test="province_id != null">
-                AND bct.province_id = #{province_id}
-            </if>
-            <if test="city_id != null">
-                AND bct.city_id = #{city_id}
-            </if>
-            <if test="county_id != null">
-                AND bct.county_id = #{county_id}
-            </if>
-            <if test="crowd_id != null">
-                AND bct.crowd_id = #{crowd_id}
-            </if>
-            <if test="crowd_type_id != null">
-                AND bct.crowd_type_id = #{crowd_type_id}
-            </if>
-            <if test="crowd_date != null">
-                AND bct.crowd_date = #{crowd_date}
-            </if>
-        </trim>
-        ) lt group by crowd_id,name,crowd_type_id
-    </select>
-
     <select id="getListType" resultType="HashMap" parameterType="HashMap">
         select cityName,countyName,crowd_date,
         sum(detection_total)detection_total,
@@ -456,5 +428,56 @@
             </if>
         </trim>
         ) lt group by cityName,countyName,crowd_date
+    </select>
+
+    <select id="getListData" resultType="HashMap" parameterType="HashMap">
+        SELECT a.kid typekid,a.`name`,'' datakid,
+        sum(IF(sampling_total is null,0,sampling_total)) sampling_total,
+        sum(if(detection_total is null,0,detection_total))detection_total,
+        sum(if(masculine_total is null,0,masculine_total))masculine_total
+        FROM bs_crowd_type a
+        LEFT JOIN  bs_crowd_total b on b.crowd_type_id=a.kid and b.crowd_date = #{crowd_date}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="province_id != null">
+                AND b.province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND b.city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND b.county_id = #{county_id}
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="crowd_id != null">
+                AND a.crowd_id = #{crowd_id}
+            </if>
+        </trim>
+        group by a.kid,a.name
+    </select>
+
+    <select id="getList" resultType="HashMap" parameterType="HashMap">
+        SELECT a.kid typekid,a.`name`,IF(b.kid is null,'',b.kid) datakid,
+        IF(sampling_total is null,0,sampling_total) sampling_total,
+        if(detection_total is null,0,detection_total) detection_total,
+        if(masculine_total is null,0,masculine_total) masculine_total
+        FROM bs_crowd_type a
+        LEFT JOIN  bs_crowd_total b on b.crowd_type_id=a.kid and b.crowd_date = #{crowd_date}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="province_id != null">
+                AND b.province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND b.city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND b.county_id = #{county_id}
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="crowd_id != null">
+                AND a.crowd_id = #{crowd_id}
+            </if>
+        </trim>
     </select>
 </mapper>

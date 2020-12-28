@@ -1,5 +1,6 @@
 package com.fwtai.api.controller;
 
+import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.entity.CrowdTotal;
 import com.fwtai.entity.ReqPage;
@@ -124,7 +125,13 @@ public class CrowdTotalController{
         @ApiImplicitParam(name = "crowd_date", value = "登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
     })
     public void getListData(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(apiCrowdTotalService.getListData(request),response);
+        PageFormData formData = ToolClient.getFormData(request);
+        final String county_id = formData.getString("county_id");
+        if(county_id == null){
+            ToolClient.responseJson(apiCrowdTotalService.getListData(request),response);
+        }else{
+            ToolClient.responseJson(apiCrowdTotalService.getList(request),response);
+        }
     }
 
     @ApiOperation(value = "获取统计日报明细", notes = "获取统计日报明细,可以通过指定‘人群分类的kid’和人群类型的kid获取对应的人员类型的详细信息,若不传crowd_id、crowd_type_id则获取全部的统计信息")

@@ -60,6 +60,10 @@ public class ApiCrowdTotalDao{
         return dao.queryForListHashMap("api_bs_crowd_total.getListData",formData);
     }
 
+    public List<HashMap<String,Object>> getList(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_crowd_total.getList",formData);
+    }
+
     public List<HashMap<String,Object>> getListType(final PageFormData formData){
         return dao.queryForListHashMap("api_bs_crowd_total.getListType",formData);
     }

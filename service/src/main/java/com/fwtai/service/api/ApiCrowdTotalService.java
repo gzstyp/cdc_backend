@@ -151,6 +151,16 @@ public class ApiCrowdTotalService{
         return ToolClient.jsonPage((List<?>) map.get(ConfigFile.rows),(Integer) map.get(ConfigFile.total));
     }
 
+    public String getList(final HttpServletRequest request){
+        final PageFormData formData = ToolClient.getFormData(request);
+        String crowd_date = formData.getString("crowd_date");
+        if(crowd_date == null){
+            crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            formData.put("crowd_date",crowd_date);
+        }
+        return ToolClient.queryJson(apiCrowdTotalDao.getList(formData));
+    }
+
     public String getListData(final HttpServletRequest request){
         final PageFormData formData = ToolClient.getFormData(request);
         String crowd_date = formData.getString("crowd_date");
