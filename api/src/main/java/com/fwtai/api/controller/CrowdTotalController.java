@@ -36,7 +36,7 @@ public class CrowdTotalController{
 	private ApiCrowdTotalService apiCrowdTotalService;
 
     /**添加*/
-    @ApiOperation(value = "post请求,添加操作", notes = "添加操作,若kid为空时执行添加方法;为不为空时编辑方法")
+    @ApiOperation(value = "添加|编辑操作", notes = "添加|编辑操作,若kid为空时执行添加方法;若不为空时编辑方法")
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/add")
     //public void add(@RequestBody final CrowdTotal crowdTotal,todo 添加@RequestBody注解时请求体就是json格式数据,否则就是表单的提交方式 final HttpServletRequest request,final HttpServletResponse response){
