@@ -55,7 +55,7 @@ public class CrowdTotalController{
             e.printStackTrace();
         }*/
         final String kid = crowdTotal.getKid();
-        if(kid == null){
+        if(kid == null || kid.length() <= 0){
             ToolClient.responseJson(apiCrowdTotalService.add(crowdTotal),response);
         }else{
             ToolClient.responseJson(apiCrowdTotalService.edit(crowdTotal),response);
