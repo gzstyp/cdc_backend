@@ -395,6 +395,7 @@
         LIMIT 1
 	</select>
 
+    <!-- 获取统计日报明细 -->
     <select id="getListType" resultType="HashMap" parameterType="HashMap">
         select cityName,countyName,crowd_date,
         sum(detection_total)detection_total,
@@ -427,7 +428,7 @@
                 <![CDATA[ AND crowd_date <= #{crowd_date_end} ]]>
             </if>
         </trim>
-        ) lt group by cityName,countyName,crowd_date
+        ) lt group by cityName,countyName,crowd_date order by crowd_date DESC
     </select>
 
     <!-- 查看数据 -->
