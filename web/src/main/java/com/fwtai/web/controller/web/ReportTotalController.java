@@ -43,4 +43,11 @@ public class ReportTotalController{
     public void getView(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(reportTotalService.getView(ToolClient.getFormData(request)),response);
     }
+
+    /**导出*/
+    @PreAuthorize("hasAuthority('reportTotal_btn_export')")
+    @GetMapping("/exportExcel")
+    public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
+        reportTotalService.queryDataExport(request,response);
+    }
 }
