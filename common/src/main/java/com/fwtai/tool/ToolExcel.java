@@ -4,6 +4,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.metadata.WriteSheet;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public final class ToolExcel{
      * @注意选项 注意 用{} 来表示你要用的变量 如果本来就有"{","}" 特殊字符 用"\{","\}"代替
      * @param excelFullPath excelFullPath带后缀名.xlsx全路径,最终生成的文件
      * @param data 数据
-     * @param head 表头
+     * @param head 表头的实体类的字段带注解还有get和set @ExcelProperty("样本编号") private String sample_code;
      * @param sheet sheet名称,为空时是Sheet1
      * @作者 田应平
      * @QQ 444141300
@@ -71,5 +73,22 @@ public final class ToolExcel{
                 excelWriter.finish();
             }
         }
+    }
+
+    /**
+     * 适用于 service层或controller层调用,当然支持导出失败返回错误的json数据
+     * @param fileName 下载时显示的文件名
+     * @param head 表头的实体类的字段带注解还有get和set @ExcelProperty("样本编号") private String sample_code;
+     * @param data 就是list参数head的集合
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2020/12/29 19:09
+    */
+    public static void writeExcelDownload(final String fileName,final Class<?> head,final List<?> data,final HttpServletResponse response)throws IOException{
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-disposition","attachment;filename*=utf-8''" + fileName + ".xlsx");
+        // 这里需要设置不关闭流
+        EasyExcel.write(response.getOutputStream(),head).autoCloseStream(Boolean.FALSE).sheet("模板").doWrite(data);
     }
 }
