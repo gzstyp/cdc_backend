@@ -89,6 +89,12 @@ public class EmployeeController{
         ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
     }
 
+    @PreAuthorize("hasAuthority('employee_btn_export')")
+    @GetMapping("/exportExcel")
+    public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
+        employeeService.queryDataExport(request,response);
+    }
+
     /**获取区域数据*/
     @PreAuthorize("hasAuthority('employee_btn_row_areaSelect')")
     @GetMapping("/queryAreaSelect")

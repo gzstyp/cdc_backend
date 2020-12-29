@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 环境监测访问数据库
@@ -49,5 +51,9 @@ public class EnvironmentDao{
 
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"bs_environment.listData","bs_environment.listTotal");
+    }
+
+    public List<Map<String, Object>> queryDataExport(final PageFormData formData){
+        return dao.queryForListMap("bs_environment.queryDataExport",formData);
     }
 }

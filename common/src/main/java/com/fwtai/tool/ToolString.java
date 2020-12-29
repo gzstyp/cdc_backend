@@ -199,6 +199,10 @@ public final class ToolString implements Serializable {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());//设置日期格式
 	}
 
+	public final String getDate(){
+		return new SimpleDateFormat("yyyyMMdd").format(new Date());//设置日期格式
+	}
+
     /**
      * ids字符串数组转换为ArrayList<String>,默认是以逗号,隔开
      * @param ids 格式如:12958292,12951500,12977780,12997129

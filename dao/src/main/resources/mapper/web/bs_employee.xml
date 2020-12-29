@@ -499,7 +499,7 @@
 	
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
-		<trim prefix="WHERE" prefixOverrides="AND">
+		<trim prefix="AND" prefixOverrides="AND">
             <if test="sample_code != null">
                 AND bee.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
@@ -568,6 +568,7 @@
         LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
         LEFT JOIN sys_dict pn on pn.kid = bee.profession
         LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        where bee.flag = 1
         <include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
@@ -590,8 +591,47 @@
         LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
         LEFT JOIN sys_dict pn on pn.kid = bee.profession
         LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        where bee.flag = 1
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
 
+    <select id="queryDataExport" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            bee.sample_code,
+            city.name city_id,
+            county.name county_id,
+            bee.real_name,
+            bee.phone,
+            CASE WHEN bee.gender = 1 THEN '男'
+            WHEN bee.gender = 2 THEN '女'
+            ELSE '' END AS gender,
+            bee.age,
+            bee.work_site,
+            wte.name work_type,
+            fte.name freeze_type,
+            pn.name profession,
+            CASE WHEN bee.cold_chain = 1
+            THEN '是'
+            ELSE '否'
+            END cold_chain,
+            ste.name sample_type,
+            DATE_FORMAT(bee.sampling_date,'%Y-%m-%d') sampling_date,
+            DATE_FORMAT(bee.detection_date,'%Y-%m-%d') detection_date,
+            CASE WHEN bee.result = 1 THEN '未检测'
+            WHEN bee.result = 2 THEN '阴性'
+            WHEN bee.result = 3 THEN '阳性'
+            ELSE '' END AS result,
+            bee.remark
+        FROM BS_EMPLOYEE bee
+        LEFT JOIN sys_area city on city.kid = bee.city_id
+        LEFT JOIN sys_area county on county.kid = bee.county_id
+        LEFT JOIN sys_dict wte on wte.kid = bee.work_type
+        LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
+        LEFT JOIN sys_dict pn on pn.kid = bee.profession
+        LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        where bee.flag = 1
+        <include refid="sql_where_listData"/>
+        ORDER BY sampling_date DESC
+    </select>
 </mapper>

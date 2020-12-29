@@ -89,6 +89,12 @@ public class EnvironmentController{
         ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
     }
 
+    @PreAuthorize("hasAuthority('environment_btn_export')")
+    @GetMapping("/exportExcel")
+    public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
+        environmentService.queryDataExport(request,response);
+    }
+
     /**获取区域数据*/
     @PreAuthorize("hasAuthority('environment_btn_row_areaSelect')")
     @GetMapping("/queryAreaSelect")

@@ -610,4 +610,45 @@
         select kid,site_name name from bs_manage where site_letter LIKE CONCAT(#{siteLetter},'%') order by site_letter LIMIT 20
     </select>
 
+    <select id="queryDataExport" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            bet.sample_code,
+            city.name city_id,
+            county.name county_id,
+            sd.NAME site_type,
+            sd2.NAME freeze_type,
+            bet.market_name,
+            bet.vendor_name,
+            bet.phone,
+            bet.vendor_code,
+            bet.source,
+            CASE WHEN bet.entrance = 1
+            THEN '是'
+            ELSE '否'
+            END entrance,
+            bet.entrance_serial,
+            bet.sample_name,
+            CASE WHEN bet.freeze_related = 1
+            THEN '是'
+            ELSE '否'
+            END freeze_related,
+            bb.NAME sample_type,
+            DATE_FORMAT(bet.sampling_date,'%Y-%m-%d') sampling_date,
+            DATE_FORMAT(bet.detection_date,'%Y-%m-%d') detection_date,
+            CASE WHEN bet.result = 1 THEN '未检测'
+            WHEN bet.result = 2 THEN '阴性'
+            WHEN bet.result = 3 THEN '阳性'
+            ELSE ''
+            END AS result,
+            bet.remark
+        FROM BS_ENVIRONMENT bet
+        LEFT JOIN sys_area city on city.kid = bet.city_id
+        LEFT JOIN sys_area county on county.kid = bet.county_id
+        LEFT JOIN sys_dict sd on sd.kid = bet.site_type
+        LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
+        LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        where bet.flag = 1
+        <include refid="sql_where_listData"/>
+        ORDER BY sampling_date DESC
+    </select>
 </mapper>

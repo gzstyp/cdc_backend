@@ -3,15 +3,20 @@ package com.fwtai.service.web;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
+import com.fwtai.tool.ToolExcel;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.EmployeeDao;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 从业人员业务层
@@ -23,6 +28,12 @@ import java.util.List;
 */
 @Service
 public class EmployeeService{
+
+    @Value("${excel_dir_window}")
+    private String dir_window;
+
+    @Value("${excel_dir_linux}")
+    private String dir_linux;
 
     @Resource
     private EmployeeDao employeeDao;
@@ -132,6 +143,25 @@ public class EmployeeService{
             return ToolClient.dataTableOK((List<Object>)map.get(ConfigFile.rows),map.get(ConfigFile.total),formData.get("sEcho"));
         } catch (Exception e){
             return ToolClient.dataTableException(formData.get("sEcho"));
+        }
+    }
+
+    public void queryDataExport(final HttpServletRequest request,final HttpServletResponse response){
+        final PageFormData formData = ToolClient.getFormData(request);
+        formData.remove("accessToken");
+        formData.remove("refreshToken");
+        final String separator = File.separator;
+        final String os_dir = ToolString.isLinuxOS() ? dir_linux : dir_window;
+        final String templateFileName = os_dir + "employee.xlsx";
+        final String fileName = new ToolString().getDate()+"_"+ToolString.getIdsChar32();
+        final List<Map<String,Object>> list = employeeDao.queryDataExport(formData);
+        final String excelFullPath = os_dir + "download"+separator+fileName+".xlsx";
+        final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
+        if(b){
+            ToolClient.download(excelFullPath,response);
+        }else{
+            final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
+            ToolClient.responseJson(json,response);
         }
     }
 }

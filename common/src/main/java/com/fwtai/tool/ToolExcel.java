@@ -64,6 +64,7 @@ public final class ToolExcel{
             excelWriter.fill(data,writeSheet);
             return true;
         } catch (final Exception e) {
+            e.printStackTrace();
             return false;
         }finally{
             if(excelWriter != null){

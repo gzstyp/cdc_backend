@@ -19,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -686,7 +685,7 @@ public final class ToolClient implements Serializable{
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public static boolean download(final HttpServletResponse response,final String filePath){
+	public static boolean download(final String filePath,final HttpServletResponse response){
 		try {
 			// filePath是指欲下载的文件的全路径。
 			final File file = new File(filePath);
@@ -696,8 +695,9 @@ public final class ToolClient implements Serializable{
 			}
 			// 取得文件名。
 			final String filename = file.getName();
-			// 取得文件的后缀名。
-			final String ext = filename.substring(filename.lastIndexOf(".") + 1);
+            final int node = filename.lastIndexOf(".")+1;
+            // 取得文件的后缀名。
+			final String ext = filename.substring(node);
 			// 以流的形式下载文件。
 			InputStream fis = new BufferedInputStream(new FileInputStream(file));
 			byte[] buffer = new byte[fis.available()];
@@ -706,7 +706,7 @@ public final class ToolClient implements Serializable{
 			// 清空response
 			response.reset();
 			// 设置response的Header
-			response.addHeader("Content-Disposition", "attachment;filename="+ new String((filename + ext).getBytes("utf-8"), "ISO-8859-1"));
+			response.addHeader("Content-Disposition", "attachment;filename="+ new String((filename.substring(0,node) + ext).getBytes("utf-8"), "ISO-8859-1"));
             response.addHeader("Content-Length",String.valueOf(file.length()));
 			OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
 			response.setContentType("application/octet-stream");
@@ -722,20 +722,7 @@ public final class ToolClient implements Serializable{
 	}
 
 	/**
-	 * 获取项目物理根路径
-	 * @返回结果 {"code":"200","msg":"E:\workspace\manager"}
-	 * @作者 田应平
-	 * @返回值类型 String
-	 * @创建时间 2016年1月5日 12:32:51
-	 * @QQ号码 444141300
-	 * @官网 http://www.fwtai.com
-	*/
-	public static String getWebRoot(){
-		return RequestContext.class.getResource("/../../").getPath();
-	}
-
-	/**
-	 * 获取项目所在的物理路径,推荐使用
+	 * 获取项目所在的物理路径,推荐使用,但不适合jar运行的项目,仅能通过配置固定目录
 	 * @param request
 	 * @作者 田应平
 	 * @创建时间 2017年9月25日 下午3:47:29
