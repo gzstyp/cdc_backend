@@ -463,6 +463,12 @@
             <if test="real_name != null">
                 AND real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
+            <if test="market_name != null">
+                AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
+            </if>
+            <if test="site_letter != null">
+                AND bm.site_letter LIKE CONCAT(#{site_letter},'%')
+            </if>
             <if test="province_id != null">
                 AND province_id = #{province_id}
             </if>
@@ -492,7 +498,8 @@
             bee.phone,
             bee.gender,
             bee.age,
-            bm.site_name work_site,
+            bm.site_name,
+            bee.work_site,
             bee.work_type,
             bee.freeze_type,
             bee.profession,

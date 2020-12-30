@@ -518,6 +518,9 @@
             <if test="market_name != null">
                 AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
             </if>
+            <if test="site_letter != null">
+                AND bm.site_letter LIKE CONCAT(#{site_letter},'%')
+            </if>
             <if test="result != null">
                 AND bet.result = #{result}
             </if>
@@ -545,7 +548,8 @@
             bet.county_id,
             bet.site_type,
             bet.freeze_type,
-            bm.site_name market_name,
+            bm.site_name,
+            bet.market_name,
             bet.vendor_name,
             bet.phone,
             bet.vendor_code,

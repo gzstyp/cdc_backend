@@ -90,6 +90,10 @@ public class EmployeeController{
     @ApiOperation(value = "获取分页数据", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/listDataPage")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "market_name", value = "从业场所名称[经营场所名称]", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "site_letter", value = "从业场所名称的首写字母[经营场所名称的首写字母]", dataType = "String", paramType = "query", required = false)
+    })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.listDataPage(request),response);
     }
