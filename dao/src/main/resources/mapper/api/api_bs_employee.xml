@@ -112,8 +112,8 @@
 			<if test="profession != null">#{profession},</if>
 			<if test="cold_chain != null">#{cold_chain},</if>
 			<if test="sample_type != null">#{sample_type},</if>
-			<if test="sampling_date != null">#{sampling_date},</if>
-			<if test="detection_date != null">#{detection_date},</if>
+			<if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+			<if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
 			<if test="result != null">#{result},</if>
 			<if test="remark != null">#{remark},</if>
 			<if test="modify_userid != null">#{modify_userid}</if>
@@ -177,8 +177,8 @@
             <if test="profession != null">#{profession},</if>
             <if test="cold_chain != null">#{cold_chain},</if>
             <if test="sample_type != null">#{sample_type},</if>
-            <if test="sampling_date != null">#{sampling_date},</if>
-            <if test="detection_date != null">#{detection_date},</if>
+            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">#{result},</if>
             <if test="remark != null">#{remark},</if>
             <if test="modify_userid != null">#{modify_userid}</if>
@@ -205,8 +205,8 @@
             <if test="profession != null">profession = #{profession},</if>
             <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
-            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="sampling_date != null">sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">detection_date = STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid}</if>
@@ -271,8 +271,8 @@
                 <if test="item.profession != null">#{item.profession},</if>
                 <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">#{item.sampling_date},</if>
-                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid}</if>
@@ -371,8 +371,8 @@
                 <if test="item.profession != null">#{item.profession},</if>
                 <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">#{item.sampling_date},</if>
-                <if test="item.detection_date != null">#{item.detection_date},</if>
+                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid}</if>
@@ -401,8 +401,8 @@
             <if test="profession != null">profession = #{profession},</if>
             <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = #{sampling_date},</if>
-            <if test="detection_date != null">detection_date = #{detection_date},</if>
+            <if test="sampling_date != null">sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            <if test="detection_date != null">detection_date = STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>

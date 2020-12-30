@@ -47,7 +47,7 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getCrowdType(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "获取经营场所数据", notes = "获取经营场所数据,根据当前登录人的areaData的区域主键area_id所绑定区域来同步基础数据")
+    @ApiOperation(value = "获取经营场所名称数据", notes = "获取经营场所名称数据,根据当前登录人的areaData的区域主键area_id所绑定区域来同步基础数据,环境检测是叫市场名称;从业人员检测是的叫从业场所名称")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerArea")
     @ApiImplicitParams({
@@ -58,7 +58,7 @@ public class SyncDataController{
         ToolClient.responseJson(apiSyncDataService.getManagerArea(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "获取经营场所|从业场所|监测场所类型数据", notes = "经营场所|从业场所|监测场所都属于场所类型数据,供下拉列表选择")
+    @ApiOperation(value = "获取经营场所类型|从业场所类型|监测场所类型数据", notes = "经营场所类型|从业场所类型|监测场所类型数据,供下拉列表选择")
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/getManagerLocation")
     public void getManagerLocation(final HttpServletResponse response){
