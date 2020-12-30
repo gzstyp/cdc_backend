@@ -34,7 +34,7 @@ public final class EmployeeBean implements Serializable{
     private Integer gender;
     @ApiModelProperty(required = true,value = "人员年龄")
     private Integer age;
-    @ApiModelProperty(required = true,value = "从业场所名称,从下拉列表获取保存所选的kid")
+    @ApiModelProperty(required = true,value = "从业场所名称[即经营场所名称],通过首写字母搜索得下拉列表获取保存所选的kid")
     private String work_site;
     @ApiModelProperty(required = true,value = "从业场所类型(场所类型),取值于某个是列表场所类型(经营场所类型)的kid的值")
     private String work_type;
