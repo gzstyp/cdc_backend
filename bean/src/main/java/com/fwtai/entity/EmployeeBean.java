@@ -46,7 +46,7 @@ public final class EmployeeBean implements Serializable{
     private Integer cold_chain;
     @ApiModelProperty(required = true,value = "样本类型(来源数据字典)")
     private String sample_type;
-    @ApiModelProperty(notes = "采样日期",required = true,value = "采样日期,格式:2020-12-19",example = "2020-12-19")
+    @ApiModelProperty(notes = "采样日期",required = false,value = "采样日期,格式:2020-12-19",example = "2020-12-19")
     private String sampling_date;
     @ApiModelProperty(notes = "检测日期",required = false,value = "检测日期,格式:2020-12-19",example = "2020-12-19")
     private String detection_date;

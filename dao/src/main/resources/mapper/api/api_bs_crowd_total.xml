@@ -2,24 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="api_bs_crowd_total">
 
-    <sql id="sql_select">
-        <if test="area_level != null">area_level,</if>
-        <if test="city_id != null">city_id,</if>
-        <if test="county_id != null">county_id,</if>
-        <if test="craete_userid != null">craete_userid,</if>
-        <if test="create_date != null">create_date,</if>
-        <if test="crowd_date != null">crowd_date,</if>
-        <if test="crowd_id != null">crowd_id,</if>
-        <if test="crowd_type_id != null">crowd_type_id,</if>
-        <if test="detection_total != null">detection_total,</if>
-        <if test="kid != null">kid,</if>
-        <if test="masculine_total != null">masculine_total,</if>
-        <if test="modify_date != null">modify_date,</if>
-        <if test="modify_userid != null">modify_userid,</if>
-        <if test="province_id != null">province_id,</if>
-        <if test="sampling_total != null">sampling_total</if>
-    </sql>
-
     <sql id="sql_column">
         area_level,
         city_id,
@@ -268,7 +250,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_CROWD_TOTAL
+		UPDATE BS_CROWD_TOTAL
 		<trim prefix="SET" suffixOverrides=",">
             <if test="area_level != null">area_level = #{area_level},</if>
             <if test="city_id != null">city_id = #{city_id},</if>

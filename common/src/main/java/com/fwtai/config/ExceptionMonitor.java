@@ -134,7 +134,10 @@ public class ExceptionMonitor{
     @ExceptionHandler(Exception.class)
     public void exception(final Exception exception,final HttpServletResponse response){
         exception.printStackTrace();
-        System.out.println(exception.getClass());
+        final String message = exception.getMessage();
+        System.out.println("message:"+message);
+        final Class<? extends Exception> cls = exception.getClass();
+        System.out.println(cls);
         ToolClient.responseJson(ToolClient.exceptionJson(),response);
     }
 }

@@ -93,7 +93,9 @@ public class EnvironmentController{
     @GetMapping("/listDataPage")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "market_name", value = "市场名称的名称[经营场所名称]", dataType = "String", paramType = "query", required = false),
-        @ApiImplicitParam(name = "site_letter", value = "市场名称的首写字母[经营场所名称的首写字母]", dataType = "String", paramType = "query", required = false)
+        @ApiImplicitParam(name = "site_letter", value = "市场名称的首写字母[经营场所名称的首写字母]", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "sampling_date_start", value = "采样日期开始日期,格式为:2020-12-01", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "sampling_date_end", value = "采样日期结束日期,格式为:2020-12-01", dataType = "String", paramType = "query", required = false)
     })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEnvironmentService.listDataPage(request),response);

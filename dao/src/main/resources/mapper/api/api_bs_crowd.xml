@@ -14,7 +14,7 @@
 
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_CROWD (
+        INSERT INTO BS_CROWD (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
             <if test="name != null">name</if>
@@ -105,7 +105,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_CROWD
+		UPDATE BS_CROWD
 		<trim prefix="SET" suffixOverrides=",">
             <if test="name != null">name = #{name}</if>
 		</trim>

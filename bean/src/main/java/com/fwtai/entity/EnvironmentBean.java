@@ -59,7 +59,7 @@ public final class EnvironmentBean implements Serializable{
     private Integer freeze_related;
     @ApiModelProperty(notes = "标本类型",required = true,value = "标本类型[取值来自于基础数据的'标本类型(用于环境监测)'的某个kid值]")
     private String sample_type;
-    @ApiModelProperty(notes = "采样日期",required = true,value = "采样日期,格式:2020-12-19",example = "2020-12-19")
+    @ApiModelProperty(notes = "采样日期",required = false,value = "采样日期,格式:2020-12-19",example = "2020-12-19")
     private String sampling_date;
     @ApiModelProperty(notes = "检测日期",required = false,value = "检测日期,格式:2020-12-19",example = "2020-12-19")
     private String detection_date;

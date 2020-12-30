@@ -2,31 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="api_bs_manage">
 
-    <sql id="sql_select">
-        <if test="address != null">address,</if>
-        <if test="area_level != null">area_level,</if>
-        <if test="area_id != null">area_id,</if>
-        <if test="audit_user != null">audit_user,</if>
-        <if test="city_id != null">city_id,</if>
-        <if test="county_id != null">county_id,</if>
-        <if test="craete_userid != null">craete_userid,</if>
-        <if test="create_date != null">create_date,</if>
-        <if test="entrance != null">entrance,</if>
-        <if test="flag != null">flag,</if>
-        <if test="freeze != null">freeze,</if>
-        <if test="kid != null">kid,</if>
-        <if test="linkman != null">linkman,</if>
-        <if test="mobile != null">mobile,</if>
-        <if test="modify_date != null">modify_date,</if>
-        <if test="modify_userid != null">modify_userid,</if>
-        <if test="province_id != null">province_id,</if>
-        <if test="remark != null">remark,</if>
-        <if test="risk != null">risk,</if>
-        <if test="site_letter != null">site_letter,</if>
-        <if test="site_type != null">site_type,</if>
-        <if test="site_name != null">site_name</if>
-    </sql>
-
     <sql id="sql_column">
         address,
         area_level,
@@ -54,7 +29,7 @@
 
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_MANAGE (
+        INSERT INTO BS_MANAGE (
         <trim suffixOverrides=",">
             <if test="address != null">address,</if>
             <if test="area_level != null">area_level,</if>
@@ -345,7 +320,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_MANAGE
+		UPDATE BS_MANAGE
 		<trim prefix="SET" suffixOverrides=",">
             <if test="address != null">address = #{address},</if>
             <if test="area_level != null">area_level = #{area_level},</if>

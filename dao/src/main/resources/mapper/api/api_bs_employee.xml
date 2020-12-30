@@ -2,69 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="api_bs_employee">
 
-    <sql id="sql_select">
-        <if test="kid != null">kid,</if>
-        <if test="flag != null">flag,</if>
-        <if test="audit_user != null">audit_user,</if>
-        <if test="craete_userid != null">craete_userid,</if>
-        <if test="sample_code != null">sample_code,</if>
-        <if test="area_id != null">area_id,</if>
-        <if test="province_id != null">province_id,</if>
-        <if test="city_id != null">city_id,</if>
-        <if test="county_id != null">county_id,</if>
-        <if test="area_level != null">area_level,</if>
-        <if test="real_name != null">real_name,</if>
-        <if test="phone != null">phone,</if>
-        <if test="gender != null">gender,</if>
-        <if test="age != null">age,</if>
-        <if test="work_site != null">work_site,</if>
-        <if test="work_type != null">work_type,</if>
-        <if test="freeze_type != null">freeze_type,</if>
-        <if test="profession != null">profession,</if>
-        <if test="cold_chain != null">cold_chain,</if>
-        <if test="sample_type != null">sample_type,</if>
-        <if test="sampling_date != null">sampling_date,</if>
-        <if test="detection_date != null">detection_date,</if>
-        <if test="result != null">result,</if>
-        <if test="remark != null">remark,</if>
-        <if test="modify_userid != null">modify_userid,</if>
-        <if test="create_date != null">create_date,</if>
-        <if test="modify_date != null">modify_date</if>
-    </sql>
-
-    <sql id="sql_column">
-        kid,
-        flag,
-        audit_user,
-        craete_userid,
-        sample_code,
-        area_id,
-        province_id,
-        city_id,
-        county_id,
-        area_level,
-        real_name,
-        phone,
-        gender,
-        age,
-        work_site,
-        work_type,
-        freeze_type,
-        profession,
-        cold_chain,
-        sample_type,
-        sampling_date,
-        detection_date,
-        result,
-        remark,
-        modify_userid,
-        create_date,
-        modify_date
-    </sql>
-
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_EMPLOYEE (
+        INSERT INTO BS_EMPLOYEE (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
             <if test="audit_user != null">audit_user,</if>
@@ -85,7 +25,7 @@
             <if test="profession != null">profession,</if>
             <if test="cold_chain != null">cold_chain,</if>
             <if test="sample_type != null">sample_type,</if>
-            <if test="sampling_date != null">sampling_date,</if>
+            sampling_date,
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
@@ -112,7 +52,7 @@
 			<if test="profession != null">#{profession},</if>
 			<if test="cold_chain != null">#{cold_chain},</if>
 			<if test="sample_type != null">#{sample_type},</if>
-			<if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            date_format(now(),'%Y-%m-%d'),
 			<if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
 			<if test="result != null">#{result},</if>
 			<if test="remark != null">#{remark},</if>
@@ -149,7 +89,7 @@
             <if test="profession != null">profession,</if>
             <if test="cold_chain != null">cold_chain,</if>
             <if test="sample_type != null">sample_type,</if>
-            <if test="sampling_date != null">sampling_date,</if>
+            sampling_date,
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
@@ -177,7 +117,7 @@
             <if test="profession != null">#{profession},</if>
             <if test="cold_chain != null">#{cold_chain},</if>
             <if test="sample_type != null">#{sample_type},</if>
-            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            date_format(now(),'%Y-%m-%d'),
             <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">#{result},</if>
             <if test="remark != null">#{remark},</if>
@@ -205,7 +145,7 @@
             <if test="profession != null">profession = #{profession},</if>
             <if test="cold_chain != null">cold_chain = #{cold_chain},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            sampling_date = date_format(now(),'%Y-%m-%d'),
             <if test="detection_date != null">detection_date = STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -239,7 +179,7 @@
                     <if test="item.profession != null">profession,</if>
                     <if test="item.cold_chain != null">cold_chain,</if>
                     <if test="item.sample_type != null">sample_type,</if>
-                    <if test="item.sampling_date != null">sampling_date,</if>
+                    sampling_date,
                     <if test="item.detection_date != null">detection_date,</if>
                     <if test="item.result != null">result,</if>
                     <if test="item.remark != null">remark,</if>
@@ -271,7 +211,7 @@
                 <if test="item.profession != null">#{item.profession},</if>
                 <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                date_format(now(),'%Y-%m-%d'),
                 <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
@@ -339,7 +279,7 @@
                         <if test="item.profession != null">profession,</if>
                         <if test="item.cold_chain != null">cold_chain,</if>
                         <if test="item.sample_type != null">sample_type,</if>
-                        <if test="item.sampling_date != null">sampling_date,</if>
+                        sampling_date,
                         <if test="item.detection_date != null">detection_date,</if>
                         <if test="item.result != null">result,</if>
                         <if test="item.remark != null">remark,</if>
@@ -371,7 +311,7 @@
                 <if test="item.profession != null">#{item.profession},</if>
                 <if test="item.cold_chain != null">#{item.cold_chain},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                date_format(now(),'%Y-%m-%d'),
                 <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
@@ -383,7 +323,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_EMPLOYEE
+		UPDATE BS_EMPLOYEE
 		<trim prefix="SET" suffixOverrides=",">
             <if test="sample_code != null">sample_code = #{sample_code},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
@@ -477,6 +417,12 @@
             </if>
             <if test="county_id != null">
                 AND county_id = #{county_id}
+            </if>
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND bee.sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND bee.sampling_date <= #{sampling_date_end} ]]>
             </if>
 		</trim>
 	</sql>

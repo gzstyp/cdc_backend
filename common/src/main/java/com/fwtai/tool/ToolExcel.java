@@ -2,10 +2,13 @@ package com.fwtai.tool;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.write.metadata.WriteSheet;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,5 +93,56 @@ public final class ToolExcel{
         response.setHeader("Content-disposition","attachment;filename*=utf-8''" + fileName + ".xlsx");
         // 这里需要设置不关闭流
         EasyExcel.write(response.getOutputStream(),head).autoCloseStream(Boolean.FALSE).sheet("模板").doWrite(data);
+    }
+
+    class ComplexHeadData {
+        @ExcelProperty({"主标题", "字符串标题"})
+        private String string;
+        @ExcelProperty({"主标题", "日期标题"})
+        private Date date;
+        @ExcelProperty({"主标题", "数字标题"})
+        private Double doubleData;
+
+        public String getString(){
+            return string;
+        }
+
+        public void setString(String string){
+            this.string = string;
+        }
+
+        public Date getDate(){
+            return date;
+        }
+
+        public void setDate(Date date){
+            this.date = date;
+        }
+
+        public Double getDoubleData(){
+            return doubleData;
+        }
+
+        public void setDoubleData(Double doubleData){
+            this.doubleData = doubleData;
+        }
+    }
+
+    private List<ComplexHeadData> data() {
+        List<ComplexHeadData> list = new ArrayList<ComplexHeadData>();
+        for (int i = 0; i < 10; i++) {
+            ComplexHeadData data = new ComplexHeadData();
+            data.setString("字符串" + i);
+            data.setDate(new Date());
+            data.setDoubleData(0.56);
+            list.add(data);
+        }
+        return list;
+    }
+
+    void complexHeadWrite() {
+        String fileName = "C:\\excel\\"+System.currentTimeMillis()+".xlsx";
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        EasyExcel.write(fileName, ComplexHeadData.class).sheet("模板").doWrite(data());
     }
 }

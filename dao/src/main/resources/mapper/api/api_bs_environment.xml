@@ -2,73 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="api_bs_environment">
 
-    <sql id="sql_select">
-        <if test="kid != null">kid,</if>
-        <if test="flag != null">flag,</if>
-        <if test="audit_user != null">audit_user,</if>
-        <if test="craete_userid != null">craete_userid,</if>
-        <if test="sample_code != null">sample_code,</if>
-        <if test="area_id != null">area_id,</if>
-        <if test="province_id != null">province_id,</if>
-        <if test="city_id != null">city_id,</if>
-        <if test="county_id != null">county_id,</if>
-        <if test="area_level != null">area_level,</if>
-        <if test="site_type != null">site_type,</if>
-        <if test="freeze_type != null">freeze_type,</if>
-        <if test="market_name != null">market_name,</if>
-        <if test="vendor_name != null">vendor_name,</if>
-        <if test="phone != null">phone,</if>
-        <if test="vendor_code != null">vendor_code,</if>
-        <if test="source != null">source,</if>
-        <if test="entrance != null">entrance,</if>
-        <if test="entrance_serial != null">entrance_serial,</if>
-        <if test="sample_name != null">sample_name,</if>
-        <if test="freeze_related != null">freeze_related,</if>
-        <if test="sample_type != null">sample_type,</if>
-        <if test="sampling_date != null">sampling_date,</if>
-        <if test="detection_date != null">detection_date,</if>
-        <if test="result != null">result,</if>
-        <if test="remark != null">remark,</if>
-        <if test="modify_userid != null">modify_userid,</if>
-        <if test="create_date != null">create_date,</if>
-        <if test="modify_date != null">modify_date</if>
-    </sql>
-
-    <sql id="sql_column">
-        kid,
-        flag,
-        audit_user,
-        craete_userid,
-        sample_code,
-        area_id,
-        province_id,
-        city_id,
-        county_id,
-        area_level,
-        site_type,
-        freeze_type,
-        market_name,
-        vendor_name,
-        phone,
-        vendor_code,
-        source,
-        entrance,
-        entrance_serial,
-        sample_name,
-        freeze_related,
-        sample_type,
-        sampling_date,
-        detection_date,
-        result,
-        remark,
-        modify_userid,
-        create_date,
-        modify_date
-    </sql>
-
     <!-- 添加数据 -->
     <update id="add" parameterType="HashMap">
-        INSERT IGNORE INTO BS_ENVIRONMENT (
+        INSERT INTO BS_ENVIRONMENT (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
             <if test="audit_user != null">audit_user,</if>
@@ -91,7 +27,7 @@
             <if test="sample_name != null">sample_name,</if>
             <if test="freeze_related != null">freeze_related,</if>
             <if test="sample_type != null">sample_type,</if>
-            <if test="sampling_date != null">sampling_date,</if>
+            sampling_date,
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
@@ -99,34 +35,34 @@
         </trim>
         ) VALUES (
         <trim suffixOverrides=",">
-			<if test="kid != null">#{kid},</if>
-			<if test="audit_user != null">#{audit_user},</if>
-			<if test="craete_userid != null">#{craete_userid},</if>
-			<if test="sample_code != null">#{sample_code},</if>
-			<if test="area_id != null">#{area_id},</if>
-			<if test="province_id != null">#{province_id},</if>
-			<if test="city_id != null">#{city_id},</if>
-			<if test="county_id != null">#{county_id},</if>
-			<if test="area_level != null">#{area_level},</if>
-			<if test="site_type != null">#{site_type},</if>
-			<if test="freeze_type != null">#{freeze_type},</if>
-			<if test="market_name != null">#{market_name},</if>
-			<if test="vendor_name != null">#{vendor_name},</if>
-			<if test="phone != null">#{phone},</if>
-			<if test="vendor_code != null">#{vendor_code},</if>
-			<if test="source != null">#{source},</if>
-			<if test="entrance != null">#{entrance},</if>
-			<if test="entrance_serial != null">#{entrance_serial},</if>
-			<if test="sample_name != null">#{sample_name},</if>
-			<if test="freeze_related != null">#{freeze_related},</if>
-			<if test="sample_type != null">#{sample_type},</if>
-			<if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
-			<if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
-			<if test="result != null">#{result},</if>
-			<if test="remark != null">#{remark},</if>
-			<if test="modify_userid != null">#{modify_userid},</if>
-			<if test="create_date != null">#{create_date},</if>
-			<if test="modify_date != null">#{modify_date}</if>
+            <if test="kid != null">#{kid},</if>
+            <if test="audit_user != null">#{audit_user},</if>
+            <if test="craete_userid != null">#{craete_userid},</if>
+            <if test="sample_code != null">#{sample_code},</if>
+            <if test="area_id != null">#{area_id},</if>
+            <if test="province_id != null">#{province_id},</if>
+            <if test="city_id != null">#{city_id},</if>
+            <if test="county_id != null">#{county_id},</if>
+            <if test="area_level != null">#{area_level},</if>
+            <if test="site_type != null">#{site_type},</if>
+            <if test="freeze_type != null">#{freeze_type},</if>
+            <if test="market_name != null">#{market_name},</if>
+            <if test="vendor_name != null">#{vendor_name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="vendor_code != null">#{vendor_code},</if>
+            <if test="source != null">#{source},</if>
+            <if test="entrance != null">#{entrance},</if>
+            <if test="entrance_serial != null">#{entrance_serial},</if>
+            <if test="sample_name != null">#{sample_name},</if>
+            <if test="freeze_related != null">#{freeze_related},</if>
+            <if test="sample_type != null">#{sample_type},</if>
+            date_format(now(),'%Y-%m-%d'),
+            <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
+            <if test="result != null">#{result},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="modify_userid != null">#{modify_userid},</if>
+            <if test="create_date != null">#{create_date},</if>
+            <if test="modify_date != null">#{modify_date}</if>
         </trim>
         )
     </update>
@@ -161,7 +97,7 @@
             <if test="sample_name != null">sample_name,</if>
             <if test="freeze_related != null">freeze_related,</if>
             <if test="sample_type != null">sample_type,</if>
-            <if test="sampling_date != null">sampling_date,</if>
+            sampling_date,
             <if test="detection_date != null">detection_date,</if>
             <if test="result != null">result,</if>
             <if test="remark != null">remark,</if>
@@ -193,7 +129,7 @@
             <if test="sample_name != null">#{sample_name},</if>
             <if test="freeze_related != null">#{freeze_related},</if>
             <if test="sample_type != null">#{sample_type},</if>
-            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            date_format(now(),'%Y-%m-%d'),
             <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">#{result},</if>
             <if test="remark != null">#{remark},</if>
@@ -225,7 +161,7 @@
             <if test="sample_name != null">sample_name = #{sample_name},</if>
             <if test="freeze_related != null">freeze_related = #{freeze_related},</if>
             <if test="sample_type != null">sample_type = #{sample_type},</if>
-            <if test="sampling_date != null">STR_TO_DATE(#{sampling_date},'%Y-%m-%d'),</if>
+            date_format(now(),'%Y-%m-%d'),
             <if test="detection_date != null">STR_TO_DATE(#{detection_date},'%Y-%m-%d'),</if>
             <if test="result != null">result = #{result},</if>
             <if test="remark != null">remark = #{remark},</if>
@@ -263,7 +199,7 @@
                     <if test="item.sample_name != null">sample_name,</if>
                     <if test="item.freeze_related != null">freeze_related,</if>
                     <if test="item.sample_type != null">sample_type,</if>
-                    <if test="item.sampling_date != null">sampling_date,</if>
+                    sampling_date,
                     <if test="item.detection_date != null">detection_date,</if>
                     <if test="item.result != null">result,</if>
                     <if test="item.remark != null">remark,</if>
@@ -299,7 +235,7 @@
                 <if test="item.sample_name != null">#{item.sample_name},</if>
                 <if test="item.freeze_related != null">#{item.freeze_related},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                date_format(now(),'%Y-%m-%d'),
                 <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
@@ -375,7 +311,7 @@
                         <if test="item.sample_name != null">sample_name,</if>
                         <if test="item.freeze_related != null">freeze_related,</if>
                         <if test="item.sample_type != null">sample_type,</if>
-                        <if test="item.sampling_date != null">sampling_date,</if>
+                        sampling_date,
                         <if test="item.detection_date != null">detection_date,</if>
                         <if test="item.result != null">result,</if>
                         <if test="item.remark != null">remark,</if>
@@ -411,7 +347,7 @@
                 <if test="item.sample_name != null">#{item.sample_name},</if>
                 <if test="item.freeze_related != null">#{item.freeze_related},</if>
                 <if test="item.sample_type != null">#{item.sample_type},</if>
-                <if test="item.sampling_date != null">STR_TO_DATE(#{item.sampling_date},'%Y-%m-%d'),</if>
+                date_format(now(),'%Y-%m-%d'),
                 <if test="item.detection_date != null">STR_TO_DATE(#{item.detection_date},'%Y-%m-%d'),</if>
                 <if test="item.result != null">#{item.result},</if>
                 <if test="item.remark != null">#{item.remark},</if>
@@ -425,7 +361,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_ENVIRONMENT
+		UPDATE BS_ENVIRONMENT
 		<trim prefix="SET" suffixOverrides=",">
             <if test="sample_code != null">sample_code = #{sample_code},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
@@ -532,6 +468,12 @@
             </if>
             <if test="county_id != null">
                 AND bet.county_id = #{county_id}
+            </if>
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND bet.sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND bet.sampling_date <= #{sampling_date_end} ]]>
             </if>
 		</trim>
 	</sql>
