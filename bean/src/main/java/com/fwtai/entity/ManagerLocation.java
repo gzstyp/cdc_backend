@@ -29,7 +29,7 @@ public class ManagerLocation implements Serializable{
     private Integer area_level;
     @ApiModelProperty(notes = "区域的id",required = true,value = "所选的区域id")
     private Long area_id;
-    @ApiModelProperty(notes = "经营场所首写字母",required = true,value = "经营场所首写字母")
+    @ApiModelProperty(notes = "经营场所首写字母",required = false,value = "经营场所首写字母")
     private String site_letter;
     @ApiModelProperty(notes = "经营场所名称",required = true,value = "经营场所名称")
     private String site_name;
