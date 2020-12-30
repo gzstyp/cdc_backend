@@ -507,28 +507,28 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="flag != null">
-                AND flag = #{flag}
+                AND bet.flag = #{flag}
             </if>
             <if test="sample_code != null">
-                AND sample_code LIKE CONCAT('%',#{sample_code},'%')
+                AND bet.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
             <if test="site_type != null">
-                AND site_type = #{site_type}
+                AND bet.site_type = #{site_type}
             </if>
             <if test="market_name != null">
-                AND market_name LIKE CONCAT('%',#{market_name},'%')
+                AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
             </if>
             <if test="result != null">
-                AND result = #{result}
+                AND bet.result = #{result}
             </if>
             <if test="province_id != null">
-                AND province_id = #{province_id}
+                AND bet.province_id = #{province_id}
             </if>
             <if test="city_id != null">
-                AND city_id = #{city_id}
+                AND bet.city_id = #{city_id}
             </if>
             <if test="county_id != null">
-                AND county_id = #{county_id}
+                AND bet.county_id = #{county_id}
             </if>
 		</trim>
 	</sql>
@@ -536,32 +536,33 @@
 	<!-- 列表数据 -->
 	<select id="listData" parameterType="HashMap" resultType="HashMap">
 		SELECT
-            kid,
-			flag,
-			audit_user,
-			craete_userid,
-			sample_code,
-			city_id,
-			county_id,
-			site_type,
-			freeze_type,
-			market_name,
-			vendor_name,
-			phone,
-			vendor_code,
-			source,
-			entrance,
-			entrance_serial,
-			sample_name,
-			freeze_related,
-			sample_type,
-			sampling_date,
-			detection_date,
-			result,
-			remark,
-			create_date,
-			modify_date
-		FROM BS_ENVIRONMENT
+            bet.kid,
+            bet.flag,
+            bet.audit_user,
+            bet.craete_userid,
+            bet.sample_code,
+            bet.city_id,
+            bet.county_id,
+            bet.site_type,
+            bet.freeze_type,
+            bm.site_name market_name,
+            bet.vendor_name,
+            bet.phone,
+            bet.vendor_code,
+            bet.source,
+            bet.entrance,
+            bet.entrance_serial,
+            bet.sample_name,
+            bet.freeze_related,
+            bet.sample_type,
+            bet.sampling_date,
+            bet.detection_date,
+            bet.result,
+            bet.remark,
+            bet.create_date,
+            bet.modify_date
+		FROM BS_ENVIRONMENT bet
+        left join bs_manage bm on bm.kid = bet.market_name
 		<include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
@@ -577,7 +578,8 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_ENVIRONMENT
+		SELECT COUNT(kid) TOTAL FROM BS_ENVIRONMENT bet
+        left join bs_manage bm on bm.kid = bet.market_name
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>
