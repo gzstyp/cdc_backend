@@ -7,6 +7,7 @@
         INSERT INTO BS_ENVIRONMENT (
         <trim suffixOverrides=",">
             <if test="kid != null">kid,</if>
+            <if test="appid != null">appid,</if>
             <if test="audit_user != null">audit_user,</if>
             <if test="craete_userid != null">craete_userid,</if>
             <if test="sample_code != null">sample_code,</if>
@@ -36,6 +37,7 @@
         ) VALUES (
         <trim suffixOverrides=",">
             <if test="kid != null">#{kid},</if>
+            <if test="appid != null">#{appid},</if>
             <if test="audit_user != null">#{audit_user},</if>
             <if test="craete_userid != null">#{craete_userid},</if>
             <if test="sample_code != null">#{sample_code},</if>
@@ -364,6 +366,7 @@
 		UPDATE BS_ENVIRONMENT
 		<trim prefix="SET" suffixOverrides=",">
             <if test="sample_code != null">sample_code = #{sample_code},</if>
+            <if test="appid != null">appid = #{appid},</if>
             <if test="area_id != null">area_id = #{area_id},</if>
             <if test="province_id != null">province_id = #{province_id},</if>
             <if test="city_id != null">city_id = #{city_id},</if>

@@ -626,7 +626,7 @@ public final class ToolString implements Serializable {
     /**判断是否还有中文或英文字符串*/
 	public final static boolean checkChar(final char ch){
         // 英文
-// 中文
+        // 中文
         return (ch + "").getBytes().length == 1;
 	}
 	
@@ -634,16 +634,12 @@ public final class ToolString implements Serializable {
 	public final static boolean editExistKey(final String queryResultKey,final String keyEdit){
 		return !isBlank(queryResultKey) && queryResultKey.equals(keyEdit);
 	}
-	
-	/**判断是否是合格的yyyy-MM-dd时间格式*/
+
+    /**判断是否是合格的yyyy-MM-dd|yyyyMMdd|yyyy.MM.dd时间格式*/
 	public final static boolean checkDate(final String date){
-		if (isBlank(date))return false;
-		try{
-			new SimpleDateFormat("yyyy-MM-dd").parse(date);
-			return true;
-		} catch (Exception e){
-			return false;
-		}
+		if(isBlank(date))return false;
+        final String pattern = "\\d{4}(\\-|\\/|.)\\d{1,2}\\1\\d{1,2}";
+        return Pattern.matches(pattern,date);
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package com.fwtai.config;
 import com.fwtai.tool.ToolClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -94,6 +95,19 @@ public class ExceptionMonitor{
         ToolClient.responseJson(ToolClient.exceptionJson(),response);
     }
 
+    @ExceptionHandler(PersistenceException.class)
+    public void persistenceException(final Exception exception,final HttpServletResponse response){
+        exception.printStackTrace();
+        String json = ToolClient.exceptionJson();
+        final String message = exception.getMessage();
+        if(message.contains("java.sql.SQLException: Incorrect datetime value:")){
+            json = ToolClient.createJsonFail("日期格式不对");
+            ToolClient.responseJson(json,response);
+            return;
+        }
+        ToolClient.responseJson(json,response);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public void integrityViolation(final Exception exception,final HttpServletRequest request,final HttpServletResponse response){
         final String message = exception.getMessage();
@@ -111,7 +125,7 @@ public class ExceptionMonitor{
             final int start = message.indexOf("Cause: java.sql.SQLException: Field '")+37;
             final int end = message.indexOf("' doesn't have a default value");
             final String field = message.substring(start,end);
-            ToolClient.responseJson(ToolClient.exceptionJson("哥们，有个字段的值为空哦!"),response);
+            ToolClient.responseJson(ToolClient.exceptionJson("哥们,有个字段的值为空哦!"),response);
         }else{
             exception.printStackTrace();
             ToolClient.responseJson(ToolClient.exceptionJson("哦,抱歉,系统出现错误"),response);
@@ -135,9 +149,8 @@ public class ExceptionMonitor{
     public void exception(final Exception exception,final HttpServletResponse response){
         exception.printStackTrace();
         final String message = exception.getMessage();
-        System.out.println("message:"+message);
-        final Class<? extends Exception> cls = exception.getClass();
-        System.out.println(cls);
+        System.out.println("错误信息:"+message);
+        System.out.println("报错的类:"+exception.getClass());
         ToolClient.responseJson(ToolClient.exceptionJson(),response);
     }
 }

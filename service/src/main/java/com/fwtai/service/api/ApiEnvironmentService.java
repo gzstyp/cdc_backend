@@ -59,10 +59,6 @@ public class ApiEnvironmentService{
             detection_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put("detection_date",detection_date);
         }else{
-            final int length = detection_date.length();
-            if(length != 10){
-                return ToolClient.createJsonFail("检测日期格式不对");
-            }
             final boolean bl = ToolString.checkDate(detection_date);
             if(!bl){
                 return ToolClient.createJsonFail("检测日期格式不对");
