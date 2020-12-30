@@ -101,7 +101,7 @@ public class ExceptionMonitor{
         String json = ToolClient.exceptionJson();
         final String message = exception.getMessage();
         if(message.contains("java.sql.SQLException: Incorrect datetime value:")){
-            json = ToolClient.createJsonFail("日期格式不对");
+            json = ToolClient.createJsonFail("日期时间格式不对");
             ToolClient.responseJson(json,response);
             return;
         }
