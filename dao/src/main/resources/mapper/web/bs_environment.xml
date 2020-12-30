@@ -527,7 +527,7 @@
                 AND bet.county_id = #{county_id}
             </if>
             <if test="market_name != null">
-                AND bet.market_name LIKE CONCAT('%',#{market_name},'%')
+                AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
             </if>
             <if test="sampling_date_start != null">
                 <![CDATA[ AND bet.sampling_date >= #{sampling_date_start} ]]>
@@ -559,7 +559,7 @@
             county.name county_id,
             sd.NAME site_type,
             sd2.NAME freeze_type,
-            bet.market_name,
+            bm.site_name market_name,
             bet.vendor_name,
             bet.vendor_code,
             bet.source,
@@ -578,6 +578,7 @@
         LEFT JOIN sys_dict sd on sd.kid = bet.site_type
         LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
         LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        left join bs_manage bm on bm.kid = bet.market_name
         where bet.flag = 1
         <include refid="sql_where_listData"/>
 		<choose>
@@ -600,6 +601,7 @@
         LEFT JOIN sys_dict sd on sd.kid = bet.site_type
         LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
         LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        left join bs_manage bm on bm.kid = bet.market_name
         where bet.flag = 1
 		<include refid="sql_where_listData"/>
         LIMIT 1
@@ -617,7 +619,7 @@
             county.name county_id,
             sd.NAME site_type,
             sd2.NAME freeze_type,
-            bet.market_name,
+            bm.site_name market_name,
             bet.vendor_name,
             bet.phone,
             bet.vendor_code,
@@ -647,6 +649,7 @@
         LEFT JOIN sys_dict sd on sd.kid = bet.site_type
         LEFT JOIN sys_dict sd2 on sd2.kid = bet.freeze_type
         LEFT JOIN sys_dict bb on bb.kid = bet.sample_type
+        left join bs_manage bm on bm.kid = bet.market_name
         where bet.flag = 1
         <include refid="sql_where_listData"/>
         ORDER BY sampling_date DESC
