@@ -1,7 +1,6 @@
 package com.fwtai.service.web;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.fwtai.bean.PageFormData;
@@ -9,28 +8,19 @@ import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.ReportTotalDao;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReportTotalService{
-
-    @Value("${excel_dir_window}")
-    private String dir_window;
-
-    @Value("${excel_dir_linux}")
-    private String dir_linux;
 
     @Resource
     private ReportTotalDao reportTotalDao;
@@ -56,12 +46,8 @@ public class ReportTotalService{
             crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put(p_crowd_date,crowd_date);
         }
-        final String separator = File.separator;
-        final String os_dir = ToolString.isLinuxOS() ? dir_linux : dir_window;
-        final String templateFileName = os_dir + "daily.xlsx";
         final String fileName = new ToolString().getDate()+"_"+ToolString.getIdsChar32();
         final List<HashMap<String,Object>> list = reportTotalDao.queryDataExport(formData);
-        final String excelFullPath = os_dir + "download"+separator+fileName+".xlsx";
 
         final String province_id = formData.getString("province_id");
         final String city_id = formData.getString("city_id");
@@ -97,14 +83,14 @@ public class ReportTotalService{
 
         System.out.println(label);
 
-        final ExcelWriter excelWriter = EasyExcel.write(excelFullPath).withTemplate(templateFileName).build();
+        //final ExcelWriter excelWriter = EasyExcel.write(excelFullPath).withTemplate(templateFileName).build();
         final WriteSheet writeSheet = EasyExcel.writerSheet(0,"模块啊").build();
         // 直接写入数据
         final ArrayList<Titles> ts = new ArrayList<>();
         final Titles t = new Titles();
         t.setTitle("我是标题");
         ts.add(t);
-        excelWriter.fill(ts,writeSheet);
+        /*excelWriter.fill(ts,writeSheet);
         // 写入list之前的数据
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("label",label);
@@ -119,7 +105,7 @@ public class ReportTotalService{
         totalList.add("统计:1000");
         // 这里是write 别和fill 搞错了
         excelWriter.write(totalListList, writeSheet);
-        excelWriter.finish();
+        excelWriter.finish();*/
 
         final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
         ToolClient.responseJson(json,response);

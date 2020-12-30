@@ -2,17 +2,15 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.excel.ToolExcel;
 import com.fwtai.tool.ToolClient;
-import com.fwtai.tool.ToolExcel;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.EmployeeDao;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +26,6 @@ import java.util.Map;
 */
 @Service
 public class EmployeeService{
-
-    @Value("${excel_dir_window}")
-    private String dir_window;
-
-    @Value("${excel_dir_linux}")
-    private String dir_linux;
 
     @Resource
     private EmployeeDao employeeDao;
@@ -150,17 +142,49 @@ public class EmployeeService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
-        final String separator = File.separator;
-        final String os_dir = ToolString.isLinuxOS() ? dir_linux : dir_window;
-        final String templateFileName = os_dir + "employee.xlsx";
-        final String fileName = new ToolString().getDate()+"_"+ToolString.getIdsChar32();
+        final String fileName = new ToolString().getDate()+"_从业人员监测";
         final List<Map<String,Object>> list = employeeDao.queryDataExport(formData);
-        final String excelFullPath = os_dir + "download"+separator+fileName+".xlsx";
-        final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
-        if(b){
-            ToolClient.download(excelFullPath,response);
-        }else{
-            final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
+        final ArrayList<String> fields = new ArrayList<>();
+        fields.add("sample_code");
+        fields.add("city_id");
+        fields.add("county_id");
+        fields.add("real_name");
+        fields.add("phone");
+        fields.add("gender");
+        fields.add("age");
+        fields.add("work_site");
+        fields.add("work_type");
+        fields.add("freeze_type");
+        fields.add("profession");
+        fields.add("cold_chain");
+        fields.add("sample_type");
+        fields.add("sampling_date");
+        fields.add("detection_date");
+        fields.add("result");
+        fields.add("remark");
+        final ArrayList<String> titles = new ArrayList<>();
+        titles.add("样本编号");
+        titles.add("市|区");
+        titles.add("区|县");
+        titles.add("姓名");
+        titles.add("联系电话");
+        titles.add("性别");
+        titles.add("年龄");
+        titles.add("从业场所名称");
+        titles.add("从业场所类型");
+        titles.add("冷库类型");
+        titles.add("工种");
+        titles.add("是否进口产品");
+        titles.add("样本类型");
+        titles.add("采样日期");
+        titles.add("检测日期");
+        titles.add("检测结果");
+        titles.add("备注");
+        try {
+            ToolExcel.exportExcel(list,fields,titles,"从业人员监测",fileName,response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            final String json = ToolClient.createJson(ConfigFile.code199,e.getMessage());
             ToolClient.responseJson(json,response);
         }
     }

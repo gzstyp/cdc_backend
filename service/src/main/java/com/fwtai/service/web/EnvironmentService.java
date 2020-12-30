@@ -2,17 +2,15 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.excel.ToolExcel;
 import com.fwtai.tool.ToolClient;
-import com.fwtai.tool.ToolExcel;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.EnvironmentDao;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +26,6 @@ import java.util.Map;
 */
 @Service
 public class EnvironmentService{
-
-    @Value("${excel_dir_window}")
-    private String dir_window;
-
-    @Value("${excel_dir_linux}")
-    private String dir_linux;
 
     @Resource
     private EnvironmentDao environmentDao;
@@ -136,17 +128,55 @@ public class EnvironmentService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
-        final String separator = File.separator;
-        final String os_dir = ToolString.isLinuxOS() ? dir_linux : dir_window;
-        final String templateFileName = os_dir + "environment.xlsx";
-        final String fileName = new ToolString().getDate()+"_"+ToolString.getIdsChar32();
+        final String fileName = new ToolString().getDate()+"_外环境监测";
         final List<Map<String,Object>> list = environmentDao.queryDataExport(formData);
-        final String excelFullPath = os_dir + "download"+separator+fileName+".xlsx";
-        final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
-        if(b){
-            ToolClient.download(excelFullPath,response);
-        }else{
-            final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
+        final ArrayList<String> fields = new ArrayList<>();
+        fields.add("sample_code");
+        fields.add("city_id");
+        fields.add("county_id");
+        fields.add("site_type");
+        fields.add("freeze_type");
+        fields.add("market_name");
+        fields.add("vendor_name");
+        fields.add("phone");
+        fields.add("vendor_code");
+        fields.add("source");
+        fields.add("entrance");
+        fields.add("entrance_serial");
+        fields.add("sample_name");
+        fields.add("freeze_related");
+        fields.add("sample_type");
+        fields.add("sampling_date");
+        fields.add("detection_date");
+        fields.add("result");
+        fields.add("remark");
+
+        final ArrayList<String> titles = new ArrayList<>();
+        titles.add("标本实验编号");
+        titles.add("市（州）");
+        titles.add("县（区）");
+        titles.add("监测场所类型");
+        titles.add("冷库类型");
+        titles.add("市场名称");
+        titles.add("摊主姓名");
+        titles.add("联系电话");
+        titles.add("摊位编号");
+        titles.add("产品来源地");
+        titles.add("是否为进口产品");
+        titles.add("进口产品批号");
+        titles.add("标本名称");
+        titles.add("是否冷链相关");
+        titles.add("标本类型");
+        titles.add("采样日期");
+        titles.add("检测日期");
+        titles.add("核酸检测结果");
+        titles.add("备注");
+
+        try {
+            ToolExcel.exportExcel(list,fields,titles,"从业人员监测",fileName,response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            final String json = ToolClient.createJson(ConfigFile.code199,e.getMessage());
             ToolClient.responseJson(json,response);
         }
     }

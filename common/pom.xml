@@ -11,6 +11,7 @@
     <artifactId>common</artifactId>
     <properties>
         <jwt.version>0.11.2</jwt.version>
+        <poi.version>3.14</poi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -118,9 +119,19 @@
             <version>2.5.1</version>
         </dependency>
         <dependency>
-            <groupId>com.deepoove</groupId>
-            <artifactId>poi-tl</artifactId>
-            <version>1.8.2</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
         </dependency>
     </dependencies>
 </project>
