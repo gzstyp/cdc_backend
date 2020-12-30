@@ -65,7 +65,7 @@ public class ApiEmployeeService{
             detection_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put("detection_date",detection_date);
         }else{
-            final boolean bl = ToolString.checkDate(formData.getString(detection_date));
+            final boolean bl = ToolString.checkDate(detection_date);
             if(!bl){
                 return ToolClient.createJsonFail("检测日期格式不对");
             }
@@ -114,7 +114,7 @@ public class ApiEmployeeService{
             detection_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put("detection_date",detection_date);
         }else{
-            final boolean bl = ToolString.checkDate(formData.getString(detection_date));
+            final boolean bl = ToolString.checkDate(detection_date);
             if(!bl){
                 return ToolClient.createJsonFail("检测日期格式不对");
             }
