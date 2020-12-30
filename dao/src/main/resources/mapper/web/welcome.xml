@@ -2,12 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="welcome">
 
-    <select id="getData" resultType="HashMap" parameterType="HashMap">
+    <select id="getEnvironment" resultType="HashMap" parameterType="HashMap">
         SELECT COUNT(0) total,
 		    sum(case when result='1' then 1 else 0 end) notest,
 		    sum(case when result='2' then 1 else 0 end) negative,
 		    sum(case when result='3' then 1 else 0 end) positive,
 		    ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2) pc
         FROM bs_environment
+    </select>
+
+    <select id="getEmployee" resultType="HashMap" parameterType="HashMap">
+         SELECT COUNT(0) total,
+		 sum(case when result='1' then 1 else 0 end) notest,
+		 sum(case when result='2' then 1 else 0 end) negative,
+		 sum(case when result='3' then 1 else 0 end) positive,
+		 ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2)pc
+         FROM bs_employee
     </select>
 </mapper>

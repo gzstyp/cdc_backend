@@ -13,7 +13,11 @@ public class WelcomeDao{
     @Resource
     private DaoHandle dao;
 
-    public HashMap<String, Object> getData(final PageFormData formData){
-        return dao.queryForHashMap("welcome.getData",formData);
+    public HashMap<String, Object> getEnvironment(final PageFormData formData){
+        return dao.queryForHashMap("welcome.getEnvironment",formData);
+    }
+
+    public HashMap<String, Object> getEmployee(final PageFormData formData){
+        return dao.queryForHashMap("welcome.getEmployee",formData);
     }
 }

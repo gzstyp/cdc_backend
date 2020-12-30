@@ -16,8 +16,10 @@ public class WelcomeService{
 
     public String getData(final PageFormData formData){
         final HashMap<String,Object> map = new HashMap<>();
-        final HashMap<String, Object> environment = welcomeDao.getData(formData);
+        final HashMap<String, Object> environment = welcomeDao.getEnvironment(formData);
+        final HashMap<String, Object> employee = welcomeDao.getEmployee(formData);
         map.put("environment",environment);
+        map.put("employee",employee);
         return ToolClient.queryJson(map);
     }
 }
