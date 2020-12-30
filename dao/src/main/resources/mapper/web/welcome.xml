@@ -19,4 +19,13 @@
 		 ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2)pc
          FROM bs_employee
     </select>
+
+    <select id="getCrowdTotal" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            SUM(sampling_total) sampling_total,
+            SUM(detection_total) detection_total,
+            SUM(masculine_total) positive,
+            ROUND(SUM(detection_total)/SUM(sampling_total)*100,2)pc
+        from bs_crowd_total b
+    </select>
 </mapper>

@@ -20,4 +20,8 @@ public class WelcomeDao{
     public HashMap<String, Object> getEmployee(final PageFormData formData){
         return dao.queryForHashMap("welcome.getEmployee",formData);
     }
+
+    public HashMap<String, Object> getCrowdTotal(final PageFormData formData){
+        return dao.queryForHashMap("welcome.getCrowdTotal",formData);
+    }
 }
