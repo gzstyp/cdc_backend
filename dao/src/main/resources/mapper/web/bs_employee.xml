@@ -504,7 +504,7 @@
                 AND bee.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
             <if test="work_site != null">
-                AND bee.work_site LIKE CONCAT('%',#{work_site},'%')
+                AND bm.site_name LIKE CONCAT('%',#{work_site},'%')
             </if>
             <if test="province_id != null">
                 AND bee.province_id = #{province_id}
@@ -552,7 +552,7 @@
         bee.real_name,
         bee.gender,
         bee.age,
-        bee.work_site,
+        bm.site_name work_site,
         wte.name work_type,
         fte.name freeze_type,
         pn.name profession,
@@ -568,6 +568,7 @@
         LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
         LEFT JOIN sys_dict pn on pn.kid = bee.profession
         LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        left join bs_manage bm on bm.kid = bee.work_site
         where bee.flag = 1
         <include refid="sql_where_listData"/>
 		<choose>
@@ -591,6 +592,7 @@
         LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
         LEFT JOIN sys_dict pn on pn.kid = bee.profession
         LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        left join bs_manage bm on bm.kid = bee.work_site
         where bee.flag = 1
 		<include refid="sql_where_listData"/>
         LIMIT 1
@@ -607,7 +609,7 @@
             WHEN bee.gender = 2 THEN '女'
             ELSE '' END AS gender,
             bee.age,
-            bee.work_site,
+            bm.site_name work_site,
             wte.name work_type,
             fte.name freeze_type,
             pn.name profession,
@@ -630,6 +632,7 @@
         LEFT JOIN sys_dict fte on fte.kid = bee.freeze_type
         LEFT JOIN sys_dict pn on pn.kid = bee.profession
         LEFT JOIN sys_dict ste on ste.kid = bee.sample_type
+        left join bs_manage bm on bm.kid = bee.work_site
         where bee.flag = 1
         <include refid="sql_where_listData"/>
         ORDER BY sampling_date DESC

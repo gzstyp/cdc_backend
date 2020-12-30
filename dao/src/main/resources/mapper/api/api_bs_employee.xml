@@ -478,34 +478,35 @@
 	<!-- 列表数据 -->
 	<select id="listData" parameterType="HashMap" resultType="HashMap">
 		SELECT
-            kid,
-			flag,
-			audit_user,
-			craete_userid,
-			sample_code,
-			area_id,
-			province_id,
-			city_id,
-			county_id,
-			area_level,
-			real_name,
-			phone,
-			gender,
-			age,
-			work_site,
-			work_type,
-			freeze_type,
-			profession,
-			cold_chain,
-			sample_type,
-			sampling_date,
-			detection_date,
-			result,
-			remark,
-			modify_userid,
-			modify_date,
-			create_date
-		FROM BS_EMPLOYEE
+            bee.kid,
+            bee.flag,
+            bee.audit_user,
+            bee.craete_userid,
+            bee.sample_code,
+            bee.area_id,
+            bee.province_id,
+            bee.city_id,
+            bee.county_id,
+            bee.area_level,
+            bee.real_name,
+            bee.phone,
+            bee.gender,
+            bee.age,
+            bm.site_name work_site,
+            bee.work_type,
+            bee.freeze_type,
+            bee.profession,
+            bee.cold_chain,
+            bee.sample_type,
+            bee.sampling_date,
+            bee.detection_date,
+            bee.result,
+            bee.remark,
+            bee.modify_userid,
+            bee.modify_date,
+            bee.create_date
+		FROM BS_EMPLOYEE bee
+        left join bs_manage bm on bm.kid = bee.work_site
 		<include refid="sql_where_listData"/>
 		<choose>
     	<when test="order != null and column != null">
@@ -521,7 +522,8 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_EMPLOYEE
+		SELECT COUNT(bee.kid) TOTAL FROM BS_EMPLOYEE bee
+        left join bs_manage bm on bm.kid = bee.work_site
 		<include refid="sql_where_listData"/>
         LIMIT 1
 	</select>

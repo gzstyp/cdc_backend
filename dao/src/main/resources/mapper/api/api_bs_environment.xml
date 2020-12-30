@@ -578,7 +578,7 @@
 	
 	<!-- 总条数总记录数 -->
 	<select id="listTotal" parameterType="HashMap" resultType="Integer">
-		SELECT COUNT(kid) TOTAL FROM BS_ENVIRONMENT bet
+		SELECT COUNT(bet.kid) TOTAL FROM BS_ENVIRONMENT bet
         left join bs_manage bm on bm.kid = bet.market_name
 		<include refid="sql_where_listData"/>
         LIMIT 1
