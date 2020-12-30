@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class ApiEnvironmentService{
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
+        final String p_detection_date = "detection_date";
         final String p_result = "result";
         final String validate = ToolClient.validateField(formData,p_appid,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result);
         if(validate != null)return validate;
@@ -54,7 +57,17 @@ public class ApiEnvironmentService{
         if(validateInteger != null)return validateInteger;
         final boolean b = ToolString.checkDate(formData.getString(p_sampling_date));
         if(!b){
-            return ToolClient.createJsonFail("日期格式不对");
+            return ToolClient.createJsonFail("采样日期格式不对");
+        }
+        String detection_date = formData.getString(p_detection_date);
+        if(detection_date == null){
+            detection_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            formData.put("detection_date",detection_date);
+        }else{
+            final boolean bl = ToolString.checkDate(formData.getString(detection_date));
+            if(!bl){
+                return ToolClient.createJsonFail("检测日期格式不对");
+            }
         }
         final String userId = LocalUserId.get();
         final String kid = ToolString.getIdsChar32();
@@ -87,6 +100,7 @@ public class ApiEnvironmentService{
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_sampling_date = "sampling_date";
+        final String p_detection_date = "detection_date";
         final String p_result = "result";
         final String validate = ToolClient.validateField(formData,p_sample_code,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_sampling_date,p_result,p_kid);
         if(validate != null)return validate;
@@ -94,7 +108,17 @@ public class ApiEnvironmentService{
         if(validateInteger != null)return validateInteger;
         final boolean b = ToolString.checkDate(formData.getString(p_sampling_date));
         if(!b){
-            return ToolClient.createJsonFail("日期格式不对");
+            return ToolClient.createJsonFail("采样日期格式不对");
+        }
+        String detection_date = formData.getString(p_detection_date);
+        if(detection_date == null){
+            detection_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            formData.put("detection_date",detection_date);
+        }else{
+            final boolean bl = ToolString.checkDate(formData.getString(detection_date));
+            if(!bl){
+                return ToolClient.createJsonFail("检测日期格式不对");
+            }
         }
         final String exist_key = apiEnvironmentDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
