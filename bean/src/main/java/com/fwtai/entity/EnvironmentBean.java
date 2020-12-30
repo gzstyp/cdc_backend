@@ -39,7 +39,7 @@ public final class EnvironmentBean implements Serializable{
     private String site_type;
     @ApiModelProperty(notes = "冷库类型",required = false,value = "冷库类型[若监测场所类型为冷库请选择[经营场所类型]数据的kid的值")
     private String freeze_type;
-    @ApiModelProperty(notes = "市场名称",required = true,value = "市场名称,从下拉列表获取直接保存文字,无需保存所选的kid")
+    @ApiModelProperty(notes = "市场名称",required = true,value = "市场名称,从下拉列表获取所选的kid")
     private String market_name;
     @ApiModelProperty(notes = "摊主姓名",required = true,value = "摊主姓名")
     private String vendor_name;
