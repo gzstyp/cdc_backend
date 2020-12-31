@@ -557,7 +557,7 @@ public final class ToolExcel{
 		// 创建两种字体
 		final Font fontHead = wb.createFont();
 		final Font fontContent = wb.createFont();
-		// 创建第一种字体样式（用于列名）
+		// 创建第一种字体样式（用于表头）
 		fontHead.setFontHeightInPoints((short)12);//设置字号
 		fontHead.setColor(IndexedColors.WHITE.getIndex());//设置字体颜色
         fontHead.setBold(true);
@@ -600,18 +600,43 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
-    protected static XSSFWorkbook workbook(){
+    protected static XSSFWorkbook workbook(final String label){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
-        // 创建第一行,表头行
-        final Row rowTitle = sheet.createRow(0);//行
-        final Cell indexCell = rowTitle.createCell(0);//57
+        final Row labelRow = sheet.createRow(0);//第1行
+        final Cell labelCell = labelRow.createCell(0);
+        final XSSFCellStyle style = wb.createCellStyle();
+        final Font labelFont = wb.createFont();
+        labelFont.setFontHeightInPoints((short)14);//设置字号
+        labelFont.setColor(IndexedColors.BLACK.getIndex());//设置字体颜色
+        labelFont.setBold(true);
+        style.setFont(labelFont);
+        style.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        style.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        labelCell.setCellStyle(style);
+        cellRangeAddress(sheet,0,0,0,58);
+
+        final Row crowdRow = sheet.createRow(1);//第2行
+        final Cell cell1 = crowdRow.createCell(0);//第2行的第1格
+        cell1.setCellValue("分类");
+        final int startCol = 1;//第2格
+        cellRangeAddress(sheet,1,1,startCol,40);//此时是第2格
+
+        final Cell cell2 = crowdRow.createCell(startCol);//上面何必后此时是第2格,此时是第2行的第2格,注意和上面的第4个参数1对应!!!
+        cell2.setCellValue("“应检尽检”人群");
+
+        cellRangeAddress(sheet,1,1,41,58);//此时是第41格,注意这41,因为上面是40,
+
+        final Cell cell3 = crowdRow.createCell(41);//上面何必后此时是第41格(第2行的41格),注意和上面的第4个参数的41对应!!!
+        cell3.setCellValue("“愿检尽检”人群");
+
+        labelCell.setCellValue(label);
 
         for (int i = 0; i < 10;i++){
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
             // 创建一行，在页sheet上
-            final Row rowData = sheet.createRow(i+1);
-            // 在row行上创建一个方格
+            final Row rowData = sheet.createRow(i+10);//上面累加,在row行上创建一个方格
+
             for (int j = 0; j < 10; j++){
                 final Cell cell = rowData.createCell(j);
                 cell.setCellValue("我是内容啊");
@@ -620,9 +645,14 @@ public final class ToolExcel{
         return wb;
     }
 
-    public static void export(final HttpServletResponse response) throws Exception {
+    //合并单元格,指定 4 个参数，起始行，结束行，起始列，结束列。这个区域将被合并;更复杂些的，需要自己计算好行与列即可
+    private static int cellRangeAddress(final XSSFSheet sheet,final int startRow,final int endRow,final int startCol,final int endCol){
+        return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
+    }
+
+    public static void export(final String label,final HttpServletResponse response) throws Exception {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        workbook().write(os);//填充数据
+        workbook(label).write(os);//填充数据
         final byte[] content = os.toByteArray();
         final InputStream is = new ByteArrayInputStream(content);
         // 设置response参数，可以打开下载页面

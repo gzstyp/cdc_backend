@@ -2,6 +2,7 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.excel.ToolExcel;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.ReportTotalDao;
@@ -84,9 +85,13 @@ public class ReportTotalService{
         label += "核酸日报表"+_date+" (0:00-24:00)";
 
         System.out.println(label);
-
-        final String json = ToolClient.createJson(ConfigFile.code200,"导出失败,稍候重试");
-        ToolClient.responseJson(json,response);
+        try {
+            ToolExcel.export(label,response);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            final String json = ToolClient.createJson(ConfigFile.code200,"导出失败,稍候重试");
+            ToolClient.responseJson(json,response);
+        }
 
         /*final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
         if(b){
