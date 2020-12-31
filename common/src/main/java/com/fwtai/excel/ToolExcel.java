@@ -2,15 +2,19 @@ package com.fwtai.excel;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.tool.ToolString;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -545,13 +549,13 @@ public final class ToolExcel{
 		// 创建第一行,表头行
 		final Row rowTitle = sheet.createRow(0);
 		// 创建两种单元格格式
-		final CellStyle csHead = wb.createCellStyle();
-		final CellStyle csContent = wb.createCellStyle();
+        final XSSFCellStyle csHead = wb.createCellStyle();
+        final CellStyle csContent = wb.createCellStyle();
 		// 创建两种字体
 		final Font fontHead = wb.createFont();
 		final Font fontContent = wb.createFont();
 		// 创建第一种字体样式（用于列名）
-		fontHead.setFontHeightInPoints((short)12);//像素点
+		fontHead.setFontHeightInPoints((short)12);//设置字号
 		fontHead.setColor(IndexedColors.BLACK.getIndex());
         fontHead.setBold(true);
 		// 创建第二种字体样式（用于值）
@@ -560,19 +564,19 @@ public final class ToolExcel{
 
 		// 设置第一种单元格的样式（用于列名）
         csHead.setFont(fontHead);
-        csHead.setBorderLeft(CellStyle.BORDER_THIN);
-        csHead.setBorderRight(CellStyle.BORDER_THIN);
-        csHead.setBorderTop(CellStyle.BORDER_THIN);
-        csHead.setBorderBottom(CellStyle.BORDER_THIN);
-        csHead.setAlignment(CellStyle.ALIGN_LEFT);
+        csHead.setBorderLeft(BorderStyle.THIN);
+        csHead.setBorderRight(BorderStyle.THIN);
+        csHead.setBorderTop(BorderStyle.THIN);
+        csHead.setBorderBottom(BorderStyle.THIN);
+        csHead.setAlignment(HorizontalAlignment.LEFT);//左对齐
 
         // 设置第二种单元格的样式（用于值）
         csContent.setFont(fontContent);
-        csContent.setBorderLeft(CellStyle.BORDER_THIN);
-        csContent.setBorderRight(CellStyle.BORDER_THIN);
-        csContent.setBorderTop(CellStyle.BORDER_THIN);
-        csContent.setBorderBottom(CellStyle.BORDER_THIN);
-        csContent.setAlignment(CellStyle.ALIGN_LEFT);
+        csContent.setBorderLeft(BorderStyle.THIN);
+        csContent.setBorderRight(BorderStyle.THIN);
+        csContent.setBorderTop(BorderStyle.THIN);
+        csContent.setBorderBottom(BorderStyle.THIN);
+        csContent.setAlignment(HorizontalAlignment.LEFT);
 		// 设置列名,表头
 		for (int i = 0; i < titles.size();i++){
 			final Cell cell = rowTitle.createCell(i);
@@ -624,8 +628,8 @@ public final class ToolExcel{
 		final int lastCol = fields.size()-2;
 		sheet.addMergedRegion(new CellRangeAddress(line,lastRow,firstCol,lastCol));//合并单元格;0,fields.size()-1
 		final Cell cellDescribe = rowDescribe.createCell(firstCol);//第几列
-        cellStyleDescribe.setAlignment(CellStyle.ALIGN_CENTER);//水平居中显示
-        cellStyleDescribe.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中显示
+        cellStyleDescribe.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中显示
+        cellStyleDescribe.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中显示
 		cellDescribe.setCellValue(titleDescribe);
 		cellDescribe.setCellStyle(cellStyleDescribe);
 		final Font font = wb.createFont();
@@ -633,11 +637,11 @@ public final class ToolExcel{
 		font.setFontHeightInPoints((short)16);
 		font.setColor(IndexedColors.BLACK.getIndex());
 		cellStyleDescribe.setFont(font);
-		
+
 		// 创建第一行,表头行
 		final Row rowTitle = sheet.createRow(startRow);
 		// 创建两种单元格格式
-		final CellStyle csHead = wb.createCellStyle();
+        final XSSFCellStyle csHead = wb.createCellStyle();
 		final CellStyle csContent = wb.createCellStyle();
 		// 创建两种字体
 		final Font fontHead = wb.createFont();
@@ -652,19 +656,19 @@ public final class ToolExcel{
 
         // 设置第一种单元格的样式（用于列名）
         csHead.setFont(fontHead);
-        csHead.setBorderLeft(CellStyle.BORDER_THIN);
-        csHead.setBorderRight(CellStyle.BORDER_THIN);
-        csHead.setBorderTop(CellStyle.BORDER_THIN);
-        csHead.setBorderBottom(CellStyle.BORDER_THIN);
-        csHead.setAlignment(CellStyle.ALIGN_LEFT);
+        csHead.setBorderLeft(BorderStyle.THIN);
+        csHead.setBorderRight(BorderStyle.THIN);
+        csHead.setBorderTop(BorderStyle.THIN);
+        csHead.setBorderBottom(BorderStyle.THIN);
+        csHead.setAlignment(HorizontalAlignment.LEFT);
 
         // 设置第二种单元格的样式（用于值）
         csContent.setFont(fontContent);
-        csContent.setBorderLeft(CellStyle.BORDER_THIN);
-        csContent.setBorderRight(CellStyle.BORDER_THIN);
-        csContent.setBorderTop(CellStyle.BORDER_THIN);
-        csContent.setBorderBottom(CellStyle.BORDER_THIN);
-        csContent.setAlignment(CellStyle.ALIGN_LEFT);
+        csContent.setBorderLeft(BorderStyle.THIN);
+        csContent.setBorderRight(BorderStyle.THIN);
+        csContent.setBorderTop(BorderStyle.THIN);
+        csContent.setBorderBottom(BorderStyle.THIN);
+        csContent.setAlignment(HorizontalAlignment.LEFT);
 
 		// 设置列名,表头
 		for (int i = 0; i < titles.size();i++){
@@ -687,98 +691,6 @@ public final class ToolExcel{
 		return sheet;
 	}
 
-    /**
-     * 生成 Sheet工作簿,数据是从第指定startRow+1行可是写入数据,因为1是表头标题栏
-     * @param list 数据集合
-     * @param fields 数据库字段,要与titles的add顺序要一致
-     * @param titles 标题栏,要与fields的add顺序要一致
-     * @param wb
-     * @param sheetName sheet名称
-     * @param startRow 从开始行startRow写起;0表示第1行,1表示第2行,
-     * @param titleDescribe 给导出的Excel表格起个标题或描述
-     * @作者 田应平
-     * @返回值类型 XSSFSheet
-     * @创建时间 2017年9月5日 16:11:51
-     * @QQ号码 444141300
-     * @官网 http://www.fwtai.com
-     */
-    private static XSSFSheet createSheet0(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final XSSFWorkbook wb,final String sheetName,int startRow,final String titleDescribe){
-        final XSSFSheet sheet = wb.createSheet(sheetName);
-        // 手动设置列宽。第一个参数表示要为第几列设,第二个参数表示列的宽度，n为列高的像素数。
-        for (int i = 0; i < fields.size();i++){
-            sheet.setColumnWidth(i,(int)(35.7 * 150));
-        }
-        if (startRow < 4)startRow = 4;
-        int line = 1;//让其‘titleDescribe’上下各隔一行
-        final Row rowDescribe = sheet.createRow(line);//第几行行创建row
-        final CellStyle cellStyleDescribe = wb.createCellStyle();
-        final int lastRow = startRow-2;
-        final int firstCol = 1;
-        final int lastCol = fields.size()-2;
-        sheet.addMergedRegion(new CellRangeAddress(line,lastRow,firstCol,lastCol));//合并单元格;0,fields.size()-1
-        final Cell cellDescribe = rowDescribe.createCell(firstCol);//第几列
-        cellStyleDescribe.setAlignment(CellStyle.ALIGN_CENTER);//水平居中显示
-        cellStyleDescribe.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中显示
-        cellDescribe.setCellValue(titleDescribe);
-        cellDescribe.setCellStyle(cellStyleDescribe);
-        final Font font = wb.createFont();
-        // 创建第一种字体样式（用于列名）
-        font.setFontHeightInPoints((short)16);
-        font.setColor(IndexedColors.BLACK.getIndex());
-        cellStyleDescribe.setFont(font);
-
-        // 创建第一行,表头行
-        final Row rowTitle = sheet.createRow(startRow);
-        // 创建两种单元格格式
-        final CellStyle csHead = wb.createCellStyle();
-        final CellStyle csContent = wb.createCellStyle();
-        // 创建两种字体
-        final Font fontHead = wb.createFont();
-        final Font fontContent = wb.createFont();
-        // 创建第一种字体样式（用于列名）
-        fontHead.setFontHeightInPoints((short) 12);
-        fontHead.setColor(IndexedColors.BLACK.getIndex());
-        fontHead.setStrikeout(true);
-        // 创建第二种字体样式（用于值）
-        fontContent.setFontHeightInPoints((short) 11);
-        fontContent.setColor(IndexedColors.BLACK.getIndex());
-
-        // 设置第一种单元格的样式（用于列名）
-        csHead.setFont(fontHead);
-        csHead.setBorderLeft(CellStyle.BORDER_THIN);
-        csHead.setBorderRight(CellStyle.BORDER_THIN);
-        csHead.setBorderTop(CellStyle.BORDER_THIN);
-        csHead.setBorderBottom(CellStyle.BORDER_THIN);
-        csHead.setAlignment(CellStyle.ALIGN_LEFT);
-        
-        // 设置第二种单元格的样式（用于值）
-        csContent.setFont(fontContent);
-        csContent.setBorderLeft(CellStyle.BORDER_THIN);
-        csContent.setBorderRight(CellStyle.BORDER_THIN);
-        csContent.setBorderTop(CellStyle.BORDER_THIN);
-        csContent.setBorderBottom(CellStyle.BORDER_THIN);
-        csContent.setAlignment(CellStyle.ALIGN_LEFT);
-        // 设置列名,表头
-        for (int i = 0; i < titles.size();i++){
-            final Cell cell = rowTitle.createCell(i);
-            cell.setCellValue(titles.get(i));
-            cell.setCellStyle(csHead);
-        }
-        // 设置每行每列的值
-        for (int i = 0; i < list.size();i++){
-            // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
-            // 创建一行，在页sheet上
-            final Row rowData = sheet.createRow(i+startRow+1);
-            // 在row行上创建一个方格
-            for (int j = 0; j < fields.size(); j++){
-                final Cell cell = rowData.createCell(j);
-                cell.setCellValue(list.get(i).get(fields.get(j)) == null ? " " : list.get(i).get(fields.get(j)).toString());
-                cell.setCellStyle(csContent);
-            }
-        }
-        return sheet;
-    }
-	
 	/**
 	 * 生成并下载Excel表格,通过fields和titles的添加顺序生成想要的表头顺序
 	 * @param listData 要导出的最初数据集合
