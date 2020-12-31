@@ -404,22 +404,25 @@
 	<sql id="sql_where_listData">
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="real_name != null">
-                AND real_name LIKE CONCAT('%',#{real_name},'%')
+                AND bee.real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
             <if test="market_name != null">
                 AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
+            </if>
+            <if test="sample_code != null">
+                AND bee.sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
             <if test="site_letter != null">
                 AND bm.site_letter LIKE CONCAT(#{site_letter},'%')
             </if>
             <if test="province_id != null">
-                AND province_id = #{province_id}
+                AND bee.province_id = #{province_id}
             </if>
             <if test="city_id != null">
-                AND city_id = #{city_id}
+                AND bee.city_id = #{city_id}
             </if>
             <if test="county_id != null">
-                AND county_id = #{county_id}
+                AND bee.county_id = #{county_id}
             </if>
             <if test="sampling_date_start != null">
                 <![CDATA[ AND bee.sampling_date >= #{sampling_date_start} ]]>

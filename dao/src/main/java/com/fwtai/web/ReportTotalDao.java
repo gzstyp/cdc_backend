@@ -21,4 +21,9 @@ public class ReportTotalDao{
     public List<HashMap<String,Object>> queryDataExport(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.queryDataExport",formData);
     }
+
+    /**查询登录者所拥有的权限*/
+    public List<String> queryPermissions(){
+        return dao.queryPermissions("reportTotal/queryAreaSelect");//指定url
+    }
 }

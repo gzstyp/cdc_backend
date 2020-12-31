@@ -41,7 +41,6 @@ public class ApiEmployeeService{
         final String p_county_id = "county_id";
         final String p_area_level = "area_level";
         final String p_real_name = "real_name";
-        final String p_phone = "phone";
         final String p_gender = "gender";
         final String p_age = "age";
         final String p_work_site = "work_site";
@@ -51,7 +50,7 @@ public class ApiEmployeeService{
         final String p_sample_type = "sample_type";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_appid,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_phone,p_gender,p_age,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_result);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_appid,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_gender,p_age,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_result);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_gender,p_cold_chain,p_result);
         if(validateInteger != null)return validateInteger;

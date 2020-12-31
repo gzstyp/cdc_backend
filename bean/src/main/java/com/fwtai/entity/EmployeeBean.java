@@ -28,7 +28,7 @@ public final class EmployeeBean implements Serializable{
     private Long area_level;
     @ApiModelProperty(required = true,value = "人员姓名")
     private String real_name;
-    @ApiModelProperty(required = true,value = "联系电话")
+    @ApiModelProperty(required = false,value = "联系电话")
     private String phone;
     @ApiModelProperty(required = true,value = "人员性别(1男;2女)")
     private Integer gender;

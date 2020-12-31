@@ -50,4 +50,10 @@ public class ReportTotalController{
     public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
         reportTotalService.queryDataExport(request,response);
     }
+
+    @PreAuthorize("hasAuthority('reportTotal_btn_permissions')")
+    @GetMapping("/queryPermissions")
+    public void queryPermissions(final HttpServletResponse response){
+        ToolClient.responseJson(reportTotalService.queryPermissions(),response);
+    }
 }

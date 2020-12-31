@@ -35,6 +35,12 @@ public class ReportTotalService{
         return ToolClient.queryJson(reportTotalDao.getView(formData));
     }
 
+    /**查询登录者所拥有的权限*/
+    public String queryPermissions(){
+        final List<String> permissions = reportTotalDao.queryPermissions();
+        return ToolClient.queryJson(permissions);
+    }
+
     //导出,https://www.yuque.com/easyexcel/doc/api
     public void queryDataExport(final HttpServletRequest request,final HttpServletResponse response){
         final PageFormData formData = ToolClient.getFormData(request);
