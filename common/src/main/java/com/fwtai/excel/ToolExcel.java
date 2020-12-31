@@ -587,13 +587,13 @@ public final class ToolExcel{
 	}
 
 	/*单元格的样式*/
-    private static void rowCellStyle(final XSSFCellStyle csContent,final Font fontContent){
-        csContent.setFont(fontContent);
-        csContent.setBorderLeft(BorderStyle.THIN);
-        csContent.setBorderRight(BorderStyle.THIN);
-        csContent.setBorderTop(BorderStyle.THIN);
-        csContent.setBorderBottom(BorderStyle.THIN);
-        csContent.setAlignment(HorizontalAlignment.LEFT);
+    private static void rowCellStyle(final XSSFCellStyle style,final Font font){
+        style.setFont(font);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setAlignment(HorizontalAlignment.LEFT);
     }
 
     /**
