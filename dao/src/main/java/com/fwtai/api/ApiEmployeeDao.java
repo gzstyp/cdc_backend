@@ -2,6 +2,7 @@ package com.fwtai.api;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.datasource.DaoHandle;
+import com.fwtai.entity.PublishBean;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -45,6 +46,10 @@ public class ApiEmployeeDao{
 
     public int delByKeys(final ArrayList<String> list){
         return dao.execute("api_bs_employee.delByKeys",list);
+    }
+
+    public int editPublish(final ArrayList<PublishBean> lists){
+        return dao.execute("api_bs_employee.editPublish",lists);
     }
 
     public HashMap<String,Object> listData(final PageFormData pageFormData){

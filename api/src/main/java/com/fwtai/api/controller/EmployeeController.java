@@ -2,6 +2,7 @@ package com.fwtai.api.controller;
 
 import com.fwtai.config.ConfigFile;
 import com.fwtai.entity.EmployeeBean;
+import com.fwtai.entity.PublishBean;
 import com.fwtai.entity.ReqPage;
 import com.fwtai.service.api.ApiEmployeeService;
 import com.fwtai.tool.ToolClient;
@@ -12,12 +13,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  * 从业人员控制层|路由层[api]
@@ -84,6 +87,13 @@ public class EmployeeController{
     @PostMapping("/delByKeys")
     public void delByKeys(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.delByKeys(ToolClient.getFormData(request)),response);
+    }
+
+    @ApiOperation(value = "发布接口,未审核前操作", notes = "发布接口,未审核前操作,即未审核的状态flag=0;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
+    @PostMapping("/editPublish")
+    public void editPublish(@RequestBody final ArrayList<PublishBean> lists,final HttpServletResponse response){
+        ToolClient.responseJson(apiEmployeeService.editPublish(lists),response);
     }
 
     /**获取分页数据,请勿删除ReqPage否则swagger不显示参数*/

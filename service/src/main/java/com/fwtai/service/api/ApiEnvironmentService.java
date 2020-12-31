@@ -5,6 +5,7 @@ import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.entity.EnvironmentBean;
+import com.fwtai.entity.PublishBean;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import org.springframework.stereotype.Service;
@@ -149,6 +150,15 @@ public class ApiEnvironmentService{
         final String ids = formData.getString(p_ids);
         final ArrayList<String> lists = ToolString.keysToList(ids);
         return ToolClient.executeRows(apiEnvironmentDao.delByKeys(lists),"操作成功","数据已不存在,刷新重试");
+    }
+
+    public String editPublish(final ArrayList<PublishBean> lists){
+        final int rows = apiEnvironmentDao.editPublish(lists);
+        if(rows > 0){
+            return ToolClient.createJsonSuccess("操作成功");
+        }else{
+            return ToolClient.createJsonFail("操作失败");
+        }
     }
 
     //适用于api接口

@@ -494,4 +494,15 @@
             #{item}
         </foreach>
     </update>
+
+    <!-- 发布 -->
+    <update id="editPublish" parameterType="ArrayList">
+        <foreach collection="list" separator=";" item="item">
+            update BS_EMPLOYEE
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="item.result != null">result = #{item.result},</if>
+            </trim>
+            where kid = #{item.kid}
+        </foreach>
+    </update>
 </mapper>
