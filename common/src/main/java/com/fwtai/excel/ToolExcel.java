@@ -596,6 +596,56 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
+    protected static XSSFWorkbook workbook(){
+        final XSSFWorkbook wb = new XSSFWorkbook();
+        final XSSFSheet sheet = wb.createSheet("核酸检测日报");
+        // 创建第一行,表头行
+        final Row rowTitle = sheet.createRow(0);//行
+        final Cell indexCell = rowTitle.createCell(0);//57
+
+        for (int i = 0; i < 10;i++){
+            // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
+            // 创建一行，在页sheet上
+            final Row rowData = sheet.createRow(i+1);
+            // 在row行上创建一个方格
+            for (int j = 0; j < 10; j++){
+                final Cell cell = rowData.createCell(j);
+                cell.setCellValue("我是内容啊");
+            }
+        }
+        return wb;
+    }
+
+    public static void export(final HttpServletResponse response) throws Exception {
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        workbook().write(os);//填充数据
+        final byte[] content = os.toByteArray();
+        final InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((ToolString.getIdsChar32() + ".xlsx").getBytes(), "iso-8859-1"));
+        final ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            final byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
+        }
+    }
+
     /**
 	 * 生成 Sheet工作簿,数据是从第指定startRow+1行可是写入数据,因为1是表头标题栏
 	 * @param list 数据集合
