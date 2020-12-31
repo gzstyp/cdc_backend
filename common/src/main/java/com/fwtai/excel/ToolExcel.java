@@ -626,12 +626,12 @@ public final class ToolExcel{
         final int startCol = 1;//第2格
         cellRangeAddress(sheet,1,1,startCol,40);//此时是第2格
 
-        final Cell cell2 = crowdRow.createCell(startCol);//上面何必后此时是第2格,此时是第2行的第2格,注意和上面的第4个参数1对应!!!
+        final Cell cell2 = crowdRow.createCell(startCol);//此处是第2行的第2格,注意和上面的第4个参数1对应!!!
         cell2.setCellValue("“应检尽检”人群");
 
         cellRangeAddress(sheet,1,1,41,58);//此时是第41格,注意这41,因为上面是40,
 
-        final Cell cell3 = crowdRow.createCell(41);//上面何必后此时是第41格(第2行的41格),注意和上面的第4个参数的41对应!!!
+        final Cell cell3 = crowdRow.createCell(41);//此处是第41格(第2行的41格),注意和上面的第4个参数的41对应!!!
         cell3.setCellValue("“愿检尽检”人群");
 
         labelCell.setCellValue(label);
