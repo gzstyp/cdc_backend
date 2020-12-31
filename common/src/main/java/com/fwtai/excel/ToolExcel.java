@@ -2,8 +2,10 @@ package com.fwtai.excel;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.tool.ToolString;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -549,13 +551,15 @@ public final class ToolExcel{
 		final Row rowTitle = sheet.createRow(0);
 		// 创建两种单元格格式
         final XSSFCellStyle csHead = wb.createCellStyle();
+        csHead.setFillPattern(FillPatternType.SOLID_FOREGROUND);//设置前景填充样式
+        csHead.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);//前景填充色
         final XSSFCellStyle csContent = wb.createCellStyle();
 		// 创建两种字体
 		final Font fontHead = wb.createFont();
 		final Font fontContent = wb.createFont();
 		// 创建第一种字体样式（用于列名）
 		fontHead.setFontHeightInPoints((short)12);//设置字号
-		fontHead.setColor(IndexedColors.BLACK.getIndex());
+		fontHead.setColor(IndexedColors.WHITE.getIndex());//设置字体颜色
         fontHead.setBold(true);
 		// 创建第二种字体样式（用于值）
 		fontContent.setFontHeightInPoints((short)11);
@@ -681,7 +685,7 @@ public final class ToolExcel{
 		cellDescribe.setCellValue(titleDescribe);
 		cellDescribe.setCellStyle(cellStyleDescribe);
 		final Font font = wb.createFont();
-		// 创建第一种字体样式（用于列名）
+		// 创建第一种字体样式（用于表头）
 		font.setFontHeightInPoints((short)14);
 		font.setColor(IndexedColors.BLACK.getIndex());
 		cellStyleDescribe.setFont(font);
@@ -691,14 +695,16 @@ public final class ToolExcel{
 		// 创建两种单元格格式
         final XSSFCellStyle csHead = wb.createCellStyle();
 		final XSSFCellStyle csContent = wb.createCellStyle();
+        csHead.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        csHead.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
 		// 创建两种字体
 		final Font fontHead = wb.createFont();
 		final Font fontContent = wb.createFont();
-		// 创建第一种字体样式（用于列名）
+		// 创建第一种字体样式（用于表头）
 		fontHead.setFontHeightInPoints((short) 12);
-		fontHead.setColor(IndexedColors.BLACK.getIndex());
+		fontHead.setColor(IndexedColors.WHITE.getIndex());
         fontHead.setBold(true);
-		// 创建第二种字体样式（用于值）
+		// 创建第二种字体样式（用于数据行）
 		fontContent.setFontHeightInPoints((short) 11);
 		fontContent.setColor(IndexedColors.BLACK.getIndex());
 
