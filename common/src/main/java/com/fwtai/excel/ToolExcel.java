@@ -644,7 +644,7 @@ public final class ToolExcel{
             for (int j = 0; j < 10; j++){
                 final Cell cell = rowData.createCell(j);
                 final XSSFCellStyle cellStyle = wb.createCellStyle();
-                cellStyle.setWrapText(true);
+                cellStyle.setWrapText(true);//换行显示,即非一行显示!!!
                 cell.setCellStyle(cellStyle);
                 cell.setCellValue("我是内容啊");
             }
