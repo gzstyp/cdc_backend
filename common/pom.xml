@@ -11,7 +11,7 @@
     <artifactId>common</artifactId>
     <properties>
         <jwt.version>0.11.2</jwt.version>
-        <poi.version>3.14</poi.version>
+        <poi.version>3.17</poi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.74</version>
+            <version>1.2.75</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -89,11 +89,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>easyexcel</artifactId>
-            <version>2.2.7</version>
         </dependency>
         <!--swagger2配置-->
         <dependency>

@@ -1,8 +1,5 @@
 package com.fwtai.service.web;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.write.metadata.WriteSheet;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
@@ -14,7 +11,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,31 +85,7 @@ public class ReportTotalService{
 
         System.out.println(label);
 
-        //final ExcelWriter excelWriter = EasyExcel.write(excelFullPath).withTemplate(templateFileName).build();
-        final WriteSheet writeSheet = EasyExcel.writerSheet(0,"模块啊").build();
-        // 直接写入数据
-        final ArrayList<Titles> ts = new ArrayList<>();
-        final Titles t = new Titles();
-        t.setTitle("我是标题");
-        ts.add(t);
-        /*excelWriter.fill(ts,writeSheet);
-        // 写入list之前的数据
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("label",label);
-        excelWriter.fill(map,writeSheet);
-        List<List<String>> totalListList = new ArrayList<List<String>>();
-        List<String> totalList = new ArrayList<String>();
-        totalListList.add(totalList);
-        totalList.add(null);
-        totalList.add(null);
-        totalList.add(null);
-        // 第四列
-        totalList.add("统计:1000");
-        // 这里是write 别和fill 搞错了
-        excelWriter.write(totalListList, writeSheet);
-        excelWriter.finish();*/
-
-        final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
+        final String json = ToolClient.createJson(ConfigFile.code200,"导出失败,稍候重试");
         ToolClient.responseJson(json,response);
 
         /*final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
@@ -123,18 +95,5 @@ public class ReportTotalService{
             final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
             ToolClient.responseJson(json,response);
         }*/
-    }
-
-    class Titles{
-        @ExcelProperty("表头")
-        private String title;
-
-        public String getTitle(){
-            return title;
-        }
-
-        public void setTitle(String title){
-            this.title = title;
-        }
     }
 }
