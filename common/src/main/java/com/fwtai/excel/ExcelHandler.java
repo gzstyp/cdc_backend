@@ -74,7 +74,7 @@ public abstract class ExcelHandler extends DefaultHandler {
 	/**
 	 * 统一调用Excel批量导入数据,标题行必须放在第1行
 	 * @param excelPath 所属完整路径
-	 */
+	*/
 	public void readExcel(String excelPath) throws Exception{
 		if (excelPath == null || excelPath.equals("")){
 			throw new Exception("构造Excel导入器失败,未指定文件全名");
@@ -91,7 +91,7 @@ public abstract class ExcelHandler extends DefaultHandler {
 
 	/**
 	 * 统一调用Excel导入数据 2007数据导入
-	 */
+	*/
 	private ArrayList<String> PoiExcel2007(final String excelPath){
 		countrows = 0;
 		this.sqlBuf = new StringBuffer();
@@ -105,7 +105,7 @@ public abstract class ExcelHandler extends DefaultHandler {
 
 	/**
 	 * 开始解析文档，即开始解析XML根元素时调用该方法
-	 */
+	*/
 	@Override
 	public void startDocument() throws SAXException {
 		rowlist = new ArrayList<String>();
