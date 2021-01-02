@@ -633,19 +633,19 @@ public final class ToolExcel{
         final Row crowdRow = sheet.createRow(1);//第2行
 
         int crowdCell = 0;
-        for(int x = 0;x < data.size();x++){
+        for(int x = 0;x < data.size();x++){//处理人员类型
             final HashMap<String,Object> map = data.get(x);
             final String crowdName = (String)map.get("crowdName");
             final String sampling = (String)map.get("sampling");
-            final String[] items = sampling.split(",");
+            final int length = sampling.split(",").length;
             final Cell cell = crowdRow.createCell(crowdCell);//第1格子
             cell.setCellValue(crowdName);
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
-                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + items.length  * 3 - 1) + 6);//附加总计
-                crowdCell = crowdCell + items.length  * 3 + 6;
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 6);//附加总计
+                crowdCell = crowdCell + length * 3 + 6;
             }else{
-                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + items.length  * 3 - 1) + 3);//附加合计
-                crowdCell = crowdCell + items.length  * 3 + 3;
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 3);//附加合计
+                crowdCell = crowdCell + length * 3 + 3;
             }
         }
 
