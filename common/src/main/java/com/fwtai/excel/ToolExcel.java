@@ -618,20 +618,26 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         style.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
         labelCell.setCellStyle(style);
-        cellRangeAddress(sheet,0,0,0,58);
+
+        int crowdTotalCell = 0;
+        for(int x = 0;x < data.size();x++){
+            final HashMap<String,Object> map = data.get(x);
+            final String sampling = (String)map.get("sampling");
+            final String[] items = sampling.split(",");
+            crowdTotalCell = crowdTotalCell + items.length  * 3;
+        }
+        cellRangeAddress(sheet,0,0,0,crowdTotalCell);//第1行标题,1是第一格的内容是'分类',所以要+1;
 
         final Row crowdRow = sheet.createRow(1);//第2行
         final Cell cell1 = crowdRow.createCell(0);//第2行的第1格
         cell1.setCellValue("分类");
-        final int startCol = 1;//第2格
-        cellRangeAddress(sheet,1,1,startCol,40);//此时是第2格
 
-        final Cell cell2 = crowdRow.createCell(startCol);//此处是第2行的第2格,注意和上面的第4个参数1对应!!!
+        final Cell cell2 = crowdRow.createCell(1);//此处是第2行的第2格,注意和上面的第4个参数1对应!!!
+        cellRangeAddress(sheet,1,1,1,45);//此时是第2格
         cell2.setCellValue("“应检尽检”人群");
 
-        cellRangeAddress(sheet,1,1,41,58);//此时是第41格,注意这41,因为上面是40,
-
-        final Cell cell3 = crowdRow.createCell(41);//此处是第41格(第2行的41格),注意和上面的第4个参数的41对应!!!
+        final Cell cell3 = crowdRow.createCell(46);//此处是第41格(第2行的46格),注意和上面的第4个参数的45对应!!!
+        cellRangeAddress(sheet,1,1,46,crowdTotalCell);//此时是第41格,注意这46,因为上面是45,
         cell3.setCellValue("“愿检尽检”人群");
 
         labelCell.setCellValue(label);
