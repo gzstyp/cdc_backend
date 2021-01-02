@@ -618,6 +618,7 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         style.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
         labelCell.setCellStyle(style);
+        labelCell.setCellValue(label);
 
         int crowdTotalCell = 0;
         for(int x = 0;x < data.size();x++){
@@ -639,8 +640,6 @@ public final class ToolExcel{
         final Cell cell3 = crowdRow.createCell(46);//此处是第41格(第2行的46格),注意和上面的第4个参数的45对应!!!
         cellRangeAddress(sheet,1,1,46,crowdTotalCell);//此时是第41格,注意这46,因为上面是45,
         cell3.setCellValue("“愿检尽检”人群");
-
-        labelCell.setCellValue(label);
 
         for (int i = 0; i < 10;i++){
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
