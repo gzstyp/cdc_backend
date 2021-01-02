@@ -621,25 +621,27 @@ public final class ToolExcel{
         labelCell.setCellValue(label);
 
         int crowdTotalCell = 0;
+        final int tabsTotal = data.size();
         for(int x = 0;x < data.size();x++){
             final HashMap<String,Object> map = data.get(x);
             final String sampling = (String)map.get("sampling");
             final String[] items = sampling.split(",");
             crowdTotalCell = crowdTotalCell + items.length  * 3;
         }
-        cellRangeAddress(sheet,0,0,0,crowdTotalCell);//第1行标题,1是第一格的内容是'分类',所以要+1;
+        cellRangeAddress(sheet,0,0,0,(tabsTotal * 3 + 3) + crowdTotalCell);//第1行标题,1是第一格的内容是'分类',但是不需要+1的,因为它是从0开始算起,而此处是从1算起;[x3的各项的合计;3是核酸总计]
 
         final Row crowdRow = sheet.createRow(1);//第2行
         final Cell cell1 = crowdRow.createCell(0);//第2行的第1格
         cell1.setCellValue("分类");
 
         final Cell cell2 = crowdRow.createCell(1);//此处是第2行的第2格,注意和上面的第4个参数1对应!!!
-        cellRangeAddress(sheet,1,1,1,45);//此时是第2格
+        cellRangeAddress(sheet,1,1,1,48);//此时是第2格
         cell2.setCellValue("“应检尽检”人群");
 
-        final Cell cell3 = crowdRow.createCell(46);//此处是第41格(第2行的46格),注意和上面的第4个参数的45对应!!!
-        cellRangeAddress(sheet,1,1,46,crowdTotalCell);//此时是第41格,注意这46,因为上面是45,
+        final Cell cell3 = crowdRow.createCell(49);//此处是第41格(第2行的46格),注意和上面的第4个参数的45对应!!!
+        cellRangeAddress(sheet,1,1,49,crowdTotalCell);//此时是第41格,注意这46,因为上面是45,
         cell3.setCellValue("“愿检尽检”人群");
+
 
         for (int i = 0; i < 10;i++){
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
