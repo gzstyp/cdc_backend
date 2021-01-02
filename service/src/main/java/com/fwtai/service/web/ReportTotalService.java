@@ -86,7 +86,7 @@ public class ReportTotalService{
 
         System.out.println(label);
         try {
-            ToolExcel.export(label,response);
+            ToolExcel.export(label,list,response);
         } catch (final Exception e) {
             e.printStackTrace();
             final String json = ToolClient.createJson(ConfigFile.code200,"导出失败,稍候重试");

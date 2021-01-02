@@ -604,7 +604,7 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
-    protected static XSSFWorkbook workbook(final String label){
+    protected static XSSFWorkbook workbook(final String label,final List<HashMap<String,Object>> data){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
         final Row labelRow = sheet.createRow(0);//第1行
@@ -698,9 +698,9 @@ public final class ToolExcel{
         return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
     }
 
-    public static void export(final String label,final HttpServletResponse response) throws Exception {
+    public static void export(final String label,final List<HashMap<String,Object>> data,final HttpServletResponse response) throws Exception {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        workbook(label).write(os);//填充数据
+        workbook(label,data).write(os);//填充数据
         final byte[] content = os.toByteArray();
         final InputStream is = new ByteArrayInputStream(content);
         // 设置response参数，可以打开下载页面
