@@ -648,7 +648,12 @@ public final class ToolExcel{
             final int len = length * 3;
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 6);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
-                crowdCell = crowdCell + len + 6;
+                for(int z = 0; z < length; z++){
+                    final Cell _cell = typeRow.createCell(z*3+crowdCell);
+                    cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);
+                    _cell.setCellValue(crowdType[z]);
+                }
+
             }else{
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + len + 3;
@@ -664,7 +669,6 @@ public final class ToolExcel{
                 }
             }
         }
-
         /*cellRangeAddress(sheet,2,2,0,2);
         cellRangeAddress(sheet,2,2,3,5);
         cellRangeAddress(sheet,2,2,6,8);ok*/
