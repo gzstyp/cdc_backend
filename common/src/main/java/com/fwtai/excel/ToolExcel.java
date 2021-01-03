@@ -631,11 +631,16 @@ public final class ToolExcel{
         cellRangeAddress(sheet,0,0,0,(tabsTotal * 3 + 3) + crowdTotalCell - 1);//第1行标题,1是第一格的内容是'分类',但是不需要+1的,因为它是从0开始算起,而此处是从1算起;[x3的各项的合计;3是核酸总计]
 
         final Row crowdRow = sheet.createRow(1);//第2行
+        final Row typeRow = sheet.createRow(2);//第3行,人群类型
+        final Row row4 = sheet.createRow(3);//第3行,人群类型:已采样人数,已检测人数,检测阳性人数
 
         int crowdCell = 0;
         for(int x = 0;x < data.size();x++){//处理人员类型
             final HashMap<String,Object> map = data.get(x);
             final String crowdName = (String)map.get("crowdName");
+            final String[] crowdType = ((String)map.get("crowdType")).split(",");
+            final String masculine = (String)map.get("masculine");
+            final String detection = (String)map.get("detection");
             final String sampling = (String)map.get("sampling");
             final int length = sampling.split(",").length;
             final Cell cell = crowdRow.createCell(crowdCell);//第1格子
@@ -646,8 +651,22 @@ public final class ToolExcel{
             }else{
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + length * 3 + 3;
+                for(int z = 0; z < length; z++){
+                    final Cell _cell = typeRow.createCell(z*3);
+                    cellRangeAddress(sheet,2,2,z*3,z*3+2);
+                    _cell.setCellValue(crowdType[z]);
+                    if(z == length - 1){
+                        final Cell cell_ = typeRow.createCell((z + 1)*3);
+                        cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);
+                        cell_.setCellValue(crowdName+"合计");
+                    }
+                }
             }
         }
+
+        /*cellRangeAddress(sheet,2,2,0,2);
+        cellRangeAddress(sheet,2,2,3,5);
+        cellRangeAddress(sheet,2,2,6,8);ok*/
 
         for (int i = 0; i < 10;i++){
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
