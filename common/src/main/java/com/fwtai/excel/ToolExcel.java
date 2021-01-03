@@ -608,17 +608,29 @@ public final class ToolExcel{
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
         final Row labelRow = sheet.createRow(0);//第1行
+        labelRow.setHeightInPoints(30);
         final Cell labelCell = labelRow.createCell(0);
-        final XSSFCellStyle style = wb.createCellStyle();
+        final XSSFCellStyle styleCenter = wb.createCellStyle();
         final Font labelFont = wb.createFont();
         labelFont.setFontHeightInPoints((short)14);//设置字号
         labelFont.setColor(IndexedColors.BLACK.getIndex());//设置字体颜色
         labelFont.setBold(true);
-        style.setFont(labelFont);
-        style.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
-        style.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-        labelCell.setCellStyle(style);
+        styleCenter.setFont(labelFont);
+        styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        styleCenter.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        styleCenter.setWrapText(true);//自动换行显示,即非一行显示!!!
+        labelCell.setCellStyle(styleCenter);
         labelCell.setCellValue(label);
+
+        final XSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellStyle.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
+        cellStyle.setWrapText(true);//自动换行显示,即非一行显示!!!
+
+        final XSSFCellStyle cellCenterStyle = wb.createCellStyle();
+        cellCenterStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellCenterStyle.setVerticalAlignment(VerticalAlignment.CENTER);//靠上对齐
+        cellCenterStyle.setWrapText(true);//自动换行显示,即非一行显示!!!
 
         int crowdTotalCell = 0;
         final int tabsTotal = data.size();
@@ -631,8 +643,11 @@ public final class ToolExcel{
         cellRangeAddress(sheet,0,0,0,(tabsTotal * 3 + 3) + crowdTotalCell - 1);//第1行标题,1是第一格的内容是'分类',但是不需要+1的,因为它是从0开始算起,而此处是从1算起;[x3的各项的合计;3是核酸总计]
 
         final Row crowdRow = sheet.createRow(1);//第2行
+        crowdRow.setHeightInPoints(48);
         final Row typeRow = sheet.createRow(2);//第3行,人群类型
-        final Row rowTotal = sheet.createRow(3);//第3行,人群类型:已采样人数,已检测人数,检测阳性人数
+        typeRow.setHeightInPoints(48);//宽度
+        final Row rowTotal = sheet.createRow(3);//第4行,人群类型:已采样人数,已检测人数,检测阳性人数
+        rowTotal.setHeightInPoints(120);
 
         int crowdCell = 0;
         for(int x = 0;x < data.size();x++){//处理人员类型
@@ -644,76 +659,122 @@ public final class ToolExcel{
             final String[] sampling = ((String)map.get("sampling")).split(",");
             final int length = sampling.length;
             final Cell cell = crowdRow.createCell(crowdCell);//第1格子
+            cell.setCellStyle(cellCenterStyle);
             cell.setCellValue(crowdName);
+
             final int len = length * 3;
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
-                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 6);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
                 for(int z = 0; z < length; z++){
                     final Cell _cell = typeRow.createCell(z*3+crowdCell);//人群类型
                     cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);//人群类型
+                    _cell.setCellStyle(cellCenterStyle);
                     _cell.setCellValue(crowdType[z]);
+
+                    final Cell cellTotal0 = rowTotal.createCell(z*3+crowdCell+0);
+                    cellTotal0.setCellStyle(cellStyle);
+                    cellTotal0.setCellValue("已采样人数");
+
+                    final Cell cellTotal1 = rowTotal.createCell(z*3+crowdCell+1);
+                    cellTotal1.setCellStyle(cellStyle);
+                    cellTotal1.setCellValue("已检测人数");
+
+                    final Cell cellTotal2 = rowTotal.createCell(z*3+crowdCell+2);
+                    cellTotal2.setCellStyle(cellStyle);
+                    cellTotal2.setCellValue("检测阳性人数");
+
                     if(z == length - 1){
                         final Cell cell_ = typeRow.createCell((z + 1)*3+crowdCell);//合计
                         cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell,(z + 1)*3+2+crowdCell);//合计
+                        cell_.setCellStyle(cellCenterStyle);
                         cell_.setCellValue(crowdName+"合计");
 
-                        final Cell _cell_ = typeRow.createCell((z + 2)*3+crowdCell);//总计
-                        cellRangeAddress(sheet,2,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计
+                        final Cell total0 = rowTotal.createCell((z+1)*3+0+crowdCell);
+                        total0.setCellStyle(cellStyle);
+                        total0.setCellValue("已采样人数");
+
+                        final Cell total1 = rowTotal.createCell((z+1)*3+1+crowdCell);
+                        total1.setCellStyle(cellStyle);
+                        total1.setCellValue("已检测人数");
+
+                        final Cell total2 = rowTotal.createCell((z+1)*3+2+crowdCell);
+                        total2.setCellStyle(cellStyle);
+                        total2.setCellValue("检测阳性人数");
+
+                        final Cell _cell_ = crowdRow.createCell((z + 2)*3+crowdCell);//总计,只能是crowdRow,typeRow则无效
+                        cellRangeAddress(sheet,1,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计
+
+                        //final Cell _cell_ = typeRow.createCell((z + 2)*3+crowdCell);//总计,本方式不合并单元格
+                        //cellRangeAddress(sheet,2,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计,本方式不合并单元格
+
+                        _cell_.setCellStyle(cellCenterStyle);
                         _cell_.setCellValue("核酸总计");
+
+                        final Cell _total0 = rowTotal.createCell((z+2)*3+0+crowdCell);
+                        _total0.setCellStyle(cellStyle);
+                        _total0.setCellValue("已采样人数");
+
+                        final Cell _total1 = rowTotal.createCell((z+2)*3+1+crowdCell);
+                        _total1.setCellStyle(cellStyle);
+                        _total1.setCellValue("已检测人数");
+
+                        final Cell _total2 = rowTotal.createCell((z+2)*3+2+crowdCell);
+                        _total2.setCellStyle(cellStyle);
+                        _total2.setCellValue("检测阳性人数");
                     }
+                }
+                crowdCell = crowdCell + len + 3 + 3;
+                for(int k = 0; k < crowdCell; k++){
+                    sheet.setColumnWidth(k,4 * 256);//设置宽度是1个字符宽度，即 4 * 256是1个字符宽度
                 }
             }else{
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + len + 3;
                 for(int z = 0; z < length; z++){
+
                     final Cell _cell = typeRow.createCell(z*3);//人群类型
                     cellRangeAddress(sheet,2,2,z*3,z*3+2);//人群类型
+                    _cell.setCellStyle(cellCenterStyle);
                     _cell.setCellValue(crowdType[z]);
 
-                    System.out.print(crowdType[z]);
+                    /*System.out.print(crowdType[z]);
                     System.out.print(sampling[z]);
                     System.out.print(","+detection[z]);
                     System.out.print(","+masculine[z]);
-                    System.out.println();
+                    System.out.println();*/
 
+                    final Cell cellTotal0 = rowTotal.createCell(z*3+0);
+                    cellTotal0.setCellStyle(cellStyle);
+                    cellTotal0.setCellValue("已采样人数");
 
+                    final Cell cellTotal1 = rowTotal.createCell(z*3+1);
+                    cellTotal1.setCellStyle(cellStyle);
+                    cellTotal1.setCellValue("已检测人数");
 
-                    final Cell cellTotal = rowTotal.createCell(z*3+crowdCell);//人群类型
+                    final Cell cellTotal2 = rowTotal.createCell(z*3+2);
+                    cellTotal2.setCellStyle(cellStyle);
+                    cellTotal2.setCellValue("检测阳性人数");
 
                     if(z == length - 1){
                         final Cell cell_ = typeRow.createCell((z + 1)*3);//合计
                         cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);//合计
+                        cell_.setCellStyle(cellCenterStyle);
                         cell_.setCellValue(crowdName+"合计");
+
+                        final Cell total0 = rowTotal.createCell((z+1)*3+0);
+                        total0.setCellStyle(cellStyle);
+                        total0.setCellValue("已采样人数");
+
+                        final Cell total1 = rowTotal.createCell((z+1)*3+1);
+                        total1.setCellStyle(cellStyle);
+                        total1.setCellValue("已检测人数");
+
+                        final Cell total2 = rowTotal.createCell((z+1)*3+2);
+                        total2.setCellStyle(cellStyle);
+                        total2.setCellValue("检测阳性人数");
                     }
                 }
-
-                for(int z = 0; z < crowdCell; z++){
-                    /*final Cell cell1 = rowTotal.createCell(z);
-                    cell1.setCellValue("已采样人数");
-
-                    final Cell cell2 = rowTotal.createCell(z+1);
-                    cell2.setCellValue("已检测人数");
-
-                    final Cell cell3 = rowTotal.createCell(z+2);
-                    cell3.setCellValue("检测阳性人数");*/
-                }
             }
-        }
-
-        for (int i = 0; i < 10;i++){
-            // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
-            // 创建一行，在页sheet上
-            final Row rowData = sheet.createRow(i+10);//上面累加,在row行上创建一个方格
-
-            /*for (int j = 0; j < 10; j++){
-                final Cell cell = rowData.createCell(j);
-                final XSSFCellStyle cellStyle = wb.createCellStyle();
-                cellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
-                cellStyle.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
-                cellStyle.setWrapText(true);//换行显示,即非一行显示!!!
-                cell.setCellStyle(cellStyle);
-                //cell.setCellValue("我是内容啊");
-            }*/
         }
         return wb;
     }
@@ -743,7 +804,7 @@ public final class ToolExcel{
         cellStyle1.setAlignment(HorizontalAlignment.CENTER_SELECTION);
         //垂直对其居中
         cellStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
-        //设置true让Cell中的内容以多行显示
+        //设置true让Cell中的内容以多行显示,自动换行
         cellStyle1.setWrapText(true);
         //创建一个单元格,单元格下标从0开始
         Cell c1=row1.createCell(0);
