@@ -632,17 +632,17 @@ public final class ToolExcel{
 
         final Row crowdRow = sheet.createRow(1);//第2行
         final Row typeRow = sheet.createRow(2);//第3行,人群类型
-        final Row row4 = sheet.createRow(3);//第3行,人群类型:已采样人数,已检测人数,检测阳性人数
+        final Row rowTotal = sheet.createRow(3);//第3行,人群类型:已采样人数,已检测人数,检测阳性人数
 
         int crowdCell = 0;
         for(int x = 0;x < data.size();x++){//处理人员类型
             final HashMap<String,Object> map = data.get(x);
             final String crowdName = (String)map.get("crowdName");
             final String[] crowdType = ((String)map.get("crowdType")).split(",");
-            final String masculine = (String)map.get("masculine");
-            final String detection = (String)map.get("detection");
-            final String sampling = (String)map.get("sampling");
-            final int length = sampling.split(",").length;
+            final String[] masculine = ((String)map.get("masculine")).split(",");
+            final String[] detection = ((String)map.get("detection")).split(",");
+            final String[] sampling = ((String)map.get("sampling")).split(",");
+            final int length = sampling.length;
             final Cell cell = crowdRow.createCell(crowdCell);//第1格子
             cell.setCellValue(crowdName);
             final int len = length * 3;
@@ -657,8 +657,8 @@ public final class ToolExcel{
                         cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell,(z + 1)*3+2+crowdCell);//合计
                         cell_.setCellValue(crowdName+"合计");
 
-                        final Cell _cell_ = typeRow.createCell((z + 1)*3+crowdCell+3);//总计
-                        cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell+3,(z + 1)*3+2+crowdCell+3);//总计
+                        final Cell _cell_ = typeRow.createCell((z + 2)*3+crowdCell);//总计
+                        cellRangeAddress(sheet,2,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计
                         _cell_.setCellValue("核酸总计");
                     }
                 }
@@ -669,11 +669,33 @@ public final class ToolExcel{
                     final Cell _cell = typeRow.createCell(z*3);//人群类型
                     cellRangeAddress(sheet,2,2,z*3,z*3+2);//人群类型
                     _cell.setCellValue(crowdType[z]);
+
+                    System.out.print(crowdType[z]);
+                    System.out.print(sampling[z]);
+                    System.out.print(","+detection[z]);
+                    System.out.print(","+masculine[z]);
+                    System.out.println();
+
+
+
+                    final Cell cellTotal = rowTotal.createCell(z*3+crowdCell);//人群类型
+
                     if(z == length - 1){
                         final Cell cell_ = typeRow.createCell((z + 1)*3);//合计
                         cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);//合计
                         cell_.setCellValue(crowdName+"合计");
                     }
+                }
+
+                for(int z = 0; z < crowdCell; z++){
+                    /*final Cell cell1 = rowTotal.createCell(z);
+                    cell1.setCellValue("已采样人数");
+
+                    final Cell cell2 = rowTotal.createCell(z+1);
+                    cell2.setCellValue("已检测人数");
+
+                    final Cell cell3 = rowTotal.createCell(z+2);
+                    cell3.setCellValue("检测阳性人数");*/
                 }
             }
         }
