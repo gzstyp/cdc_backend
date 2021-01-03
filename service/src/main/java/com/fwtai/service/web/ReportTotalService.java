@@ -4,7 +4,6 @@ import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.excel.ToolExcel;
 import com.fwtai.tool.ToolClient;
-import com.fwtai.tool.ToolString;
 import com.fwtai.web.ReportTotalDao;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +48,7 @@ public class ReportTotalService{
             crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put(p_crowd_date,crowd_date);
         }
-        final String fileName = new ToolString().getDate()+"_"+ToolString.getIdsChar32();
+        final String fileName = new SimpleDateFormat("yyyyMMdd").format(new Date())+"_核酸日报";
         final List<HashMap<String,Object>> list = reportTotalDao.queryDataExport(formData);
 
         final String province_id = formData.getString("province_id");
@@ -83,22 +82,12 @@ public class ReportTotalService{
             _date += crowd_date;
         }
         label += "核酸日报表"+_date+" (0:00-24:00)";
-
-        System.out.println(label);
         try {
-            ToolExcel.export(label,list,response);
+            ToolExcel.export(label,list,fileName,response);
         } catch (final Exception e) {
             e.printStackTrace();
-            final String json = ToolClient.createJson(ConfigFile.code200,"导出失败,稍候重试");
-            ToolClient.responseJson(json,response);
-        }
-
-        /*final boolean b = ToolExcel.writeExcelTemplate(excelFullPath,list,templateFileName);
-        if(b){
-            ToolClient.download(excelFullPath,response);
-        }else{
             final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
             ToolClient.responseJson(json,response);
-        }*/
+        }
     }
 }

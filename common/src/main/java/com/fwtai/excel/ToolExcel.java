@@ -604,7 +604,7 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
-    protected static XSSFWorkbook workbook(final String label,final List<HashMap<String,Object>> data){
+    private static XSSFWorkbook workbook(final String label,final List<HashMap<String,Object>> data){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
         final Row labelRow = sheet.createRow(0);//第1行
@@ -626,6 +626,14 @@ public final class ToolExcel{
         cellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         cellStyle.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
         cellStyle.setWrapText(true);//自动换行显示,即非一行显示!!!
+
+        //采样文字样式
+        final XSSFCellStyle styleSampling = wb.createCellStyle();
+        styleSampling.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        styleSampling.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
+        styleSampling.setWrapText(true);//自动换行显示,即非一行显示!!!
+        styleSampling.setFillPattern(FillPatternType.SOLID_FOREGROUND);//设置前景填充样式
+        styleSampling.setFillForegroundColor(HSSFColor.ROSE.index);//前景填充色
 
         final XSSFCellStyle cellCenterStyle = wb.createCellStyle();
         cellCenterStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
@@ -695,7 +703,7 @@ public final class ToolExcel{
                     _cell.setCellValue(crowdType[z]);
 
                     final Cell cellTotal0 = rowTotal.createCell(z*3+crowdCell+0);//*3是每项有3个,0第1个;1第2个;2第3个;
-                    cellTotal0.setCellStyle(cellStyle);
+                    cellTotal0.setCellStyle(styleSampling);
                     cellTotal0.setCellValue("已采样人数");
 
                     final Cell cellTotal1 = rowTotal.createCell(z*3+crowdCell+1);
@@ -800,7 +808,7 @@ public final class ToolExcel{
                     _cell.setCellValue(crowdType[z]);
 
                     final Cell cellTotal0 = rowTotal.createCell(z*3+0);
-                    cellTotal0.setCellStyle(cellStyle);
+                    cellTotal0.setCellStyle(styleSampling);
                     cellTotal0.setCellValue("已采样人数");
 
                     final Cell cellTotal1 = rowTotal.createCell(z*3+1);
@@ -905,7 +913,7 @@ public final class ToolExcel{
         return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
     }
 
-    public static void export(final String label,final List<HashMap<String,Object>> data,final HttpServletResponse response) throws Exception {
+    public static void export(final String label,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         workbook(label,data).write(os);//填充数据
         final byte[] content = os.toByteArray();
@@ -913,7 +921,7 @@ public final class ToolExcel{
         // 设置response参数，可以打开下载页面
         response.reset();
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String((ToolString.getIdsChar32() + ".xlsx").getBytes(), "iso-8859-1"));
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName + ".xlsx").getBytes(), "iso-8859-1"));
         final ServletOutputStream out = response.getOutputStream();
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
