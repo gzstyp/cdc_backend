@@ -641,10 +641,10 @@ public final class ToolExcel{
             final Cell cell = crowdRow.createCell(crowdCell);//第1格子
             cell.setCellValue(crowdName);
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
-                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 6);//附加总计
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 6);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
                 crowdCell = crowdCell + length * 3 + 6;
             }else{
-                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 3);//附加合计
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + length * 3 - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + length * 3 + 3;
             }
         }
