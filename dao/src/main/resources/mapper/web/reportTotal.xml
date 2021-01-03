@@ -39,7 +39,7 @@
         SUM(detection_total) detection,
         SUM(sampling_total) sampling
         from bs_crowd_total
-        where crowd_date = '2020-12-21'
+        where crowd_date = #{crowd_date}
         <trim prefix="AND" prefixOverrides="AND">
             <if test="province_id != null">
                 AND province_id = #{province_id}

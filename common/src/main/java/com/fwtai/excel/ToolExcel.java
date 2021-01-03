@@ -668,14 +668,54 @@ public final class ToolExcel{
         cellRangeAddress(sheet,0,0,0,(tabsTotal * 3 + 3) + crowdTotalCell - 1);//第1行标题,1是第一格的内容是'分类',但是不需要+1的,因为它是从0开始算起,而此处是从1算起;[x3的各项的合计;3是核酸总计]
 
         final Row crowdRow = sheet.createRow(1);//第2行
+
+        final int cells = (tabsTotal * 3 + 3) + crowdTotalCell;
+
+        final XSSFCellStyle cellInfoStyle = wb.createCellStyle();
+        cellInfoStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellInfoStyle.setVerticalAlignment(VerticalAlignment.CENTER);//靠上对齐
+        cellInfoStyle.setWrapText(true);//自动换行显示,即非一行显示
+
+        final Cell info = crowdRow.createCell(cells);//送样及检测情况 todo 所有的createCell和cellRangeAddress的 cells 和 下行的第3个参数,cells一致!!!
+        cellRangeAddress(sheet,1,2,cells,cells + 1);
+        info.setCellStyle(cellInfoStyle);
+        info.setCellValue("送样及检测情况");
+
         crowdRow.setHeightInPoints(48);
         final Row typeRow = sheet.createRow(2);//第3行,人群类型
         typeRow.setHeightInPoints(48);//宽度
         final Row rowTotal = sheet.createRow(3);//第4行,人群类型:已采样人数,已检测人数,检测阳性人数
         rowTotal.setHeightInPoints(120);
 
+        final Cell infoToday = rowTotal.createCell(cells);//今日
+        infoToday.setCellStyle(cellInfoStyle);
+        infoToday.setCellValue("今日送样地点、送样份数、已检测份数");
+
+        final Cell infoFormer = rowTotal.createCell(cells+1);//往日
+        infoFormer.setCellStyle(cellInfoStyle);
+        infoFormer.setCellValue("往日外送样品已检测份数及结果更新情况");
+
         final Row totalValue = sheet.createRow(4);//统计数据行
-        totalValue.setHeightInPoints(20);
+        totalValue.setHeightInPoints(48);//高度
+
+        final Row rowRemark = sheet.createRow(5);//备注
+        final Cell remark = rowRemark.createCell(0);//往日
+        cellRangeAddress(sheet,5,5,0,1);
+        remark.setCellStyle(cellInfoStyle);
+        remark.setCellValue("备注");
+
+        cellRangeAddress(sheet,5,5,2,cells+1);
+        rowRemark.setHeightInPoints(40);//高度
+
+        final Row rowAuthor = sheet.createRow(6);//填表人
+        final Cell author = rowAuthor.createCell(4);
+        cellRangeAddress(sheet,6,6,4,10);
+        author.setCellValue("填表人：");
+        rowAuthor.setHeightInPoints(30);
+
+        final Cell phone = rowAuthor.createCell(11);//联系电话,todo createCell比上一个方法cellRangeAddress的第4个参数要大1,勿删除!
+        cellRangeAddress(sheet,6,6,11,11+4);
+        phone.setCellValue("联系电话：");
 
         int crowdCell = 0;
         for(int x = 0;x < data.size();x++){//处理人员类型

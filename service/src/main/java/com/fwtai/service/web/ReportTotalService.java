@@ -48,7 +48,6 @@ public class ReportTotalService{
             crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put(p_crowd_date,crowd_date);
         }
-        final String fileName = new SimpleDateFormat("yyyyMMdd").format(new Date())+"_核酸日报";
         final List<HashMap<String,Object>> list = reportTotalDao.queryDataExport(formData);
 
         final String province_id = formData.getString("province_id");
@@ -81,12 +80,18 @@ public class ReportTotalService{
         if(crowd_date != null){
             _date += crowd_date;
         }
+        final String fileName = label + "核酸日报表"+_date;
         label += "核酸日报表"+_date+" (0:00-24:00)";
         try {
-            ToolExcel.export(label,list,fileName,response);
+            if(list == null || list.size() <= 0){
+                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
+                ToolClient.responseJson(json,response);
+            }else{
+                ToolExcel.export(label,list,fileName,response);
+            }
         } catch (final Exception e) {
             e.printStackTrace();
-            final String json = ToolClient.createJson(ConfigFile.code199,"导出失败,稍候重试");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
             ToolClient.responseJson(json,response);
         }
     }
