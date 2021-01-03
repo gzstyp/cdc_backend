@@ -656,6 +656,7 @@ public final class ToolExcel{
                         final Cell cell_ = typeRow.createCell((z + 1)*3+crowdCell);//合计
                         cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell,(z + 1)*3+2+crowdCell);//合计
                         cell_.setCellValue(crowdName+"合计");
+
                         final Cell _cell_ = typeRow.createCell((z + 1)*3+crowdCell+3);//总计
                         cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell+3,(z + 1)*3+2+crowdCell+3);//总计
                         _cell_.setCellValue("核酸总计");
