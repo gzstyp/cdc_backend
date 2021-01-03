@@ -649,6 +649,9 @@ public final class ToolExcel{
         final Row rowTotal = sheet.createRow(3);//第4行,人群类型:已采样人数,已检测人数,检测阳性人数
         rowTotal.setHeightInPoints(120);
 
+        final Row totalValue = sheet.createRow(4);
+        totalValue.setHeightInPoints(20);
+
         int crowdCell = 0;
         for(int x = 0;x < data.size();x++){//处理人员类型
             final HashMap<String,Object> map = data.get(x);
@@ -665,6 +668,9 @@ public final class ToolExcel{
             final int len = length * 3;
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
+                int totalSampling = 0;
+                int totalDetection = 0;
+                int totalMasculine = 0;
                 for(int z = 0; z < length; z++){
                     final Cell _cell = typeRow.createCell(z*3+crowdCell);//人群类型
                     cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);//人群类型
@@ -682,6 +688,21 @@ public final class ToolExcel{
                     final Cell cellTotal2 = rowTotal.createCell(z*3+crowdCell+2);
                     cellTotal2.setCellStyle(cellStyle);
                     cellTotal2.setCellValue("检测阳性人数");
+
+                    //统计数值
+                    final Cell _cellValue0 = totalValue.createCell(z*3+crowdCell+0);
+                    _cellValue0.setCellStyle(cellCenterStyle);
+                    _cellValue0.setCellValue(sampling[z]);
+                    final Cell _cellValue1 = totalValue.createCell(z*3+crowdCell+1);
+                    _cellValue1.setCellStyle(cellCenterStyle);
+                    _cellValue1.setCellValue(detection[z]);
+                    final Cell _cellValue2 = totalValue.createCell(z*3+crowdCell+2);
+                    _cellValue2.setCellStyle(cellCenterStyle);
+                    _cellValue2.setCellValue(masculine[z]);
+
+                    totalSampling = totalSampling + Integer.parseInt(sampling[z]);
+                    totalDetection = totalDetection + Integer.parseInt(detection[z]);
+                    totalMasculine = totalMasculine + Integer.parseInt(masculine[z]);
 
                     if(z == length - 1){
                         final Cell cell_ = typeRow.createCell((z + 1)*3+crowdCell);//合计
@@ -701,11 +722,19 @@ public final class ToolExcel{
                         total2.setCellStyle(cellStyle);
                         total2.setCellValue("检测阳性人数");
 
+                        //合计数值
+                        final Cell _cellValue0_ = totalValue.createCell((z+1)*3+0+crowdCell);
+                        _cellValue0_.setCellStyle(cellCenterStyle);
+                        _cellValue0_.setCellValue(totalSampling);
+                        final Cell _cellValue1_ = totalValue.createCell((z+1)*3+1+crowdCell);
+                        _cellValue1_.setCellStyle(cellCenterStyle);
+                        _cellValue1_.setCellValue(totalDetection);
+                        final Cell _cellValue2_ = totalValue.createCell((z+1)*3+2+crowdCell);
+                        _cellValue2_.setCellStyle(cellCenterStyle);
+                        _cellValue2_.setCellValue(totalMasculine);
+
                         final Cell _cell_ = crowdRow.createCell((z + 2)*3+crowdCell);//总计,只能是crowdRow,typeRow则无效
                         cellRangeAddress(sheet,1,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计
-
-                        //final Cell _cell_ = typeRow.createCell((z + 2)*3+crowdCell);//总计,本方式不合并单元格
-                        //cellRangeAddress(sheet,2,2,(z + 2)*3+crowdCell,(z + 2)*3+2+crowdCell);//总计,本方式不合并单元格
 
                         _cell_.setCellStyle(cellCenterStyle);
                         _cell_.setCellValue("核酸总计");
@@ -721,6 +750,17 @@ public final class ToolExcel{
                         final Cell _total2 = rowTotal.createCell((z+2)*3+2+crowdCell);
                         _total2.setCellStyle(cellStyle);
                         _total2.setCellValue("检测阳性人数");
+
+                        //总计数值
+                        final Cell cellValue0_ = totalValue.createCell((z+2)*3+0+crowdCell);
+                        cellValue0_.setCellStyle(cellCenterStyle);
+                        cellValue0_.setCellValue(totalSampling);
+                        final Cell cellValue1_ = totalValue.createCell((z+2)*3+1+crowdCell);
+                        cellValue1_.setCellStyle(cellCenterStyle);
+                        cellValue1_.setCellValue(totalDetection);
+                        final Cell cellValue2_ = totalValue.createCell((z+2)*3+2+crowdCell);
+                        cellValue2_.setCellStyle(cellCenterStyle);
+                        cellValue2_.setCellValue(totalMasculine);
                     }
                 }
                 crowdCell = crowdCell + len + 3 + 3;
@@ -730,18 +770,17 @@ public final class ToolExcel{
             }else{
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + len + 3;
+
+                int totalSampling = 0;
+                int totalDetection = 0;
+                int totalMasculine = 0;
+
                 for(int z = 0; z < length; z++){
 
                     final Cell _cell = typeRow.createCell(z*3);//人群类型
                     cellRangeAddress(sheet,2,2,z*3,z*3+2);//人群类型
                     _cell.setCellStyle(cellCenterStyle);
                     _cell.setCellValue(crowdType[z]);
-
-                    /*System.out.print(crowdType[z]);
-                    System.out.print(sampling[z]);
-                    System.out.print(","+detection[z]);
-                    System.out.print(","+masculine[z]);
-                    System.out.println();*/
 
                     final Cell cellTotal0 = rowTotal.createCell(z*3+0);
                     cellTotal0.setCellStyle(cellStyle);
@@ -754,6 +793,21 @@ public final class ToolExcel{
                     final Cell cellTotal2 = rowTotal.createCell(z*3+2);
                     cellTotal2.setCellStyle(cellStyle);
                     cellTotal2.setCellValue("检测阳性人数");
+
+                    //统计数值
+                    final Cell cellValue0 = totalValue.createCell(z*3+0);
+                    cellValue0.setCellStyle(cellCenterStyle);
+                    cellValue0.setCellValue(sampling[z]);
+                    final Cell cellValue1 = totalValue.createCell(z*3+1);
+                    cellValue1.setCellStyle(cellCenterStyle);
+                    cellValue1.setCellValue(detection[z]);
+                    final Cell cellValue2 = totalValue.createCell(z*3+2);
+                    cellValue2.setCellStyle(cellCenterStyle);
+                    cellValue2.setCellValue(masculine[z]);
+
+                    totalSampling = totalSampling + Integer.parseInt(sampling[z]);
+                    totalDetection = totalDetection + Integer.parseInt(detection[z]);
+                    totalMasculine = totalMasculine + Integer.parseInt(masculine[z]);
 
                     if(z == length - 1){
                         final Cell cell_ = typeRow.createCell((z + 1)*3);//合计
@@ -772,6 +826,17 @@ public final class ToolExcel{
                         final Cell total2 = rowTotal.createCell((z+1)*3+2);
                         total2.setCellStyle(cellStyle);
                         total2.setCellValue("检测阳性人数");
+
+                        //合计数值
+                        final Cell _cellValue0 = totalValue.createCell((z+1)*3+0);
+                        _cellValue0.setCellStyle(cellCenterStyle);
+                        _cellValue0.setCellValue(totalSampling);
+                        final Cell _cellValue1 = totalValue.createCell((z+1)*3+1);
+                        _cellValue1.setCellStyle(cellCenterStyle);
+                        _cellValue1.setCellValue(totalDetection);
+                        final Cell _cellValue2 = totalValue.createCell((z+1)*3+2);
+                        _cellValue2.setCellStyle(cellCenterStyle);
+                        _cellValue2.setCellValue(totalMasculine);
                     }
                 }
             }
