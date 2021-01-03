@@ -649,29 +649,33 @@ public final class ToolExcel{
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 6);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
                 for(int z = 0; z < length; z++){
-                    final Cell _cell = typeRow.createCell(z*3+crowdCell);
-                    cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);
+                    final Cell _cell = typeRow.createCell(z*3+crowdCell);//人群类型
+                    cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);//人群类型
                     _cell.setCellValue(crowdType[z]);
+                    if(z == length - 1){
+                        final Cell cell_ = typeRow.createCell((z + 1)*3+crowdCell);//合计
+                        cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell,(z + 1)*3+2+crowdCell);//合计
+                        cell_.setCellValue(crowdName+"合计");
+                        final Cell _cell_ = typeRow.createCell((z + 1)*3+crowdCell+3);//总计
+                        cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell+3,(z + 1)*3+2+crowdCell+3);//总计
+                        _cell_.setCellValue("核酸总计");
+                    }
                 }
-
             }else{
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加合计,一个3是合计
                 crowdCell = crowdCell + len + 3;
                 for(int z = 0; z < length; z++){
-                    final Cell _cell = typeRow.createCell(z*3);
-                    cellRangeAddress(sheet,2,2,z*3,z*3+2);
+                    final Cell _cell = typeRow.createCell(z*3);//人群类型
+                    cellRangeAddress(sheet,2,2,z*3,z*3+2);//人群类型
                     _cell.setCellValue(crowdType[z]);
                     if(z == length - 1){
-                        final Cell cell_ = typeRow.createCell((z + 1)*3);
-                        cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);
+                        final Cell cell_ = typeRow.createCell((z + 1)*3);//合计
+                        cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);//合计
                         cell_.setCellValue(crowdName+"合计");
                     }
                 }
             }
         }
-        /*cellRangeAddress(sheet,2,2,0,2);
-        cellRangeAddress(sheet,2,2,3,5);
-        cellRangeAddress(sheet,2,2,6,8);ok*/
 
         for (int i = 0; i < 10;i++){
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
