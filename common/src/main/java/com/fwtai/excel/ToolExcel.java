@@ -649,7 +649,7 @@ public final class ToolExcel{
         final Row rowTotal = sheet.createRow(3);//第4行,人群类型:已采样人数,已检测人数,检测阳性人数
         rowTotal.setHeightInPoints(120);
 
-        final Row totalValue = sheet.createRow(4);
+        final Row totalValue = sheet.createRow(4);//统计数据行
         totalValue.setHeightInPoints(20);
 
         int crowdCell = 0;
