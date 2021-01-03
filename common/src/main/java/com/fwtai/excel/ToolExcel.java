@@ -713,8 +713,12 @@ public final class ToolExcel{
         author.setCellValue("填表人：");
         rowAuthor.setHeightInPoints(30);
 
-        final Cell phone = rowAuthor.createCell(11);//联系电话,todo createCell比上一个方法cellRangeAddress的第4个参数要大1,勿删除!
-        cellRangeAddress(sheet,6,6,11,11+4);
+        final Cell phone = rowAuthor.createCell(11);//联系电话,todo 如果两个方法[.createCell和cellRangeAddress]在同时使用时createCell方法的参数比上一个方法cellRangeAddress的第4个参数要大1,勿删除!
+        if(data.size() > 1){
+            cellRangeAddress(sheet,6,6,11,11+12);
+        }else{
+            cellRangeAddress(sheet,6,6,11,11+7);
+        }
         phone.setCellValue("联系电话：");
 
         int crowdCell = 0;
