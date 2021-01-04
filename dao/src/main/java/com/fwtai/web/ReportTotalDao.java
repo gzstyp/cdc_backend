@@ -22,6 +22,11 @@ public class ReportTotalDao{
         return dao.queryForListHashMap("reportTotal.queryDataExport",formData);
     }
 
+    /**从业人员监测结果*/
+    public List<HashMap<String,Object>> queryEmployeeReport(){
+        return dao.queryForListHashMap("reportTotal.queryEmployeeReport");
+    }
+
     /**查询登录者所拥有的权限*/
     public List<String> queryPermissions(){
         return dao.queryPermissions("reportTotal/queryAreaSelect");//指定url

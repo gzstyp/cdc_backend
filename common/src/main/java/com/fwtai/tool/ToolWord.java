@@ -53,13 +53,14 @@ import java.util.Map;
  * http://deepoove.com/poi-tl/apache-poi-guide.html ok
  */
 public class ToolWord extends XWPFDocument{
-    //初始化XWPFDocument
-    public static XWPFDocument  initDoc(List<Map<String,Object>> list) throws Exception{
 
-        XWPFDocument document = new XWPFDocument();
+    //初始化XWPFDocument
+    public static XWPFDocument initDoc(List<Map<String,Object>> list) throws Exception{
+
+        final XWPFDocument document = new XWPFDocument();
         //设置边距
         final CTSectPr sectPr = document.getDocument().getBody().addNewSectPr();
-        CTPageMar pageMar = sectPr.addNewPgMar();
+        final CTPageMar pageMar = sectPr.addNewPgMar();
         pageMar.setLeft(BigInteger.valueOf(720L));
         pageMar.setTop(BigInteger.valueOf(1440L));
         pageMar.setRight(BigInteger.valueOf(720L));
@@ -429,10 +430,14 @@ public class ToolWord extends XWPFDocument{
 
 
     public static void main(String[] args) throws Exception {
-        XWPFDocument document= initDoc(data());
-        FileOutputStream out = new FileOutputStream("C:\\部门通讯录.docx");
+        final XWPFDocument document= initDoc(data());
+        final FileOutputStream out = new FileOutputStream("C:\\部门通讯录.docx");
         document.write(out);
         out.close();
         System.out.println("导出成功!!!!!!!!");
+    }
+
+    public static void word(){
+        
     }
 }

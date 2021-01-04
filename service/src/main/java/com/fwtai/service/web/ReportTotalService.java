@@ -37,7 +37,7 @@ public class ReportTotalService{
         return ToolClient.queryJson(permissions);
     }
 
-    //导出,https://www.yuque.com/easyexcel/doc/api
+    //日报导出
     public void queryDataExport(final HttpServletRequest request,final HttpServletResponse response){
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
@@ -94,5 +94,10 @@ public class ReportTotalService{
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
             ToolClient.responseJson(json,response);
         }
+    }
+
+    /**从业人员监测结果*/
+    public void queryReportWord(final HttpServletRequest request,final HttpServletResponse response){
+        final List<HashMap<String,Object>> listEmployee = reportTotalDao.queryEmployeeReport();
     }
 }

@@ -55,4 +55,13 @@
         left join bs_crowd bc on bc.kid = lt.crowd_id
         left join bs_crowd_type bct on bct.kid = lt.crowd_type_id)t order by crowdType ASC) gt group by crowdName
     </select>
+
+    <!-- 从业人员监测结果 -->
+    <select id="queryEmployeeReport" resultType="HashMap">
+        select name,GROUP_CONCAT(profession) profession,GROUP_CONCAT(profession_total) profession_total from (
+            select sa.name,sd.name profession,lt.profession_total from (
+            select city_id,profession,count(profession) profession_total from bs_employee group by profession,city_id ORDER BY profession ASC) lt
+        left join sys_area sa on sa.kid = lt.city_id
+        left join sys_dict sd on sd.KID = lt.profession) gt group by name
+    </select>
 </mapper>
