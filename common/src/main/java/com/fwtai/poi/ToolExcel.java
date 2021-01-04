@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -1110,9 +1109,6 @@ public final class ToolExcel{
     protected static void downloadExcel(final Workbook workbook,final String fileName,final HttpServletResponse response) throws IOException{
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         workbook.write(os);//填充数据
-        final byte[] content = os.toByteArray();
-        final InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
         response.reset();
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName).getBytes(),StandardCharsets.ISO_8859_1));
@@ -1120,7 +1116,7 @@ public final class ToolExcel{
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            bis = new BufferedInputStream(is);
+            bis = new BufferedInputStream(new ByteArrayInputStream(os.toByteArray()));
             bos = new BufferedOutputStream(out);
             final byte[] buff = new byte[2048];
             int bytesRead;

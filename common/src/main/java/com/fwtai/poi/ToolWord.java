@@ -552,8 +552,6 @@ public class ToolWord extends XWPFDocument{
     protected static void downloadWord(final XWPFDocument doc,final String fileName,final HttpServletResponse response) throws IOException{
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         doc.write(os);
-        final byte[] content = os.toByteArray();
-        final InputStream is = new ByteArrayInputStream(content);
         response.reset();
         response.setContentType("application/vnd.ms-word;charset=utf-8");
         response.setHeader("Content-Disposition","attachment;filename=" + new String((fileName).getBytes(), "iso-8859-1"));
@@ -561,7 +559,7 @@ public class ToolWord extends XWPFDocument{
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            bis = new BufferedInputStream(is);
+            bis = new BufferedInputStream(new ByteArrayInputStream(os.toByteArray()));
             bos = new BufferedOutputStream(out);
             final byte[] buff = new byte[2048];
             int bytesRead;
