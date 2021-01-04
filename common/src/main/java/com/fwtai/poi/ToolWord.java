@@ -556,7 +556,7 @@ public class ToolWord extends XWPFDocument{
         final InputStream is = new ByteArrayInputStream(content);
         response.reset();
         response.setContentType("application/vnd.ms-word;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName).getBytes(), "iso-8859-1"));
+        response.setHeader("Content-Disposition","attachment;filename=" + new String((fileName).getBytes(), "iso-8859-1"));
         final ServletOutputStream out = response.getOutputStream();
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
