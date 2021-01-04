@@ -27,6 +27,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -426,18 +427,65 @@ public class ToolWord extends XWPFDocument{
         return picXml;
     }
 
-
-
-
     public static void main(String[] args) throws Exception {
-        final XWPFDocument document= initDoc(data());
+        /*final XWPFDocument document= initDoc(data());
         final FileOutputStream out = new FileOutputStream("C:\\部门通讯录.docx");
         document.write(out);
-        out.close();
+        out.close();*/
+        word();
         System.out.println("导出成功!!!!!!!!");
     }
 
     public static void word(){
-        
+        final XWPFDocument doc = new XWPFDocument();//创建新文档
+        try {
+            final FileOutputStream out = new FileOutputStream("C:\\simple.docx");//生成文档
+            final XWPFParagraph paragraph = doc.createParagraph();//创建新段落
+            //XWPFRun是段落的基本组成单元，它可以是一个文本，也可以是一张图片。
+
+            // 段落起始插入XWPFRun
+            final XWPFRun insertNewRun = paragraph.insertNewRun(0);
+            insertNewRun.setText("在段落起始位置插入这段文本");
+
+            // 段落末尾创建XWPFRun
+            final XWPFRun run = paragraph.createRun();
+            run.setText("为这个段落追加文本");
+
+            // 颜色
+            run.setColor("00ff00");
+            // 粗体
+            run.setBold(true);
+
+            //文本换行
+            run.addCarriageReturn();
+
+            //修改XWPFRun文本
+            final List<XWPFRun> runs = paragraph.getRuns();
+            // setText默认为追加文本，参数0表示设置第0个位置的文本，覆盖上一次设置
+            runs.get(0).setText("追加文本", 0);
+            runs.get(0).setText("修改文本", 0);
+
+            final InputStream stream = new FileInputStream("E:\\Images\\Images\\win7.jpg");
+            final XWPFRun runImage = paragraph.createRun();
+            runImage.addPicture(stream, XWPFDocument.PICTURE_TYPE_PNG, "Generated", Units.toEMU(256), Units.toEMU(256));
+
+            //创建新表格,创建一个三行三列的表格：--------------------------------------------------------
+
+            final XWPFTable table = doc.createTable(3,3);
+            //设置单元格文本,表格是由表格行XWPFRow构成，每行是由单元格XWPFCell构成，每个单元格内部又是由许多XWPFParagraph段落构成。
+
+            table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
+
+            //上面这一段代码和下面这一段代码是等价的：
+
+            final XWPFParagraph p1 = table.getRow(0).getCell(0).addParagraph();
+            final XWPFRun r1 = p1.createRun();
+            r1.setText("EXAMPLE OF TABLE");
+
+
+            doc.write(out);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 }
