@@ -543,7 +543,7 @@ public class ToolWord extends XWPFDocument{
     }
 
     /**
-     * 导出下载
+     * word导出下载
      * @param fileName 含后缀名
      * @作者 田应平
      * @QQ 444141300
@@ -555,7 +555,7 @@ public class ToolWord extends XWPFDocument{
         final byte[] content = os.toByteArray();
         final InputStream is = new ByteArrayInputStream(content);
         response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setContentType("application/vnd.ms-word;charset=utf-8");
         response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName).getBytes(), "iso-8859-1"));
         final ServletOutputStream out = response.getOutputStream();
         BufferedInputStream bis = null;
