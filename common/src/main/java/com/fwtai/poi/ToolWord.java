@@ -496,13 +496,14 @@ public class ToolWord extends XWPFDocument{
         }
     }
 
-    public static void exportWord(final String fileName,final HttpServletResponse response) throws Exception{
+    private static void word(final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final XWPFParagraph paragraph = doc.createParagraph();//创建新段落
         //XWPFRun是段落的基本组成单元，它可以是一个文本，也可以是一张图片。
 
         // 段落起始插入XWPFRun
         final XWPFRun insertNewRun = paragraph.insertNewRun(0);
+        //final XWPFRun runDescribe = paragraph.insertNewRun(0);//保留
         insertNewRun.setText("在段落起始位置插入这段文本");
 
         // 段落末尾创建XWPFRun
@@ -540,6 +541,85 @@ public class ToolWord extends XWPFDocument{
         final XWPFRun r1 = p1.createRun();
         r1.setText("文档下载");
         downloadWord(doc,fileName,response);
+    }
+
+    public static void exportWord(final String fileName,final HttpServletResponse response) throws Exception{
+        final XWPFDocument doc = new XWPFDocument();//创建新文档
+        final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
+        singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
+
+        final String describe = "为了贯彻落实国务院联防联控机制《关于开展冷冻冷藏肉品风险排查的通知》（联防联控机制综发〔2020〕210 号）文件的要求。为科学规范指导开展我省新冠病毒环境监测工作，深入开展病毒溯源和疫情防控，2020年8月10日贵州省卫生健康委员会联合多部委下发了《贵州省农贸（集贸）市场及冷冻冷藏产品新冠病毒环境和人员监测方案》。要求各市（州）及县（区），为加强对农贸（集贸）市场及大型食品冷库新冠病毒环境监测。现将我省此次新冠肺炎监测结果报告如下，采样时间为2020年11月16日至2020年11月22日。";
+        paragraph(doc,describe,14,false,false);
+
+        final String paragraph1 = "一、监测概况";
+        paragraph(doc,paragraph1,14,true,true);
+
+        final String paragraph2 = "本周9市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
+        paragraph(doc,paragraph2,14,true,true);
+
+        final String paragraph3 = "其中冷库食品xx份（其中冷库水产品xx份，其他冷冻肉类xx份），外环境样本xx份（其中产品外包装xx份），从业人员咽拭子xx份，共计xx份。监测结果见表1。";
+        paragraph(doc,paragraph3,14,true,false);
+
+        singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
+
+        //创建新表格,创建一个三行三列的表格：--------------------------------------------------------
+
+        final XWPFTable table = doc.createTable(3,3);
+        //设置单元格文本,表格是由表格行XWPFRow构成，每行是由单元格XWPFCell构成，每个单元格内部又是由许多XWPFParagraph段落构成。
+
+        table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
+
+        //上面这一段代码和下面这一段代码是等价的：
+
+        final XWPFParagraph p1 = table.getRow(0).getCell(0).addParagraph();
+        final XWPFRun r1 = p1.createRun();
+        r1.setText("文档下载");
+        downloadWord(doc,fileName,response);
+    }
+
+    /**
+     * 单行文本内容出处理
+     * @param content 内容
+     * @param fontSize 字体大小
+     * @param align 文本对齐方式
+     * @param newline 末尾是否换行
+     * @param bold 文本是否加粗
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/4 19:17
+    */
+    protected static void singleRow(final XWPFDocument doc,final String content,final int fontSize,final ParagraphAlignment align,final boolean newline,final boolean bold){
+        final XWPFParagraph paragraph = doc.createParagraph();
+        paragraph.setAlignment(align);//对齐方式
+        //final XWPFRun title = paragraph.insertNewRun(0);
+        final XWPFRun title = paragraph.createRun();//有问题试试上一行的方法
+        title.setText(content);
+        title.setFontSize(fontSize);
+        if(bold)
+        title.setBold(true);
+        if(newline)
+        title.addCarriageReturn();
+    }
+
+    /**
+     * 单行文本内容出处理
+     * @param content 内容
+     * @param fontSize 字体大小
+     * @param newline 末尾是否换行
+     * @param bold 文本是否加粗
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/4 19:17
+     */
+    protected static void paragraph(final XWPFDocument doc,final String content,final int fontSize,final boolean newline,final boolean bold){
+        final XWPFParagraph paragraph = doc.createParagraph();
+        final XWPFRun run = paragraph.createRun();
+        run.setText(content);
+        run.setFontSize(fontSize);
+        if(newline)
+        run.addCarriageReturn();
+        if(bold)
+        run.setBold(true);
     }
 
     /**

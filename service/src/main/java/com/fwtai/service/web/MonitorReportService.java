@@ -32,6 +32,10 @@ public class MonitorReportService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
+        final String p_sampling_date_start = "sampling_date_start";
+        final String p_sampling_date_end = "sampling_date_end";
+        final String sampling_date_start = formData.getString(p_sampling_date_start);
+        final String sampling_date_end = formData.getString(p_sampling_date_end);
         final List<HashMap<String,Object>> list = monitorReportDao.queryEmployeeReport(formData);
         try {
             if(list == null || list.size() <= 0){
