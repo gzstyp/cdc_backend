@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.OptionalInt;
 
 /**
  * 一些其他的网站写法
@@ -176,13 +176,13 @@ public class ToolWord extends XWPFDocument{
     }
 
     //设置表头行样式和内容
-    public static void titleStyle(XWPFTableRow titleRow){
+    public static void titleStyle(final XWPFTableRow titleRow){
         XWPFTableCell xhCell = titleRow.getCell(0);//创建的表格没有指定几行几列，就默认是一行一列，这里获取创建的第一列
         xhCell.setText("");
         CelldataCss(xhCell,"800");
         XWPFTableCell bmCell =titleRow.addNewTableCell();//在当前行继续创建新列
 
-        TitleCelldata(bmCell,"部门");
+        TitleCelldata(bmCell,"部01门");
 
         XWPFTableCell xmCell =titleRow.addNewTableCell();
         TitleCelldata(xmCell,"姓名");
@@ -198,12 +198,41 @@ public class ToolWord extends XWPFDocument{
 
         XWPFTableCell yxCell =titleRow.addNewTableCell();
         TitleCelldata(yxCell,"邮箱");
-
     }
 
+    protected static void titleRowStyle(final XWPFTableRow titleRow,final String[] titles,final String homeColumn){
+        final XWPFTableCell xhCell = titleRow.getCell(0);
+        titleCell(xhCell,homeColumn);
+        for(final String title : titles){
+            final XWPFTableCell temp = titleRow.addNewTableCell();//在当前行继续创建新列
+            titleCell(temp,title);
+        }
+    }
+
+    protected static void titleRowStyle(final XWPFTableRow titleRow,final String[] titles){
+        for(final String title : titles){
+            final XWPFTableCell temp = titleRow.addNewTableCell();//在当前行继续创建新列
+            titleCell(temp,title);
+        }
+    }
+
+    public static void titleCell(final XWPFTableCell cell,final String txt){
+        //给当前列中添加段落，就是给列添加内容
+        final XWPFParagraph p = cell.getParagraphs().get(0);
+        final XWPFRun run = p.createRun();
+        run.setText(txt);//设置内容
+        run.setFontSize(12);//设置大小
+        //给列中的内容设置样式
+        final CTTc cttc = cell.getCTTc();
+        final CTTcPr ctPr = cttc.addNewTcPr();
+        ctPr.addNewVAlign().setVal(STVerticalJc.CENTER);//上下居中
+        cttc.getPList().get(0).addNewPPr().addNewJc().setVal(STJc.CENTER);//左右居中
+        final CTTblWidth tblWidth = ctPr.isSetTcW() ? ctPr.getTcW() : ctPr.addNewTcW();
+        tblWidth.setType(STTblWidth.DXA);
+    }
 
     //设置数据列样式
-    public static void CelldataCss(XWPFTableCell cell,String width){
+    public static void CelldataCss(final XWPFTableCell cell,final String width){
         /** 设置水平居中 */
         CTTc cttc = cell.getCTTc();
         CTTcPr ctPr = cttc.addNewTcPr();
@@ -257,7 +286,6 @@ public class ToolWord extends XWPFDocument{
         }else{
             tblWidth.setW(new BigInteger("1600"));//设置列宽度
         }
-
         tblWidth.setType(STTblWidth.DXA);
     }
     //设置表头和单位信息样式
@@ -435,11 +463,10 @@ public class ToolWord extends XWPFDocument{
     }
 
     public static void main(String[] args) throws Exception {
-        /*final XWPFDocument document= initDoc(data());
+        final XWPFDocument document= initDoc(data());
         final FileOutputStream out = new FileOutputStream("C:\\部门通讯录.docx");
         document.write(out);
-        out.close();*/
-        writeWord();
+        out.close();
         System.out.println("导出成功!!!!!!!!");
     }
 
@@ -543,7 +570,7 @@ public class ToolWord extends XWPFDocument{
         downloadWord(doc,fileName,response);
     }
 
-    public static void exportWord(final String fileName,final HttpServletResponse response) throws Exception{
+    public static void exportWord(final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
         singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
@@ -564,7 +591,31 @@ public class ToolWord extends XWPFDocument{
 
         //创建新表格,创建一个三行三列的表格：--------------------------------------------------------
 
-        final XWPFTable table = doc.createTable(3,3);
+        //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
+        final OptionalInt optMax = data.stream().mapToInt(value -> {
+            final String profession = (String) value.get("profession");
+            final String[] split = profession.split(",");
+            return split.length;
+        }).max();
+        final int cols = optMax.getAsInt();//获取最大值
+        HashMap<String,Object> _map_ = new HashMap<>(cols);
+        for(int i = 0; i < data.size(); i++){
+            final String[] professions = ((String) data.get(i).get("profession")).split(",");
+            if(cols == professions.length){
+                _map_ = data.get(i);
+                break;
+            }
+        }
+        final XWPFTable table = doc.createTable();
+        final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
+        titleRowStyle(titleRow,((String)_map_.get("profession")).split(","),"地区");
+        for(int i = 0; i < data.size(); i++){
+            final XWPFTableRow row = table.getRow(i + 1);
+            titleRowStyle(row,((String)_map_.get("profession")).split(","));
+        }
+        titleRow.setHeight(500);//设置当前行行高
+
+        /*final XWPFTable table = doc.createTable(3,3);
         //设置单元格文本,表格是由表格行XWPFRow构成，每行是由单元格XWPFCell构成，每个单元格内部又是由许多XWPFParagraph段落构成。
 
         table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
@@ -573,7 +624,7 @@ public class ToolWord extends XWPFDocument{
 
         final XWPFParagraph p1 = table.getRow(0).getCell(0).addParagraph();
         final XWPFRun r1 = p1.createRun();
-        r1.setText("文档下载");
+        r1.setText("文档下载");*/
         downloadWord(doc,fileName,response);
     }
 
