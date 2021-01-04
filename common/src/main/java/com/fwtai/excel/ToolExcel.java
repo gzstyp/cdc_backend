@@ -631,9 +631,7 @@ public final class ToolExcel{
         final XSSFCellStyle styleSampling = wb.createCellStyle();
         styleSampling.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         styleSampling.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
-        styleSampling.setWrapText(true);//自动换行显示,即非一行显示!!!
-        styleSampling.setFillPattern(FillPatternType.SOLID_FOREGROUND);//设置前景填充样式
-        styleSampling.setFillForegroundColor(HSSFColor.ROSE.index);//前景填充色
+        styleSampling.setWrapText(true);
 
         final XSSFCellStyle cellCenterStyle = wb.createCellStyle();
         cellCenterStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中

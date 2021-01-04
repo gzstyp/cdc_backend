@@ -89,15 +89,9 @@ public class ReportTotalService{
             }else{
                 ToolExcel.export(label,list,fileName,response);
             }
-        } catch (final Exception e) {
-            e.printStackTrace();
+        } catch (final Exception e){
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
             ToolClient.responseJson(json,response);
         }
-    }
-
-    /**从业人员监测结果*/
-    public void queryReportWord(final HttpServletRequest request,final HttpServletResponse response){
-        final List<HashMap<String,Object>> listEmployee = reportTotalDao.queryEmployeeReport();
     }
 }

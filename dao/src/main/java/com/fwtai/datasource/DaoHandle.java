@@ -418,7 +418,7 @@ public class DaoHandle{
         return map;
     }
 
-    /*指定请求url且该url已获取获取才能获取权限数据,仅需指定获取类似于列表数据的url即,前提是必须拥有该权限,用法:dao.queryPermissions("department/queryAllDepartment")*/
+    /*指定请求url且该url已获取获取才能获取权限数据,仅需指定当前子菜单url[当然也可以指定controller层的自己url],前提是必须拥有该权限,用法:dao.queryPermissions("department/queryAllDepartment")*/
     public List<String> queryPermissions(final String url){
         if(url != null){
             final HashMap<String,String> permissions = new HashMap<String,String>(2);
