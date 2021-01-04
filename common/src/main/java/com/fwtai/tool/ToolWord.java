@@ -48,6 +48,9 @@ import java.util.Map;
  * https://www.cnblogs.com/dayuruozhi/p/6490868.html
  * https://www.cnblogs.com/AardWolf/p/11268068.html
  * https://blog.csdn.net/owen_william/article/details/81290024
+ *
+ * https://blog.csdn.net/owen_william/article/details/81290024
+ * http://deepoove.com/poi-tl/apache-poi-guide.html ok
  */
 public class ToolWord extends XWPFDocument{
     //初始化XWPFDocument
@@ -55,7 +58,7 @@ public class ToolWord extends XWPFDocument{
 
         XWPFDocument document = new XWPFDocument();
         //设置边距
-        CTSectPr sectPr = document.getDocument().getBody().addNewSectPr();
+        final CTSectPr sectPr = document.getDocument().getBody().addNewSectPr();
         CTPageMar pageMar = sectPr.addNewPgMar();
         pageMar.setLeft(BigInteger.valueOf(720L));
         pageMar.setTop(BigInteger.valueOf(1440L));
