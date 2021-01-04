@@ -38,7 +38,7 @@ public class MonitorReportService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolWord.exportWord(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"啥啊.docx",response);
+                ToolWord.exportWord(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();
