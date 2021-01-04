@@ -677,7 +677,7 @@ public final class ToolClient implements Serializable{
 	}
 
 	/**
-	 * 文件下载
+	 * 指定文件路径下载
 	 * @param filePath 文件物理路径
 	 * @param response
 	 * @作者 田应平
