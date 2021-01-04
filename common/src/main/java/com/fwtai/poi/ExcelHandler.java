@@ -1,4 +1,4 @@
-package com.fwtai.excel;
+package com.fwtai.poi;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
