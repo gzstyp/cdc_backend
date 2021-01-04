@@ -80,14 +80,14 @@ public class ReportTotalService{
         if(crowd_date != null){
             _date += crowd_date;
         }
-        final String fileName = label + "核酸日报表"+_date;
+        final String fileName = label + "核酸日报表"+_date+".xlsx";
         label += "核酸日报表"+_date+" (0:00-24:00)";
         try {
             if(list == null || list.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolExcel.export(label,list,fileName,response);
+                ToolExcel.exportExcel(label,list,fileName,response);
             }
         } catch (final Exception e){
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");

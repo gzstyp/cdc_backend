@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -604,7 +605,7 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
-    private static XSSFWorkbook workbook(final String label,final List<HashMap<String,Object>> data){
+    private static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
         final Row labelRow = sheet.createRow(0);//第1行
@@ -955,34 +956,8 @@ public final class ToolExcel{
         return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
     }
 
-    public static void export(final String label,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception {
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        workbook(label,data).write(os);//填充数据
-        final byte[] content = os.toByteArray();
-        final InputStream is = new ByteArrayInputStream(content);
-        // 设置response参数，可以打开下载页面
-        response.reset();
-        response.setContentType("application/vnd.ms-excel;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName + ".xlsx").getBytes(), "iso-8859-1"));
-        final ServletOutputStream out = response.getOutputStream();
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-        try {
-            bis = new BufferedInputStream(is);
-            bos = new BufferedOutputStream(out);
-            final byte[] buff = new byte[2048];
-            int bytesRead;
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (final IOException e) {
-            throw e;
-        } finally {
-            if (bis != null)
-                bis.close();
-            if (bos != null)
-                bos.close();
-        }
+    public static void exportExcel(final String label,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception {
+        downloadExcel(reportExcel(label,data),fileName,response);
     }
 
     /**
@@ -1081,34 +1056,8 @@ public final class ToolExcel{
 	 * @主页 http://www.fwtai.com
 	*/
 	public static void exportExcel(final List<Map<String, Object>> listData, final ArrayList<String> fields, final ArrayList<String> titles, final String sheetName, final String fileName, final HttpServletResponse response) throws Exception {
-		if(fields.size() != titles.size())throw new Exception("导出失败,标题和列数不一致");
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		createWorkBook(listData,fields,titles,sheetName).write(os);// 填充数据
-		final byte[] content = os.toByteArray();
-		final InputStream is = new ByteArrayInputStream(content);
-		// 设置response参数，可以打开下载页面
-		response.reset();
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment;filename=" + new String(((fileName == null ? ToolString.getIdsChar32() : fileName) + ".xlsx").getBytes(), "iso-8859-1"));
-		final ServletOutputStream out = response.getOutputStream();
-		BufferedInputStream bis = null;
-		BufferedOutputStream bos = null;
-		try {
-			bis = new BufferedInputStream(is);
-			bos = new BufferedOutputStream(out);
-			final byte[] buff = new byte[2048];
-			int bytesRead;
-			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-				bos.write(buff, 0, bytesRead);
-			}
-		} catch (final IOException e) {
-			throw e;
-		} finally {
-			if (bis != null)
-				bis.close();
-			if (bos != null)
-				bos.close();
-		}
+        if(fields.size() != titles.size())throw new Exception("导出失败,标题和列数不一致");
+        downloadExcel(createWorkBook(listData,fields,titles,sheetName),fileName,response);
 	}
 	
 	/**
@@ -1126,34 +1075,8 @@ public final class ToolExcel{
 	 * @主页 http://www.fwtai.com
 	*/
 	public static void exportExcel(final List<Map<String, Object>> listData, final ArrayList<String> fields, final ArrayList<String> titles, final String sheetName, final String fileName,final int startRow,final String titleDescribe,final HttpServletResponse response) throws Exception {
-		if(fields.size() != titles.size())throw new Exception("导出失败,标题和列数不一致");
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		createWorkBook(listData,fields,titles,sheetName,startRow,titleDescribe).write(os);// 填充数据
-		final byte[] content = os.toByteArray();
-		final InputStream is = new ByteArrayInputStream(content);
-		// 设置response参数，可以打开下载页面
-		response.reset();
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment;filename=" + new String(((fileName == null ? ToolString.getIdsChar32() : fileName) + ".xlsx").getBytes(), "iso-8859-1"));
-		final ServletOutputStream out = response.getOutputStream();
-		BufferedInputStream bis = null;
-		BufferedOutputStream bos = null;
-		try {
-			bis = new BufferedInputStream(is);
-			bos = new BufferedOutputStream(out);
-			final byte[] buff = new byte[2048];
-			int bytesRead;
-			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-				bos.write(buff, 0, bytesRead);
-			}
-		} catch (final IOException e) {
-			throw e;
-		} finally {
-			if (bis != null)
-				bis.close();
-			if (bos != null)
-				bos.close();
-		}
+        if(fields.size() != titles.size())throw new Exception("导出失败,标题和列数不一致");
+        downloadExcel(createWorkBook(listData,fields,titles,sheetName,startRow,titleDescribe),fileName,response);
 	}
 
 	/**
@@ -1161,45 +1084,56 @@ public final class ToolExcel{
 	 * @param listData 要导出的最初数据集合
 	 * @param mapper → mapper.put("name","姓名");mapper.put("age","年龄");
 	 * @param sheetName 左下角第一块的名称
-	 * @param fileName 导出后下载的文件名,如果为空则以生成32位的UUID作为文件名.xlsx
+	 * @param fileName 导出后下载的含后缀名的文件名,以生成32位的UUID作为文件名.xlsx
 	 * @作者 田应平
 	 * @创建时间 2017年8月31日 20:14:25
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
 	public static void exportExcel(final List<Map<String,Object>> listData,final HashMap<String,String> mapper,final String sheetName, final String fileName, final HttpServletResponse response) throws Exception {
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
 		final ArrayList<String> fields = new ArrayList<String>(mapper.size());
 		final ArrayList<String> header = new ArrayList<String>(mapper.size());
 		for (final String key : mapper.keySet()){
 			header.add(mapper.get(key));
 			fields.add(key);
 		}
-		createWorkBook(listData,fields,header,sheetName).write(os);//填充数据
-		final byte[] content = os.toByteArray();
-		final InputStream is = new ByteArrayInputStream(content);
-		// 设置response参数，可以打开下载页面
-		response.reset();
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment;filename=" + new String(((fileName == null ? ToolString.getIdsChar32() : fileName) + ".xlsx").getBytes(), "iso-8859-1"));
-		final ServletOutputStream out = response.getOutputStream();
-		BufferedInputStream bis = null;
-		BufferedOutputStream bos = null;
-		try {
-			bis = new BufferedInputStream(is);
-			bos = new BufferedOutputStream(out);
-			final byte[] buff = new byte[2048];
-			int bytesRead;
-			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-				bos.write(buff, 0, bytesRead);
-			}
-		} catch (final IOException e) {
-			throw e;
-		} finally {
-			if (bis != null)
-				bis.close();
-			if (bos != null)
-				bos.close();
-		}
+        downloadExcel(createWorkBook(listData,fields,header,sheetName),fileName,response);
 	}
+
+    /**
+     * 导出下载
+     * @param fileName 含后缀名
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/4 15:52
+    */
+    protected static void downloadExcel(final Workbook workbook,final String fileName,final HttpServletResponse response) throws IOException{
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        workbook.write(os);//填充数据
+        final byte[] content = os.toByteArray();
+        final InputStream is = new ByteArrayInputStream(content);
+        // 设置response参数，可以打开下载页面
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName).getBytes(),StandardCharsets.ISO_8859_1));
+        final ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            final byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (final IOException e) {
+            throw e;
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
+        }
+    }
 }

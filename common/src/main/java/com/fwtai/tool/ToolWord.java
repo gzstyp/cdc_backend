@@ -24,9 +24,16 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -432,11 +439,11 @@ public class ToolWord extends XWPFDocument{
         final FileOutputStream out = new FileOutputStream("C:\\部门通讯录.docx");
         document.write(out);
         out.close();*/
-        word();
+        writeWord();
         System.out.println("导出成功!!!!!!!!");
     }
 
-    public static void word(){
+    private static void writeWord(){
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         try {
             final FileOutputStream out = new FileOutputStream("C:\\simple.docx");//生成文档
@@ -474,18 +481,100 @@ public class ToolWord extends XWPFDocument{
             final XWPFTable table = doc.createTable(3,3);
             //设置单元格文本,表格是由表格行XWPFRow构成，每行是由单元格XWPFCell构成，每个单元格内部又是由许多XWPFParagraph段落构成。
 
-            table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
+            table.getRow(1).getCell(1).setText("我是内容啊");
 
             //上面这一段代码和下面这一段代码是等价的：
 
             final XWPFParagraph p1 = table.getRow(0).getCell(0).addParagraph();
             final XWPFRun r1 = p1.createRun();
-            r1.setText("EXAMPLE OF TABLE");
+            r1.setText("我是内容");
 
 
             doc.write(out);
         } catch (final Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void exportWord(final String fileName,final HttpServletResponse response) throws Exception{
+        final XWPFDocument doc = new XWPFDocument();//创建新文档
+        final XWPFParagraph paragraph = doc.createParagraph();//创建新段落
+        //XWPFRun是段落的基本组成单元，它可以是一个文本，也可以是一张图片。
+
+        // 段落起始插入XWPFRun
+        final XWPFRun insertNewRun = paragraph.insertNewRun(0);
+        insertNewRun.setText("在段落起始位置插入这段文本");
+
+        // 段落末尾创建XWPFRun
+        final XWPFRun run = paragraph.createRun();
+        run.setText("为这个段落追加文本");
+
+        // 颜色
+        run.setColor("00ff00");
+        // 粗体
+        run.setBold(true);
+
+        //文本换行
+        run.addCarriageReturn();
+
+        //修改XWPFRun文本
+        final List<XWPFRun> runs = paragraph.getRuns();
+        // setText默认为追加文本，参数0表示设置第0个位置的文本，覆盖上一次设置
+        runs.get(0).setText("追加文本", 0);
+        runs.get(0).setText("修改文本", 0);
+
+        final InputStream stream = new FileInputStream("E:\\Images\\Images\\win7.jpg");
+        final XWPFRun runImage = paragraph.createRun();
+        runImage.addPicture(stream, XWPFDocument.PICTURE_TYPE_PNG, "Generated", Units.toEMU(256), Units.toEMU(256));
+
+        //创建新表格,创建一个三行三列的表格：--------------------------------------------------------
+
+        final XWPFTable table = doc.createTable(3,3);
+        //设置单元格文本,表格是由表格行XWPFRow构成，每行是由单元格XWPFCell构成，每个单元格内部又是由许多XWPFParagraph段落构成。
+
+        table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
+
+        //上面这一段代码和下面这一段代码是等价的：
+
+        final XWPFParagraph p1 = table.getRow(0).getCell(0).addParagraph();
+        final XWPFRun r1 = p1.createRun();
+        r1.setText("文档下载");
+        downloadWord(doc,fileName,response);
+    }
+
+    /**
+     * 导出下载
+     * @param fileName 含后缀名
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/4 15:52
+    */
+    protected static void downloadWord(final XWPFDocument doc,final String fileName,final HttpServletResponse response) throws IOException{
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        doc.write(os);
+        final byte[] content = os.toByteArray();
+        final InputStream is = new ByteArrayInputStream(content);
+        response.reset();
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String((fileName).getBytes(), "iso-8859-1"));
+        final ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(is);
+            bos = new BufferedOutputStream(out);
+            final byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))){
+                bos.write(buff, 0, bytesRead);
+            }
+        }catch (final IOException e) {
+            throw e;
+        }finally {
+            if (bis != null)
+                bis.close();
+            if (bos != null)
+                bos.close();
         }
     }
 }

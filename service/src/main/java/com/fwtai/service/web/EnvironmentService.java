@@ -128,7 +128,7 @@ public class EnvironmentService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
-        final String fileName = new ToolString().getDate()+"_外环境监测";
+        final String fileName = new ToolString().getDate()+"_外环境监测.xlsx";
         final List<Map<String,Object>> list = environmentDao.queryDataExport(formData);
         final ArrayList<String> fields = new ArrayList<>();
         fields.add("sample_code");
@@ -173,9 +173,12 @@ public class EnvironmentService{
         titles.add("备注");
 
         try {
-            ToolExcel.exportExcel(list,fields,titles,"外环境监测",fileName,response);
+            if(list.isEmpty()){
+                ToolClient.responseJson(ToolClient.createJson(ConfigFile.code199,ConfigFile.title + "暂无数据,换个搜索条件试试"),response);
+            }else{
+                ToolExcel.exportExcel(list,fields,titles,"外环境监测",fileName,response);
+            }
         } catch (final Exception e) {
-            e.printStackTrace();
             final String json = ToolClient.createJson(ConfigFile.code199,e.getMessage());
             ToolClient.responseJson(json,response);
         }

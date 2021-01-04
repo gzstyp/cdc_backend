@@ -142,7 +142,7 @@ public class EmployeeService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
-        final String fileName = new ToolString().getDate()+"_从业人员监测";
+        final String fileName = new ToolString().getDate()+"_从业人员监测.xlsx";
         final List<Map<String,Object>> list = employeeDao.queryDataExport(formData);
         final ArrayList<String> fields = new ArrayList<>();
         fields.add("sample_code");
@@ -181,9 +181,12 @@ public class EmployeeService{
         titles.add("检测结果");
         titles.add("备注");
         try {
-            ToolExcel.exportExcel(list,fields,titles,"从业人员监测",fileName,response);
-        } catch (final Exception e) {
-            e.printStackTrace();
+            if(list.isEmpty()){
+                ToolClient.responseJson(ToolClient.createJson(ConfigFile.code199,ConfigFile.title + "暂无数据,换个搜索条件试试"),response);
+            }else{
+                ToolExcel.exportExcel(list,fields,titles,"从业人员监测",fileName,response);
+            }
+        } catch (final Exception e){
             final String json = ToolClient.createJson(ConfigFile.code199,e.getMessage());
             ToolClient.responseJson(json,response);
         }

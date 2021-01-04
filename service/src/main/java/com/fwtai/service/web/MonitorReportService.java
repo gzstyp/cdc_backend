@@ -3,12 +3,15 @@ package com.fwtai.service.web;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
+import com.fwtai.tool.ToolWord;
 import com.fwtai.web.MonitorReportDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class MonitorReportService{
         return ToolClient.queryJson(permissions);
     }
 
-    //日报导出
+    //日报word导出
     public void queryExportWord(final HttpServletRequest request,final HttpServletResponse response){
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
@@ -35,10 +38,10 @@ public class MonitorReportService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                final String json = ToolClient.createJson(ConfigFile.code200,ConfigFile.title +"操作成功");
-                ToolClient.responseJson(json,response);
+                ToolWord.exportWord(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
+            e.printStackTrace();
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
             ToolClient.responseJson(json,response);
         }
