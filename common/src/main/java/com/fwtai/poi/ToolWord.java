@@ -209,13 +209,6 @@ public class ToolWord extends XWPFDocument{
         }
     }
 
-    protected static void titleRowStyle(final XWPFTableRow titleRow,final String[] titles){
-        for(final String title : titles){
-            final XWPFTableCell temp = titleRow.addNewTableCell();//在当前行继续创建新列
-            titleCell(temp,title);
-        }
-    }
-
     public static void titleCell(final XWPFTableCell cell,final String txt){
         //给当前列中添加段落，就是给列添加内容
         final XWPFParagraph p = cell.getParagraphs().get(0);
@@ -610,8 +603,10 @@ public class ToolWord extends XWPFDocument{
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
         titleRowStyle(titleRow,((String)_map_.get("profession")).split(","),"地区");
         for(int i = 0; i < data.size(); i++){
-            final XWPFTableRow row = table.getRow(i + 1);
-            titleRowStyle(row,((String)_map_.get("profession")).split(","));
+            final HashMap<String,Object> map = data.get(i);
+            final XWPFTableRow row = table.createRow();
+            final String[] profession_totals = ((String) map.get("profession_total")).split(",");
+            titleRowStyle(row,profession_totals);
         }
         titleRow.setHeight(500);//设置当前行行高
 
@@ -626,6 +621,13 @@ public class ToolWord extends XWPFDocument{
         final XWPFRun r1 = p1.createRun();
         r1.setText("文档下载");*/
         downloadWord(doc,fileName,response);
+    }
+
+    protected static void titleRowStyle(XWPFTableRow row,final String[] titles){
+        for(int x = 0; x < titles.length; x++){
+            final XWPFTableCell cell = row.getCell(x+1);
+            titleCell(cell,titles[x]);
+        }
     }
 
     /**
