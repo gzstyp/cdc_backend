@@ -90,11 +90,11 @@ public class EnvironmentController{
         ToolClient.responseJson(apiEnvironmentService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "发布接口,未审核前操作", notes = "发布接口,未审核前操作,即未审核的状态flag=0;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
+    @ApiOperation(value = "发布接口,仅修改检测结果result的字段", notes = "发布接口,仅修改检测结果result的字段;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/editPublish")
-    public void editPublish(@RequestBody final ArrayList<PublishBean> lists,final HttpServletResponse response){
-        ToolClient.responseJson(apiEnvironmentService.editPublish(lists),response);
+    public void editPublish(@RequestBody final PublishBean lists,final HttpServletResponse response){
+        //ToolClient.responseJson(apiEnvironmentService.editPublish(lists),response);
     }
 
     /**获取分页数据*/

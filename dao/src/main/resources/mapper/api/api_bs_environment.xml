@@ -541,12 +541,12 @@
         </foreach>
     </update>
 
-    <!-- 发布 -->
+    <!-- 发布,仅修改检测结果和检测日期 -->
     <update id="editPublish" parameterType="ArrayList">
         <foreach collection="list" separator=";" item="item">
-            update BS_ENVIRONMENT
-            <trim prefix="SET" suffixOverrides=",">
-                <if test="item.result != null">result = #{item.result},</if>
+            update BS_ENVIRONMENT SET detection_date = date_format(now(),'%Y-%m-%d')
+            <trim prefix="," suffixOverrides=",">
+                <if test="item.result != null">result = #{item.result}</if>
             </trim>
             where kid = #{item.kid}
         </foreach>

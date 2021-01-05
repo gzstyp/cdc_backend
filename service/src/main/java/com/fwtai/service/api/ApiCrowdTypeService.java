@@ -26,8 +26,6 @@ import java.util.List;
 @Service
 public class ApiCrowdTypeService{
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Resource
     private ApiCrowdTypeDao apiCrowdTypeDao;
 
