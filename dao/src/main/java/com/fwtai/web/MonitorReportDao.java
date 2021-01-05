@@ -14,13 +14,18 @@ public class MonitorReportDao{
     @Resource
     private DaoHandle dao;
 
+    /**查询登录者所拥有的权限*/
+    public List<String> queryPermissions(){
+        return dao.queryPermissions("monitorReport/queryPermissions");//指定当前子菜单url[当然也可以指定controller层的自己url]
+    }
+
     /**从业人员监测结果*/
     public List<HashMap<String,Object>> queryEmployeeReport(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.queryEmployeeReport",formData);
     }
 
-    /**查询登录者所拥有的权限*/
-    public List<String> queryPermissions(){
-        return dao.queryPermissions("monitorReport/queryPermissions");//指定当前子菜单url[当然也可以指定controller层的自己url]
+    /**全省不同类型场所监测情况*/
+    public List<HashMap<String,Object>> querySiteTypeReport(final PageFormData formData){
+        return dao.queryForListHashMap("reportTotal.querySiteTypeReport",formData);
     }
 }

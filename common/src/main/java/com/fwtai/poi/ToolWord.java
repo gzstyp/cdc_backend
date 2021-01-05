@@ -155,7 +155,7 @@ public final class ToolWord{
         return date;
     }
 
-    public static void exportWord(final String start,final String end,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception{
+    public static void exportWord(final String start,final String end,final List<HashMap<String,Object>> listEmployee,final List<HashMap<String,Object>> listSiteType,final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
         singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
@@ -166,34 +166,34 @@ public final class ToolWord{
         final String paragraph1 = "一、监测概况";
         paragraph(doc,paragraph1,14,true,true);
 
-        final String paragraph2 = "本周"+data.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
+        final String paragraph2 = "本周"+listEmployee.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
         paragraph(doc,paragraph2,14,true,true);
 
         final String paragraph3 = "其中冷库食品xx份（其中冷库水产品xx份，其他冷冻肉类xx份），外环境样本xx份（其中产品外包装xx份），从业人员咽拭子xx份，共计xx份。监测结果见表1。";
         paragraph(doc,paragraph3,14,true,false);
 
-        singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
+        singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
-        final OptionalInt optMax = data.stream().mapToInt(value -> {
+        final OptionalInt optMax = listEmployee.stream().mapToInt(value -> {
             final String profession = (String) value.get("profession");
             final String[] split = profession.split(",");
             return split.length;
         }).max();
         final int cols = optMax.getAsInt();//获取最大值
         HashMap<String,Object> _map_ = new HashMap<>(cols);
-        for(int i = 0; i < data.size(); i++){
-            final String[] professions = ((String) data.get(i).get("profession")).split(",");
+        for(int i = 0; i < listEmployee.size(); i++){
+            final String[] professions = ((String) listEmployee.get(i).get("profession")).split(",");
             if(cols == professions.length){
-                _map_ = data.get(i);
+                _map_ = listEmployee.get(i);
                 break;
             }
         }
         final XWPFTable table = doc.createTable();
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
         initTableTitle(titleRow,((String)_map_.get("profession")).split(","),"地区","合计");
-        for(int i = 0; i < data.size(); i++){
-            final HashMap<String,Object> map = data.get(i);
+        for(int i = 0; i < listEmployee.size(); i++){
+            final HashMap<String,Object> map = listEmployee.get(i);
             final XWPFTableRow row = table.createRow();
             final String[] profession_totals = ((String) map.get("profession_total")).split(",");
             long itemTotal = 0;
