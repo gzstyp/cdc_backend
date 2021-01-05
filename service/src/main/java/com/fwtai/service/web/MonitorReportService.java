@@ -46,7 +46,7 @@ public class MonitorReportService{
             }
         } catch (final Exception e){
             e.printStackTrace();
-            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,系统出现错误");
             ToolClient.responseJson(json,response);
         }
     }
