@@ -36,33 +36,79 @@ import java.util.OptionalInt;
 */
 public final class ToolWord{
 
-    protected static void titleRowStyle(final XWPFTableRow titleRow,final String[] titles,final String homeColumn){
-        final XWPFTableCell xhCell = titleRow.getCell(0);
-        titleCell(xhCell,homeColumn);
+    /**
+     格式如下
+       ******************************
+       *  地区  * 运输 * 加工 * 管理员 *
+       ******************************
+       * 贵阳市 * 98  * 25   *　17　  *
+       ******************************
+       * 安顺市 * 102  * 61  *　  　  *
+       ******************************
+    */
+    protected static void titleRowStyle(final XWPFTableRow row,final String[] titles,final String homeColumn){
+        final XWPFTableCell xhCell = row.getCell(0);
+        cellCenter(xhCell,homeColumn,12);
         for(final String title : titles){
-            final XWPFTableCell temp = titleRow.addNewTableCell();//在当前行继续创建新列
-            titleCell(temp,title);
+            final XWPFTableCell temp = row.addNewTableCell();//在当前行继续创建新列
+            cellCenter(temp,title,12);
         }
     }
 
-    /**指定单元格赋值文本内容*/
-    protected static void titleCell(final XWPFTableCell cell,final String content){
+    //示例代码
+    private static void indexCell(final XWPFTableRow row,final int cellIndex,final String content){
+        final XWPFTableCell cell = row.getCell(cellIndex);
+        final XWPFParagraph paragraph = cell.addParagraph();
+        final XWPFRun run = paragraph.createRun();
+        run.setText(content);
+        cellCenter(cell,content,12);
+    }
+
+    /**
+     * 指定单元格赋值文本内容及字体大小,默认的垂直居中和水平居中
+     * @param cell 单元格
+     * @param content 文本内容
+     * @param fontSize 字体大小
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021年1月5日 12:22:21
+    */
+    protected static void cellCenter(final XWPFTableCell cell,final String content,final int fontSize){
         //给当前列中添加段落，就是给列添加内容
         final XWPFParagraph paragraph = cell.getParagraphs().get(0);
         final XWPFRun run = paragraph.createRun();
         run.setText(content);//设置内容
-        run.setFontSize(12);//设置大小
+        run.setFontSize(fontSize);//设置大小
         //给列中的内容设置样式
-        cellStyle(cell,STVerticalJc.CENTER,STJc.CENTER);//上下居中,左右居中
+        rowCellAlign(cell,STVerticalJc.CENTER,STJc.CENTER);//上下居中,左右居中
     }
 
-    protected static void cellStyle(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal){
+    /**
+     * 设置单元格的对齐方式
+     * @param cell 单元格
+     * @param vertical 垂直对齐方式
+     * @param horizontal 水平对齐方式
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/5 12:18
+    */
+    protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal){
         final CTTc cttc = cell.getCTTc();
         final CTTcPr ctPr = cttc.addNewTcPr();
         ctPr.addNewVAlign().setVal(vertical);
         cttc.getPList().get(0).addNewPPr().addNewJc().setVal(horizontal);
         final CTTblWidth tblWidth = ctPr.isSetTcW() ? ctPr.getTcW() : ctPr.addNewTcW();
         tblWidth.setType(STTblWidth.DXA);
+    }
+
+    protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final int fontSize,final String content){
+        //给当前列中添加段落，就是给列添加内容
+        final XWPFParagraph paragraph = cell.getParagraphs().get(0);
+        final XWPFRun run = paragraph.createRun();
+        run.setText(content);//设置内容
+        run.setFontSize(fontSize);//设置大小
+        //给列中的内容设置样式
+        rowCellAlign(cell,vertical,horizontal);
     }
 
     public static void exportWord(final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception{
@@ -118,17 +164,9 @@ public final class ToolWord{
     protected static void titleRowStyle(final XWPFTableRow row,final String item,final String[] values){
         for(int x = 0; x < values.length; x++){
             final XWPFTableCell cell = row.getCell(x+1);
-            titleCell(cell,values[x]);
+            cellCenter(cell,values[x],12);
         }
-        titleCell(row.getCell(0),item);
-    }
-
-    protected static void indexCell(final XWPFTableRow row,final int cellIndex,final String content){
-        final XWPFTableCell cell = row.getCell(cellIndex);
-        final XWPFParagraph paragraph = cell.addParagraph();
-        final XWPFRun run = paragraph.createRun();
-        run.setText(content);
-        titleCell(cell,content);
+        cellCenter(row.getCell(0),item,12);
     }
 
     /**
