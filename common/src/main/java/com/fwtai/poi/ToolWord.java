@@ -209,11 +209,12 @@ public class ToolWord extends XWPFDocument{
         }
     }
 
-    public static void titleCell(final XWPFTableCell cell,final String txt){
+    /**指定单元格赋值文本内容*/
+    protected static void titleCell(final XWPFTableCell cell,final String content){
         //给当前列中添加段落，就是给列添加内容
         final XWPFParagraph p = cell.getParagraphs().get(0);
         final XWPFRun run = p.createRun();
-        run.setText(txt);//设置内容
+        run.setText(content);//设置内容
         run.setFontSize(12);//设置大小
         //给列中的内容设置样式
         final CTTc cttc = cell.getCTTc();
@@ -260,11 +261,11 @@ public class ToolWord extends XWPFDocument{
     }
 
     //设置表头和单位信息样式
-    public static void TitleCelldata(XWPFTableCell cell,String txt){
+    public static void TitleCelldata(XWPFTableCell cell,String content){
         //给当前列中添加段落，就是给列添加内容
         XWPFParagraph p = cell.getParagraphs().get(0);
         XWPFRun headRun0 = p.createRun();
-        headRun0.setText(txt);//设置内容
+        headRun0.setText(content);//设置内容
         headRun0.setFontSize(12);//设置大小
         headRun0.setBold(true);//是否粗体
         headRun0.setFontFamily("华文中宋");
@@ -274,7 +275,7 @@ public class ToolWord extends XWPFDocument{
         ctPr.addNewVAlign().setVal(STVerticalJc.CENTER);//上下居中
         cttc.getPList().get(0).addNewPPr().addNewJc().setVal(STJc.CENTER);//左右居中
         CTTblWidth tblWidth = ctPr.isSetTcW() ? ctPr.getTcW() : ctPr.addNewTcW();
-        if("职务".equals(txt)){
+        if("职务".equals(content)){
             tblWidth.setW(new BigInteger("2050"));//设置列宽度
         }else{
             tblWidth.setW(new BigInteger("1600"));//设置列宽度
@@ -282,11 +283,11 @@ public class ToolWord extends XWPFDocument{
         tblWidth.setType(STTblWidth.DXA);
     }
     //设置表头和单位信息样式
-    public static void TitleCelldata1(XWPFTableCell cell,String txt){
+    public static void TitleCelldata1(XWPFTableCell cell,String content){
         //给当前列中添加段落，就是给列添加内容
         XWPFParagraph p = cell.getParagraphs().get(0);
         XWPFRun headRun0 = p.createRun();
-        headRun0.setText(txt);//设置内容
+        headRun0.setText(content);//设置内容
         headRun0.setFontSize(12);//设置大小
         headRun0.setBold(true);//是否粗体
         headRun0.setFontFamily("华文中宋");
@@ -606,7 +607,8 @@ public class ToolWord extends XWPFDocument{
             final HashMap<String,Object> map = data.get(i);
             final XWPFTableRow row = table.createRow();
             final String[] profession_totals = ((String) map.get("profession_total")).split(",");
-            titleRowStyle(row,profession_totals);
+            final String item = ((String) map.get("name")).split(",")[0];
+            titleRowStyle(row,item,profession_totals);
         }
         titleRow.setHeight(500);//设置当前行行高
 
@@ -623,11 +625,20 @@ public class ToolWord extends XWPFDocument{
         downloadWord(doc,fileName,response);
     }
 
-    protected static void titleRowStyle(XWPFTableRow row,final String[] titles){
-        for(int x = 0; x < titles.length; x++){
+    protected static void titleRowStyle(final XWPFTableRow row,final String item,final String[] values){
+        for(int x = 0; x < values.length; x++){
             final XWPFTableCell cell = row.getCell(x+1);
-            titleCell(cell,titles[x]);
+            titleCell(cell,values[x]);
         }
+        titleCell(row.getCell(0),item);
+    }
+
+    protected static void indexRow(final XWPFTableRow row,final String content){
+        final XWPFTableCell cell = row.getCell(0);
+        final XWPFParagraph paragraph = cell.addParagraph();
+        //final XWPFRun run = paragraph.createRun();
+        //run.setText(content);
+        titleCell(cell,content);
     }
 
     /**
