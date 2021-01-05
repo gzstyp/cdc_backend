@@ -40,39 +40,44 @@ public final class ToolWord{
 
     /**
      生成表头,格式如下
-       ******************************
-       *  地区  * 运输 * 加工 * 管理员 *
-       ******************************
-       * 贵阳市 * 98  * 25   *　17　  *
-       ******************************
-       * 安顺市 * 102  * 61  *　  　  *
-       ******************************
-     * @param content 指定第N行的第1列的文字,用于不规则的2D表格
+       ************************************
+       *  地区  * 运输 * 加工 * 管理员 * 合计 *
+       ************************************
+       * 贵阳市 * 98  * 25   *　17　  * 140 *
+       ************************************
+       * 安顺市 * 102  * 61  *　  　  * 163 *
+       ************************************
+     * @param startColumnText 指定第1行的第1列的文字内容,用于不规则的2D表格
+     * @param endColumnText 指定第1行的最后1列的文字内容
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/1/5 13:19
     */
-    protected static void initTableTitle(final XWPFTableRow row,final String[] values,final String content){
-        cellCenter(row.getCell(0),content,12);
+    protected static void initTableTitle(final XWPFTableRow row,final String[] values,final String startColumnText,final String endColumnText){
+        cellCenter(row.getCell(0),startColumnText,12);
         for(final String value : values){
             final XWPFTableCell cell = row.addNewTableCell();//在当前行继续创建新列
             cellCenter(cell,value,12);
         }
+        cellCenter(row.addNewTableCell(),endColumnText,12);
     }
 
     /**
      * 先确定表头后,再执行填充数据行,即先执行initTableTitle()生成表头
-     * @param
+     * @param startColumnText 第N行的第1列的文字内容
+     * @param endColumnPosition 第N行的最后1列的位置索引,它和后一个参数对应
+     * @param endColumnText 第N行的最后1列的文字内容,它和前一个参数对应
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/1/5 13:23
     */
-    protected static void fillRowData(final XWPFTableRow row,final String[] values,final String content){
-        cellCenter(row.getCell(0),content,12);
+    protected static void fillRowData(final XWPFTableRow row,final String[] values,final String startColumnText,final int endColumnPosition,final String endColumnText){
+        cellCenter(row.getCell(0),startColumnText,12);
         for(int x = 0; x < values.length; x++){
             final XWPFTableCell cell = row.getCell(x+1);
             cellCenter(cell,values[x],12);
         }
+        cellCenter(row.getCell(endColumnPosition),endColumnText,12);
     }
 
     //示例代码
@@ -184,15 +189,18 @@ public final class ToolWord{
         }
         final XWPFTable table = doc.createTable();
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
-        initTableTitle(titleRow,((String)_map_.get("profession")).split(","),"地区");
+        initTableTitle(titleRow,((String)_map_.get("profession")).split(","),"地区","合计");
         for(int i = 0; i < data.size(); i++){
             final HashMap<String,Object> map = data.get(i);
             final XWPFTableRow row = table.createRow();
             final String[] profession_totals = ((String) map.get("profession_total")).split(",");
+            long itemTotal = 0;
+            for(int x = 0; x < profession_totals.length; x++){
+                itemTotal += Long.parseLong(profession_totals[x]);
+            }
             final String item = ((String) map.get("name")).split(",")[0];
-            fillRowData(row,profession_totals,item);
+            fillRowData(row,profession_totals,item,cols+1,String.valueOf(itemTotal));
         }
-        titleRow.setHeight(500);//设置当前行行高
         downloadWord(doc,fileName,response);
     }
 
