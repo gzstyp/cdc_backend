@@ -8,6 +8,7 @@ import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -142,6 +143,16 @@ public class ExceptionMonitor{
             ToolClient.responseJson(ToolClient.exceptionJson("添加编辑的[<span style='color:#f00'>"+value + "</span>]已存在"),response);
         }else{
             ToolClient.responseJson(ToolClient.exceptionJson("添加编辑的数据已存在"),response);
+        }
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public void httpMessageNotReadableException(final Exception exception,final HttpServletResponse response){
+        final String message = exception.getMessage();
+        if(message.contains("JSON parse error: Unexpected character")){
+            ToolClient.responseJson(ToolClient.createJsonFail("JSON数据格式有误"),response);
+        }else{
+            ToolClient.responseJson(ToolClient.exceptionJson(),response);
         }
     }
 
