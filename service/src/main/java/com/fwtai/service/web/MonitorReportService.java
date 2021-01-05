@@ -34,15 +34,15 @@ public class MonitorReportService{
         formData.remove("refreshToken");
         final String p_sampling_date_start = "sampling_date_start";
         final String p_sampling_date_end = "sampling_date_end";
-        final String sampling_date_start = formData.getString(p_sampling_date_start);
-        final String sampling_date_end = formData.getString(p_sampling_date_end);
+        final String start = formData.getString(p_sampling_date_start);
+        final String end = formData.getString(p_sampling_date_end);
         final List<HashMap<String,Object>> list = monitorReportDao.queryEmployeeReport(formData);
         try {
             if(list == null || list.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolWord.exportWord(list,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                ToolWord.exportWord(start,end,list,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();

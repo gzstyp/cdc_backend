@@ -21,6 +21,8 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.OptionalInt;
@@ -37,7 +39,7 @@ import java.util.OptionalInt;
 public final class ToolWord{
 
     /**
-     格式如下
+     生成表头,格式如下
        ******************************
        *  地区  * 运输 * 加工 * 管理员 *
        ******************************
@@ -45,13 +47,31 @@ public final class ToolWord{
        ******************************
        * 安顺市 * 102  * 61  *　  　  *
        ******************************
+     * @param content 指定第N行的第1列的文字,用于不规则的2D表格
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/5 13:19
     */
-    protected static void titleRowStyle(final XWPFTableRow row,final String[] titles,final String homeColumn){
-        final XWPFTableCell xhCell = row.getCell(0);
-        cellCenter(xhCell,homeColumn,12);
-        for(final String title : titles){
-            final XWPFTableCell temp = row.addNewTableCell();//在当前行继续创建新列
-            cellCenter(temp,title,12);
+    protected static void initTableTitle(final XWPFTableRow row,final String[] values,final String content){
+        cellCenter(row.getCell(0),content,12);
+        for(final String value : values){
+            final XWPFTableCell cell = row.addNewTableCell();//在当前行继续创建新列
+            cellCenter(cell,value,12);
+        }
+    }
+
+    /**
+     * 先确定表头后,再执行填充数据行,即先执行initTableTitle()生成表头
+     * @param
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/5 13:23
+    */
+    protected static void fillRowData(final XWPFTableRow row,final String[] values,final String content){
+        cellCenter(row.getCell(0),content,12);
+        for(int x = 0; x < values.length; x++){
+            final XWPFTableCell cell = row.getCell(x+1);
+            cellCenter(cell,values[x],12);
         }
     }
 
@@ -111,26 +131,41 @@ public final class ToolWord{
         rowCellAlign(cell,vertical,horizontal);
     }
 
-    public static void exportWord(final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception{
+    private static String handleDate(final String start,final String end){
+        String date = "";
+        if(start != null && end != null){
+            date = start +"至"+end;
+        }
+        if(start == null && end == null){
+            date = "截至"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        }
+        if(start == null && end != null){
+            date = "截至"+end;
+        }
+        if(start != null && end == null){
+            date = start+"至"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        }
+        return date;
+    }
+
+    public static void exportWord(final String start,final String end,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
         singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
 
-        final String describe = "为了贯彻落实国务院联防联控机制《关于开展冷冻冷藏肉品风险排查的通知》（联防联控机制综发〔2020〕210 号）文件的要求。为科学规范指导开展我省新冠病毒环境监测工作，深入开展病毒溯源和疫情防控，2020年8月10日贵州省卫生健康委员会联合多部委下发了《贵州省农贸（集贸）市场及冷冻冷藏产品新冠病毒环境和人员监测方案》。要求各市（州）及县（区），为加强对农贸（集贸）市场及大型食品冷库新冠病毒环境监测。现将我省此次新冠肺炎监测结果报告如下，采样时间为2020年11月16日至2020年11月22日。";
+        final String describe = "为了贯彻落实国务院联防联控机制《关于开展冷冻冷藏肉品风险排查的通知》（联防联控机制综发〔2020〕210 号）文件的要求。为科学规范指导开展我省新冠病毒环境监测工作，深入开展病毒溯源和疫情防控，2020年8月10日贵州省卫生健康委员会联合多部委下发了《贵州省农贸（集贸）市场及冷冻冷藏产品新冠病毒环境和人员监测方案》。要求各市（州）及县（区），为加强对农贸（集贸）市场及大型食品冷库新冠病毒环境监测。现将我省此次新冠肺炎监测结果报告如下，采样时间为"+handleDate(start,end)+"。";
         paragraph(doc,describe,14,false,false);
 
         final String paragraph1 = "一、监测概况";
         paragraph(doc,paragraph1,14,true,true);
 
-        final String paragraph2 = "本周9市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
+        final String paragraph2 = "本周"+data.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
         paragraph(doc,paragraph2,14,true,true);
 
         final String paragraph3 = "其中冷库食品xx份（其中冷库水产品xx份，其他冷冻肉类xx份），外环境样本xx份（其中产品外包装xx份），从业人员咽拭子xx份，共计xx份。监测结果见表1。";
         paragraph(doc,paragraph3,14,true,false);
 
         singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
-
-        //创建新表格,创建一个三行三列的表格：--------------------------------------------------------
 
         //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
         final OptionalInt optMax = data.stream().mapToInt(value -> {
@@ -149,24 +184,16 @@ public final class ToolWord{
         }
         final XWPFTable table = doc.createTable();
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
-        titleRowStyle(titleRow,((String)_map_.get("profession")).split(","),"地区");
+        initTableTitle(titleRow,((String)_map_.get("profession")).split(","),"地区");
         for(int i = 0; i < data.size(); i++){
             final HashMap<String,Object> map = data.get(i);
             final XWPFTableRow row = table.createRow();
             final String[] profession_totals = ((String) map.get("profession_total")).split(",");
             final String item = ((String) map.get("name")).split(",")[0];
-            titleRowStyle(row,item,profession_totals);
+            fillRowData(row,profession_totals,item);
         }
         titleRow.setHeight(500);//设置当前行行高
         downloadWord(doc,fileName,response);
-    }
-
-    protected static void titleRowStyle(final XWPFTableRow row,final String item,final String[] values){
-        for(int x = 0; x < values.length; x++){
-            final XWPFTableCell cell = row.getCell(x+1);
-            cellCenter(cell,values[x],12);
-        }
-        cellCenter(row.getCell(0),item,12);
     }
 
     /**
