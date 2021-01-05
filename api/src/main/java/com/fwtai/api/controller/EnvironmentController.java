@@ -90,7 +90,7 @@ public class EnvironmentController{
         ToolClient.responseJson(apiEnvironmentService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
-    @ApiOperation(value = "发布接口,仅修改检测结果result的字段", notes = "发布接口,仅修改检测结果result的字段;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
+    @ApiOperation(value = "发布,仅修改检测结果result的字段", notes = "发布接口,仅修改检测结果result的字段;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/editPublish")
     public void editPublish(@RequestBody final ArrayList<PublishBean> lists,final HttpServletResponse response){
@@ -122,7 +122,7 @@ public class EnvironmentController{
         ToolClient.responseJson(apiEnvironmentService.listAllData(request),response);
     }
 
-    @ApiOperation(value = "审批审核且提交更新为已审核状态", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
+    @ApiOperation(value = "上报,审批审核且提交更新为已审核状态", notes = "上报,就是更改flag的状态值为1;ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
     })
