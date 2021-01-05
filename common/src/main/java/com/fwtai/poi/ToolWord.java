@@ -200,7 +200,7 @@ public final class ToolWord{
     }
 
     /**
-     * 创建表格并填充数据
+     * 创建表格并填充数据,2D二维表格
      * @param doc word文档对象
      * @param listData 数据
      * @param cols 最大个数作为表头的列个数
