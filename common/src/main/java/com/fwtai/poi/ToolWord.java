@@ -21,6 +21,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -124,6 +125,7 @@ public final class ToolWord{
         cttc.getPList().get(0).addNewPPr().addNewJc().setVal(horizontal);
         final CTTblWidth tblWidth = ctPr.isSetTcW() ? ctPr.getTcW() : ctPr.addNewTcW();
         tblWidth.setType(STTblWidth.DXA);
+        tblWidth.setW(BigInteger.valueOf(360*8));//宽度
     }
 
     protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final int fontSize,final String content){

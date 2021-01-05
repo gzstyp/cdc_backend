@@ -580,6 +580,6 @@
             create_date,
             modify_date
 		FROM BS_ENVIRONMENT bet
-        where sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d') and craete_userid = #{craete_userid} and flag = 0
+        where sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d') and craete_userid = #{craete_userid}
     </select>
 </mapper>

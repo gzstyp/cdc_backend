@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 一些其他的网站写法
+ * 示例代码
  * https://elim.iteye.com/blog/2049110
  * https://www.cnblogs.com/unruly/archive/2017/09/06/7483858.html
  * https://www.cnblogs.com/zyc-blogs/p/10558859.html
