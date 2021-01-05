@@ -169,6 +169,15 @@ public class ApiEnvironmentService{
         return ToolClient.jsonPage((List<?>) map.get(ConfigFile.rows),(Integer) map.get(ConfigFile.total));
     }
 
+    public String listAllData(final HttpServletRequest request){
+        final PageFormData formData = ToolClient.getFormData(request);
+        final String p_sampling_date = "sampling_date";
+        final String validate = ToolClient.validateField(formData,p_sampling_date);
+        if(validate != null)return validate;
+        formData.put("craete_userid",LocalUserId.get());
+        return ToolClient.queryJson(apiEnvironmentDao.listAllData(formData));
+    }
+
     public String updateBatchAudit(final PageFormData formData){
         final String p_ids = "ids";
         final String validate = ToolClient.validateField(formData,p_ids);

@@ -93,8 +93,8 @@ public class EnvironmentController{
     @ApiOperation(value = "发布接口,仅修改检测结果result的字段", notes = "发布接口,仅修改检测结果result的字段;数据格式:[{\"kid\":\"1024\",\"result\":2},{\"kid\":\"1024\",\"result\":3}]")
     @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/editPublish")
-    public void editPublish(@RequestBody final PublishBean lists,final HttpServletResponse response){
-        //ToolClient.responseJson(apiEnvironmentService.editPublish(lists),response);
+    public void editPublish(@RequestBody final ArrayList<PublishBean> lists,final HttpServletResponse response){
+        ToolClient.responseJson(apiEnvironmentService.editPublish(lists),response);
     }
 
     /**获取分页数据*/
@@ -110,6 +110,16 @@ public class EnvironmentController{
     })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEnvironmentService.listDataPage(request),response);
+    }
+
+    @ApiOperation(value = "获取指定采样日期获取全部数据", notes = "获取指定采样日期获取全部数据,仅返回flag=0的数据,必须指定采用日期")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/listAllData")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "sampling_date", value = "采样日期,格式为:2021-01-05", dataType = "String", paramType = "query", required = true)
+    })
+    public void listAllData(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiEnvironmentService.listAllData(request),response);
     }
 
     @ApiOperation(value = "审批审核且提交更新为已审核状态", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")

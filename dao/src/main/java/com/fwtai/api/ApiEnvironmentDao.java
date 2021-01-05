@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 环境监测访问数据库
@@ -58,5 +59,10 @@ public class ApiEnvironmentDao{
 
     public int editPublish(final ArrayList<PublishBean> lists){
         return dao.execute("api_bs_environment.editPublish",lists);
+    }
+
+    //获取指定采样日期获取全部数据
+    public List<HashMap<String,Object>> listAllData(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_environment.listAllData",formData);
     }
 }

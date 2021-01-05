@@ -551,4 +551,37 @@
             where kid = #{item.kid}
         </foreach>
     </update>
+
+    <select id="listAllData" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            bet.kid,
+            bet.flag,
+            bet.audit_user,
+            bet.craete_userid,
+            bet.sample_code,
+            bet.city_id,
+            bet.county_id,
+            bet.site_type,
+            bet.freeze_type,
+            bm.site_name,
+            bet.market_name,
+            bet.vendor_name,
+            bet.phone,
+            bet.vendor_code,
+            bet.source,
+            bet.entrance,
+            bet.entrance_serial,
+            bet.sample_name,
+            bet.freeze_related,
+            bet.sample_type,
+            bet.sampling_date,
+            bet.detection_date,
+            bet.result,
+            bet.remark,
+            bet.create_date,
+            bet.modify_date
+		FROM BS_ENVIRONMENT bet
+        left join bs_manage bm on bm.kid = bet.market_name
+        where bet.sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d') and bet.craete_userid = #{craete_userid} and bet.flag = 0
+    </select>
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 从业人员访问数据库
@@ -57,6 +58,11 @@ public class ApiEmployeeDao{
     }
 
     public int updateEmployeeAudit(final HashMap<String,Object> map){
-        return dao.execute("api_bs_environment.updateEmployeeAudit",map);
+        return dao.execute("api_bs_employee.updateEmployeeAudit",map);
+    }
+
+    //获取指定采样日期获取全部数据
+    public List<HashMap<String,Object>> listAllData(final PageFormData formData){
+        return dao.queryForListHashMap("api_bs_employee.listAllData",formData);
     }
 }

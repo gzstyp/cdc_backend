@@ -505,4 +505,40 @@
             where kid = #{item.kid}
         </foreach>
     </update>
+
+    <!-- 获取指定采样日期获取全部数据 -->
+    <select id="listAllData" resultType="HashMap" parameterType="HashMap">
+        SELECT
+            bee.kid,
+            bee.flag,
+            bee.audit_user,
+            bee.craete_userid,
+            bee.sample_code,
+            bee.area_id,
+            bee.province_id,
+            bee.city_id,
+            bee.county_id,
+            bee.area_level,
+            bee.real_name,
+            bee.phone,
+            bee.gender,
+            bee.age,
+            bm.site_name,
+            bee.work_site,
+            bee.work_type,
+            bee.freeze_type,
+            bee.profession,
+            bee.cold_chain,
+            bee.sample_type,
+            bee.sampling_date,
+            bee.detection_date,
+            bee.result,
+            bee.remark,
+            bee.modify_userid,
+            bee.modify_date,
+            bee.create_date
+		FROM BS_EMPLOYEE bee
+        left join bs_manage bm on bm.kid = bee.work_site
+        where bee.sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d') and bee.craete_userid = #{craete_userid} and bee.flag = 0
+    </select>
 </mapper>

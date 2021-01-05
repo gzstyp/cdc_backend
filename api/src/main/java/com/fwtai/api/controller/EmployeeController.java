@@ -111,6 +111,16 @@ public class EmployeeController{
         ToolClient.responseJson(apiEmployeeService.listDataPage(request),response);
     }
 
+    @ApiOperation(value = "获取指定采样日期获取全部数据", notes = "获取指定采样日期获取全部数据,仅返回flag=0的数据,必须指定采用日期")
+    @PreAuthorize("hasRole('ROLE_APP')")
+    @GetMapping("/listAllData")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "sampling_date", value = "采样日期,格式为:2021-01-05", dataType = "String", paramType = "query", required = true)
+    })
+    public void listAllData(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(apiEmployeeService.listAllData(request),response);
+    }
+
     @ApiOperation(value = "审批审核且提交更新为已审核状态", notes = "ids是字符串,每个值主键kid以英文逗号,隔开;如10001,10002,10003")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),

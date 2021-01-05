@@ -163,6 +163,16 @@ public class ApiEmployeeService{
         return ToolClient.jsonPage((List<?>) map.get(ConfigFile.rows),(Integer) map.get(ConfigFile.total));
     }
 
+    //获取指定采样日期获取全部数据
+    public String listAllData(final HttpServletRequest request){
+        final PageFormData formData = ToolClient.getFormData(request);
+        final String p_sampling_date = "sampling_date";
+        final String validate = ToolClient.validateField(formData,p_sampling_date);
+        if(validate != null)return validate;
+        formData.put("craete_userid",LocalUserId.get());
+        return ToolClient.queryJson(apiEmployeeDao.listAllData(formData));
+    }
+
     public String updateEmployeeAudit(final PageFormData formData){
         final String p_ids = "ids";
         final String validate = ToolClient.validateField(formData,p_ids);
