@@ -57,10 +57,19 @@
     </select>
 
     <!-- 从业人员监测结果 -->
-    <select id="queryEmployeeReport" resultType="HashMap">
+    <select id="queryEmployeeReport" resultType="HashMap" parameterType="HashMap">
         select name,GROUP_CONCAT(profession) profession,GROUP_CONCAT(profession_total) profession_total from (
             select sa.name,sd.name profession,lt.profession_total from (
-            select city_id,profession,count(profession) profession_total from bs_employee group by profession,city_id ORDER BY profession ASC) lt
+            select city_id,profession,count(profession) profession_total from bs_employee
+            <trim prefix="WHERE" prefixOverrides="AND">
+                <if test="sampling_date_start != null">
+                    <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+                </if>
+                <if test="sampling_date_end != null">
+                    <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+                </if>
+            </trim>
+            group by profession,city_id ORDER BY profession ASC) lt
         left join sys_area sa on sa.kid = lt.city_id
         left join sys_dict sd on sd.KID = lt.profession) gt group by name
     </select>
