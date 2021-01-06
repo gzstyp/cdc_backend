@@ -2,7 +2,7 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
-import com.fwtai.poi.ToolWord;
+import com.fwtai.poi.WordExport;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.web.MonitorReportDao;
 import org.springframework.stereotype.Service;
@@ -43,7 +43,7 @@ public class MonitorReportService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolWord.exportWord(start,end,listEmployee,listSiteType,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                WordExport.exportWord(start,end,listEmployee,listSiteType,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();
