@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,15 +84,6 @@ public final class ToolWord{
         cellCenter(row.getCell(endColumnPosition),endColumnText,12);
     }
 
-    //示例代码
-    private static void indexCell(final XWPFTableRow row,final int cellIndex,final String content){
-        final XWPFTableCell cell = row.getCell(cellIndex);
-        final XWPFParagraph paragraph = cell.addParagraph();
-        final XWPFRun run = paragraph.createRun();
-        run.setText(content);
-        cellCenter(cell,content,12);
-    }
-
     /**
      * 指定单元格赋值文本内容及字体大小,默认的垂直居中和水平居中
      * @param cell 单元格
@@ -130,6 +122,7 @@ public final class ToolWord{
         tblWidth.setW(BigInteger.valueOf(360*8));//宽度
     }
 
+    //设置单元格内容及样式
     protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final int fontSize,final String content){
         //给当前列中添加段落，就是给列添加内容
         final XWPFParagraph paragraph = cell.getParagraphs().get(0);
@@ -188,6 +181,7 @@ public final class ToolWord{
         downloadWord(doc,fileName,response);
     }
 
+    /**获取最大值*/
     private static int getMax(final List<HashMap<String,Object>> listData,final String key){
         //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
         final OptionalInt optional = listData.stream().mapToInt(value -> {
@@ -236,11 +230,55 @@ public final class ToolWord{
                 itemTotal += Long.parseLong(vulues[x]);
             }
             final String item = ((String) map.get(startVerticalKey)).split(",")[0];
-            fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));
-            /*if(i == listData.size() - 1){
-                fillRowTotal(table,((String) map.get(totalKey)).split(","),cols,"总计");
-            }*/
+            fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
+            if(i == listData.size() - 1){
+                extractTotal(table,cols,"总计");
+            }
         }
+    }
+
+    /**填充最后一行每一列计算合计*/
+    private static void extractTotal(final XWPFTable table,final int cols,final String startColumnText){
+        final List<XWPFTableRow> listRows = table.getRows();//获取行数
+        final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
+        for(int x = 1; x < listRows.size(); x++){//因为第1行是表头字段,所以 int x = 1;
+            final XWPFTableRow tableRow = table.getRow(x);
+            final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
+            final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
+            for(int y = 1; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
+                final XWPFTableCell tableCell = tableCells.get(y);
+                final List<XWPFParagraph> cellParagraphs = tableCell.getParagraphs();
+                final XWPFParagraph paragraph = cellParagraphs.get(0);
+                final String text = paragraph.getText();
+                if(text.length() >0){
+                    mapValues.put(y,Integer.parseInt(text));
+                }
+            }
+            listVales.add(mapValues);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i < cols+2; i++){//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
+            final Integer total = calculateTotal(listVales,i);
+            if(sb.length() > 0){
+                sb.append(total).append(",");
+            }else{
+                sb = new StringBuilder(total + ",");
+            }
+        }
+        final String[] values = sb.toString().split(",");
+        fillRowData(table.createRow(),values,startColumnText,cols+1,null);//最后一个参数为 null 无需传,因为是填充数据行,该方法本身已给单元格赋值,无需指定最后一列的文本内容,否则会累加
+    }
+
+    /**计算每列的总和*/
+    private static Integer calculateTotal(final ArrayList<HashMap<Integer,Integer>> listVales,final int indexColumn){
+        Integer columnTotal = 0;
+        for(int i = 0; i < listVales.size(); i++){
+            final HashMap<Integer,Integer> map = listVales.get(i);
+            try {
+                columnTotal += map.get(indexColumn);
+            } catch (final Exception e){}
+        }
+        return columnTotal;
     }
 
     /**
