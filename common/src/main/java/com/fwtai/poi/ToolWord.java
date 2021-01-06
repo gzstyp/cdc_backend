@@ -277,23 +277,23 @@ public final class ToolWord{
         run.setText(content);
         run.setFontSize(fontSize);
         if(newline)
-            run.addBreak();//换行
+            run.addCarriageReturn();//换行,新的内容不会跟这末尾
         if(bold)
             run.setBold(true);
     }
 
-    /**换行*/
+    /**换行,新的文本内容会连在末尾后面 */
     protected static void newLine(final XWPFDocument doc){
         final XWPFParagraph paragraph = doc.createParagraph();
         final XWPFRun run = paragraph.createRun();
-        run.addBreak();//换行
+        run.addBreak();//换行,新的文本内容会连在末尾后面
     }
 
-    /**换行是前面会有空白符*/
-    protected static void newLineHashSpace(final XWPFDocument doc){
+    /**换了新行,新的内容不会连在末尾后面*/
+    protected static void newLineReturn(final XWPFDocument doc){
         final XWPFParagraph paragraph = doc.createParagraph();
         final XWPFRun run = paragraph.createRun();
-        run.addCarriageReturn();//换行是前面会有空白符
+        run.addCarriageReturn();//换了新行,新的内容不会连在末尾后面
     }
 
     /**
