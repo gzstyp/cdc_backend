@@ -174,21 +174,8 @@ public final class ToolWord{
 
         singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
-        //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
-        final OptionalInt optMaxEmployee = listEmployee.stream().mapToInt(value -> {
-            final String arrs = (String) value.get("profession");
-            final String[] split = arrs.split(",");
-            return split.length;
-        }).max();
-        final int colsEmployee = optMaxEmployee.getAsInt();//获取最大值
-
-        final OptionalInt optMaxSiteType = listSiteType.stream().mapToInt(value -> {
-            final String arrs = (String) value.get("site_type");
-            final String[] split = arrs.split(",");
-            return split.length;
-        }).max();
-
-        final int colsSiteType = optMaxSiteType.getAsInt();
+        final int colsEmployee = getMax(listEmployee,"profession");
+        final int colsSiteType = getMax(listSiteType,"site_type");
 
         createTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
 
@@ -199,15 +186,25 @@ public final class ToolWord{
         downloadWord(doc,fileName,response);
     }
 
+    private static int getMax(final List<HashMap<String,Object>> listData,final String key){
+        //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
+        final OptionalInt optional = listData.stream().mapToInt(value -> {
+            final String arrs = (String) value.get(key);
+            final String[] split = arrs.split(",");
+            return split.length;
+        }).max();
+        return optional.getAsInt();
+    }
+
     /**
-     * 创建表格并填充数据,2D二维表格
+     * 创建表格并填充数据,2D二维表格,计算最后一行的计算
      * @param doc word文档对象
      * @param listData 数据
      * @param cols 最大个数作为表头的列个数
-     * @param horizontalKey 从 listData 里分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段
-     * @param startVerticalKey 从 listData 里分组[垂直竖向方向的字段]获取作为数据行的第1行的第1列的key,一般是 group by xxx字段
+     * @param horizontalKey 从 listData 里分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段,它跟前一个参数有关
+     * @param startVerticalKey 从 listData 里分组[垂直竖向方向的字段]获取作为数据行的第1行的第1列的key,一般是最外层的 group by xxx字段
      * @param startColumnText 表头的第1个单元格的名称文本内容,如:地区
-     * @param totalKey 一般是指 count(xxx) as xxx_total
+     * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total
      * @param endColumnText 表头的第最后1个单元格的名称文本内容,如:合计
      * @作者 田应平
      * @QQ 444141300
@@ -278,7 +275,7 @@ public final class ToolWord{
         run.setText(content);
         run.setFontSize(fontSize);
         if(newline)
-            run.addCarriageReturn();
+            run.addCarriageReturn();//换行
         if(bold)
             run.setBold(true);
     }
@@ -287,7 +284,7 @@ public final class ToolWord{
     protected static void newLine(final XWPFDocument doc){
         final XWPFParagraph paragraph = doc.createParagraph();
         final XWPFRun run = paragraph.createRun();
-        run.addCarriageReturn();
+        run.addBreak();//换行
     }
 
     /**
