@@ -66,7 +66,7 @@ public final class ToolWord{
     }
 
     /**
-     * 先确定表头后,再执行填充数据行,即先执行initTableTitle()生成表头
+     * 填充数据,先确定表头后,再执行填充数据行,即先执行initTableTitle()生成表头
      * @param startColumnText 第N行的第1列的文字内容
      * @param endColumnPosition 第N行的最后1列的位置索引,它和后一个参数对应
      * @param endColumnText 第N行的最后1列的文字内容,它和前一个参数对应
