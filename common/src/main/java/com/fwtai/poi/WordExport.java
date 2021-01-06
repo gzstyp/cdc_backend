@@ -19,7 +19,7 @@ import java.util.OptionalInt;
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
 */
-public class WordExport{
+public final class WordExport{
 
     public static void exportWord(final String start,final String end,final List<HashMap<String,Object>> listEmployee,final List<HashMap<String,Object>> listSiteType,final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
