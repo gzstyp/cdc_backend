@@ -179,11 +179,11 @@ public final class ToolWord{
         final int colsEmployee = getMax(listEmployee,"profession");
         final int colsSiteType = getMax(listSiteType,"site_type");
 
-        createTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
+        createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
 
         newLine(doc);//换行
 
-        createTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
+        createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
 
         downloadWord(doc,fileName,response);
     }
@@ -212,28 +212,34 @@ public final class ToolWord{
      * @QQ 444141300
      * @创建时间 2021/1/5 19:18
     */
-    private static void createTable(final XWPFDocument doc,final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,final String startVerticalKey,final String startColumnText,final String totalKey,final String endColumnText){
+    private static void createDocTable(final XWPFDocument doc,final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,final String startVerticalKey,final String startColumnText,final String totalKey,final String endColumnText){
         final XWPFTable table = doc.createTable();
         HashMap<String,Object> _map_ = new HashMap<>(cols);
         for(int i = 0; i < listData.size(); i++){
-            final String[] professions = ((String) listData.get(i).get(horizontalKey)).split(",");
-            if(cols == professions.length){
+            final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
+            if(cols == values.length){
                 _map_ = listData.get(i);
                 break;
             }
         }
+        //初始化表头行
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
+        //填充表头行各单元格
         initTableTitle(titleRow,((String)_map_.get(horizontalKey)).split(","),startColumnText,endColumnText);
+        //填充数据行
         for(int i = 0; i < listData.size(); i++){
             final HashMap<String,Object> map = listData.get(i);
-            final XWPFTableRow row = table.createRow();
-            final String[] profession_totals = ((String) map.get(totalKey)).split(",");
+            final XWPFTableRow row = table.createRow();//创建新行
+            final String[] vulues = ((String) map.get(totalKey)).split(",");
             long itemTotal = 0;
-            for(int x = 0; x < profession_totals.length; x++){
-                itemTotal += Long.parseLong(profession_totals[x]);
+            for(int x = 0; x < vulues.length; x++){
+                itemTotal += Long.parseLong(vulues[x]);
             }
             final String item = ((String) map.get(startVerticalKey)).split(",")[0];
-            fillRowData(row,profession_totals,item,cols+1,String.valueOf(itemTotal));
+            fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));
+            /*if(i == listData.size() - 1){
+                fillRowTotal(table,((String) map.get(totalKey)).split(","),cols,"总计");
+            }*/
         }
     }
 
