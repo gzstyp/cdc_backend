@@ -277,7 +277,7 @@ public final class ToolWord{
         run.setText(content);
         run.setFontSize(fontSize);
         if(newline)
-            run.addCarriageReturn();//换行
+            run.addBreak();//换行
         if(bold)
             run.setBold(true);
     }
@@ -287,6 +287,13 @@ public final class ToolWord{
         final XWPFParagraph paragraph = doc.createParagraph();
         final XWPFRun run = paragraph.createRun();
         run.addBreak();//换行
+    }
+
+    /**换行是前面会有空白符*/
+    protected static void newLineHashSpace(final XWPFDocument doc){
+        final XWPFParagraph paragraph = doc.createParagraph();
+        final XWPFRun run = paragraph.createRun();
+        run.addCarriageReturn();//换行是前面会有空白符
     }
 
     /**
