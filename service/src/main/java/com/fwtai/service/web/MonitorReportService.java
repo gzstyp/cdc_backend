@@ -57,6 +57,9 @@ public class MonitorReportService{
     }
 
     public String queryDataView(final PageFormData formData){
-        return ToolClient.queryJson(formData);
+        final List<HashMap<String,Object>> listEmployee = monitorReportDao.queryEmployeeReport(formData);
+        final HashMap<String,Object> result = new HashMap<String,Object>();
+        result.put("listEmployee",listEmployee);
+        return ToolClient.queryJson(result);
     }
 }
