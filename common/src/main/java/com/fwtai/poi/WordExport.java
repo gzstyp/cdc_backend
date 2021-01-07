@@ -47,9 +47,40 @@ public final class WordExport{
 
         ToolWord.newLine(doc);//换行
 
+        final String paragraph20 = "二、食品及外环境样本监测结果";
+        ToolWord.paragraph(doc,paragraph20,14,true,true);
+
+        final String paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，即"+getItems(listSiteType,"site_type",colsSiteType)+"。详见表2。";
+        ToolWord.paragraph(doc,paragraph21,14,true,false);
+
+        ToolWord.singleRow(doc,"表2 全省不同类型场所监测情况",14,ParagraphAlignment.CENTER,true,false);
+
         ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
 
         ToolWord.downloadWord(doc,fileName,response);
+    }
+
+    private static String getItems(final List<HashMap<String,Object>> listData,final String horizontalKey,final int maxColumn){
+        HashMap<String,Object> result = new HashMap<>();
+        for(int i = 0; i < listData.size(); i++){
+            final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
+            if(maxColumn == values.length){
+                result = listData.get(i);
+                break;
+            }
+        }
+        final String[] values = ((String)result.get(horizontalKey)).split(",");
+        StringBuilder sb = new StringBuilder();
+        for(int x = 0; x < values.length; x++){
+            final String value = values[x];
+            if(sb.length() > 0){
+                sb.append(value).append("、");
+            }else{
+                sb = new StringBuilder(value + "、");
+            }
+        }
+        final String s = sb.toString();
+        return s.substring(0,s.length() - 1);
     }
 
     /**获取最大值*/
