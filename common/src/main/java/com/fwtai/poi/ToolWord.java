@@ -198,9 +198,9 @@ public final class ToolWord{
         for(int i = 1; i < cols+2; i++){//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
             final Integer total = calculateTotal(listVales,i);
             if(sb.length() > 0){
-                sb.append(total).append(",");
+                sb.append(",").append(total);
             }else{
-                sb = new StringBuilder(total + ",");
+                sb = new StringBuilder(String.valueOf(total));//注意这个必须为 String 类型,否则得到的是空字符串""
             }
         }
         final String[] values = sb.toString().split(",");

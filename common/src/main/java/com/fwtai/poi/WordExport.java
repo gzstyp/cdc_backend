@@ -74,13 +74,12 @@ public final class WordExport{
         for(int x = 0; x < values.length; x++){
             final String value = values[x];
             if(sb.length() > 0){
-                sb.append(value).append("、");
+                sb.append("、").append(value);
             }else{
-                sb = new StringBuilder(value + "、");
+                sb = new StringBuilder(value);//无需处理最后一个字符
             }
         }
-        final String s = sb.toString();
-        return s.substring(0,s.length() - 1);
+        return sb.toString();
     }
 
     /**获取最大值*/
