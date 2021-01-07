@@ -36,6 +36,10 @@ public class MonitorReportService{
         final String p_sampling_date_end = "sampling_date_end";
         final String start = formData.getString(p_sampling_date_start);
         final String end = formData.getString(p_sampling_date_end);
+        String selectArea = formData.getString("select_area");
+        if(selectArea ==null){
+            selectArea = "未选择中高风险地区";
+        }
         final List<HashMap<String,Object>> listEmployee = monitorReportDao.queryEmployeeReport(formData);
         final List<HashMap<String,Object>> listSiteType = monitorReportDao.querySiteTypeReport(formData);
         try {
@@ -43,7 +47,7 @@ public class MonitorReportService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                WordExport.exportWord(start,end,listEmployee,listSiteType,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();

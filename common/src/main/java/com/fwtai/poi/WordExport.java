@@ -21,7 +21,7 @@ import java.util.OptionalInt;
 */
 public final class WordExport{
 
-    public static void exportWord(final String start,final String end,final List<HashMap<String,Object>> listEmployee,final List<HashMap<String,Object>> listSiteType,final String fileName,final HttpServletResponse response) throws Exception{
+    public static void exportWord(final String start,final String end,final String selectArea,final List<HashMap<String,Object>> listEmployee,final List<HashMap<String,Object>> listSiteType,final String fileName,final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
         ToolWord.singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
