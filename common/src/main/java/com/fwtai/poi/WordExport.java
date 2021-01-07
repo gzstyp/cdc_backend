@@ -60,6 +60,14 @@ public final class WordExport{
         ToolWord.downloadWord(doc,fileName,response);
     }
 
+    /**
+     * 获取分类或类型,一般用于表头行
+     * @param horizontalKey 分类或类型的字段,分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段
+     * @param maxColumn 上一次操作获取的最大值的列数
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/7 16:30
+    */
     private static String getItems(final List<HashMap<String,Object>> listData,final String horizontalKey,final int maxColumn){
         HashMap<String,Object> result = new HashMap<>();
         for(int i = 0; i < listData.size(); i++){
