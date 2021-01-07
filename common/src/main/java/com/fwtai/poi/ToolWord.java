@@ -174,10 +174,6 @@ public final class ToolWord{
                 extractTotal(table,cols,"合计");
             }
         }
-        int max = getMax(listData,totalKey);
-        for(int i = 0; i < max; i++){
-            System.out.println(ToolWord.extractTotal(listData,totalKey,i));
-        }
     }
 
     /**填充最后一行每一列计算合计,笨方法*/
