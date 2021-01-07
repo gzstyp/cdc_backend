@@ -1,5 +1,6 @@
 package com.fwtai.web.controller.web;
 
+import com.fwtai.service.core.DictionaryService;
 import com.fwtai.service.web.MonitorReportService;
 import com.fwtai.tool.ToolClient;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +26,17 @@ import javax.servlet.http.HttpServletResponse;
 public class MonitorReportController{
 
     @Resource
+    private DictionaryService dictionaryService;
+
+    @Resource
     private MonitorReportService monitorReportService;
+
+    /**根据字典父级id获取数据,获取中高风险地区*/
+    @PreAuthorize("hasAuthority('monitorReport_btn_getDicts')")
+    @GetMapping("/getDicts")
+    public void getDicts(final String pid,final HttpServletResponse response){
+        ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
+    }
 
     @PreAuthorize("hasAuthority('monitorReport_btn_permissions')")
     @GetMapping("/queryPermissions")
