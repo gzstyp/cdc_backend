@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.OptionalInt;
 
 /**
  * poi操作word
@@ -138,7 +139,7 @@ public final class ToolWord{
      * @param horizontalKey 从 listData 里分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段,它跟前一个参数有关
      * @param startVerticalKey 从 listData 里分组[垂直竖向方向的字段]获取作为数据行的第1行的第1列的key,一般是最外层的 group by xxx字段
      * @param startColumnText 表头的第1个单元格的名称文本内容,如:地区
-     * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total
+     * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total,即填入 xxx_total 该值即可
      * @param endColumnText 表头的第最后1个单元格的名称文本内容,如:合计
      * @作者 田应平
      * @QQ 444141300
@@ -170,12 +171,16 @@ public final class ToolWord{
             final String item = ((String) mapRow.get(startVerticalKey)).split(",")[0];
             fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
             if(i == listData.size() - 1){
-                extractTotal(table,cols,"总计");
+                extractTotal(table,cols,"合计");
             }
+        }
+        int max = getMax(listData,totalKey);
+        for(int i = 0; i < max; i++){
+            System.out.println(ToolWord.extractTotal(listData,totalKey,i));
         }
     }
 
-    /**填充最后一行每一列计算合计*/
+    /**填充最后一行每一列计算合计,笨方法*/
     private static void extractTotal(final XWPFTable table,final int cols,final String startColumnText){
         final List<XWPFTableRow> listRows = table.getRows();//获取行数
         final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
@@ -205,6 +210,44 @@ public final class ToolWord{
         }
         final String[] values = sb.toString().split(",");
         fillRowData(table.createRow(),values,startColumnText,cols+1,null);//最后一个参数为 null 无需传,因为是填充数据行,该方法本身已给单元格赋值,无需指定最后一列的文本内容,否则会累加
+    }
+
+    /**
+     * 最后一行的每一列计算合计,推荐使用,可以参考页面js!!!
+     * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total,即填入 xxx_total 该值即可
+     * @param indexColumn 是列数的索引
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/7 19:44
+    */
+    protected static Integer extractTotal(final List<HashMap<String,Object>> listData,final String totalKey,final int indexColumn){
+        Integer columnTotal = 0;
+        for(int i = 0; i < listData.size(); i++){
+            final HashMap<String,Object> row = listData.get(i);
+            final String[] values = ((String) row.get(totalKey)).split(",");
+            try {
+                final String value = values[indexColumn];
+                columnTotal += Integer.parseInt(value);
+            } catch (final Exception e){}
+        }
+        return columnTotal;
+    }
+
+    /**
+     * 获取最大值
+     * @param totalKey 一般指的是类型或类别的count(xxx)字段
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/7 20:03
+    */
+    protected static int getMax(final List<HashMap<String,Object>> listData,final String totalKey){
+        //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
+        final OptionalInt optional = listData.stream().mapToInt(value -> {
+            final String arrs = (String) value.get(totalKey);
+            final String[] split = arrs.split(",");
+            return split.length;
+        }).max();
+        return optional.getAsInt();
     }
 
     /**计算每列的总和*/

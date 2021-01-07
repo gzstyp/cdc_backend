@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.OptionalInt;
 
 /**
  * word导出
@@ -40,8 +39,8 @@ public final class WordExport{
 
         ToolWord.singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
-        final int colsEmployee = getMax(listEmployee,"profession");
-        final int colsSiteType = getMax(listSiteType,"site_type");
+        final int colsEmployee = ToolWord.getMax(listEmployee,"profession");
+        final int colsSiteType = ToolWord.getMax(listSiteType,"site_type");
 
         ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
 
@@ -58,17 +57,6 @@ public final class WordExport{
         ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
 
         ToolWord.downloadWord(doc,fileName,response);
-    }
-
-    /**获取最大值*/
-    private static int getMax(final List<HashMap<String,Object>> listData,final String key){
-        //final OptionalInt optMax = data.stream().mapToInt(HashMap::size).max();//简化代码
-        final OptionalInt optional = listData.stream().mapToInt(value -> {
-            final String arrs = (String) value.get(key);
-            final String[] split = arrs.split(",");
-            return split.length;
-        }).max();
-        return optional.getAsInt();
     }
 
     private static String handleDate(final String start,final String end){
