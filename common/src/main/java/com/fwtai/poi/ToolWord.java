@@ -146,28 +146,28 @@ public final class ToolWord{
     */
     protected static void createDocTable(final XWPFDocument doc,final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,final String startVerticalKey,final String startColumnText,final String totalKey,final String endColumnText){
         final XWPFTable table = doc.createTable();
-        HashMap<String,Object> _map_ = new HashMap<>(cols);
+        HashMap<String,Object> map = new HashMap<>(cols);
         for(int i = 0; i < listData.size(); i++){
             final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
             if(cols == values.length){
-                _map_ = listData.get(i);
+                map = listData.get(i);
                 break;
             }
         }
         //初始化表头行
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
         //填充表头行各单元格
-        initTableTitle(titleRow,((String)_map_.get(horizontalKey)).split(","),startColumnText,endColumnText);
+        initTableTitle(titleRow,((String)map.get(horizontalKey)).split(","),startColumnText,endColumnText);
         //填充数据行
         for(int i = 0; i < listData.size(); i++){
-            final HashMap<String,Object> map = listData.get(i);
+            final HashMap<String,Object> mapRow = listData.get(i);
             final XWPFTableRow row = table.createRow();//创建新行
-            final String[] vulues = ((String) map.get(totalKey)).split(",");
+            final String[] vulues = ((String) mapRow.get(totalKey)).split(",");
             long itemTotal = 0;
             for(int x = 0; x < vulues.length; x++){
                 itemTotal += Long.parseLong(vulues[x]);
             }
-            final String item = ((String) map.get(startVerticalKey)).split(",")[0];
+            final String item = ((String) mapRow.get(startVerticalKey)).split(",")[0];
             fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
             if(i == listData.size() - 1){
                 extractTotal(table,cols,"总计");
@@ -276,6 +276,36 @@ public final class ToolWord{
         final XWPFParagraph paragraph = doc.createParagraph();
         final XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();//换了新行,新的内容不会连在末尾后面
+    }
+
+    /**
+     * 获取分类或类型,一般用于生成表头行的列
+     * @param horizontalKey 分类或类型的字段,分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段
+     * @param maxColumn 上一次操作获取的最大值的列数
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/7 16:30
+    */
+    protected static String getItems(final List<HashMap<String,Object>> listData,final String horizontalKey,final int maxColumn){
+        HashMap<String,Object> result = new HashMap<>();
+        for(int i = 0; i < listData.size(); i++){
+            final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
+            if(maxColumn == values.length){
+                result = listData.get(i);
+                break;
+            }
+        }
+        final String[] values = ((String)result.get(horizontalKey)).split(",");
+        StringBuilder sb = new StringBuilder();
+        for(int x = 0; x < values.length; x++){
+            final String value = values[x];
+            if(sb.length() > 0){
+                sb.append("、").append(value);
+            }else{
+                sb = new StringBuilder(value);//无需处理最后一个字符
+            }
+        }
+        return sb.toString();
     }
 
     /**

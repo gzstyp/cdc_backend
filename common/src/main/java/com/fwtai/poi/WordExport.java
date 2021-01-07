@@ -50,7 +50,7 @@ public final class WordExport{
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
 
-        final String paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，即"+getItems(listSiteType,"site_type",colsSiteType)+"。详见表2。";
+        final String paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，即"+ToolWord.getItems(listSiteType,"site_type",colsSiteType)+"。详见表2。";
         ToolWord.paragraph(doc,paragraph21,14,true,false);
 
         ToolWord.singleRow(doc,"表2 全省不同类型场所监测情况",14,ParagraphAlignment.CENTER,true,false);
@@ -58,36 +58,6 @@ public final class WordExport{
         ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
 
         ToolWord.downloadWord(doc,fileName,response);
-    }
-
-    /**
-     * 获取分类或类型,一般用于表头行
-     * @param horizontalKey 分类或类型的字段,分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段
-     * @param maxColumn 上一次操作获取的最大值的列数
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/1/7 16:30
-    */
-    private static String getItems(final List<HashMap<String,Object>> listData,final String horizontalKey,final int maxColumn){
-        HashMap<String,Object> result = new HashMap<>();
-        for(int i = 0; i < listData.size(); i++){
-            final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
-            if(maxColumn == values.length){
-                result = listData.get(i);
-                break;
-            }
-        }
-        final String[] values = ((String)result.get(horizontalKey)).split(",");
-        StringBuilder sb = new StringBuilder();
-        for(int x = 0; x < values.length; x++){
-            final String value = values[x];
-            if(sb.length() > 0){
-                sb.append("、").append(value);
-            }else{
-                sb = new StringBuilder(value);//无需处理最后一个字符
-            }
-        }
-        return sb.toString();
     }
 
     /**获取最大值*/
