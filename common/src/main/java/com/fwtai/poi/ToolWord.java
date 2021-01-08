@@ -136,7 +136,7 @@ public final class ToolWord{
      * @param doc word文档对象
      * @param listData 数据
      * @param cols 最大个数作为表头的列个数
-     * @param horizontalKey 从 listData 里分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段,它跟前一个参数有关
+     * @param horizontalKey 从 listData 里分组[水平横向方向的字段]的key,一般指的是类型或类别的count(xxx)字段,如工种或场所类型
      * @param startVerticalKey 从 listData 里分组[垂直竖向方向的字段]获取作为数据行的第1行的第1列的key,一般是最外层的 group by xxx字段
      * @param startColumnText 表头的第1个单元格的名称文本内容,如:地区
      * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total,即填入 xxx_total 该值即可
@@ -231,7 +231,7 @@ public final class ToolWord{
 
     /**
      * 获取最大值
-     * @param totalKey 一般指的是类型或类别的count(xxx)字段
+     * @param totalKey 一般指的是类型或类别的count(xxx)字段,如工种或场所类型
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/1/7 20:03
