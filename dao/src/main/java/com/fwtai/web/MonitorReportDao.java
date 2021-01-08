@@ -28,4 +28,15 @@ public class MonitorReportDao{
     public List<HashMap<String,Object>> querySiteTypeReport(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.querySiteTypeReport",formData);
     }
+
+    /**外环境样本监测情况-区分产品包装和其余外环境样本*/
+    public List<HashMap<String,Object>> queryEnvironmentOuterPack(final PageFormData formData){
+        return dao.queryForListHashMap("reportTotal.queryEnvironmentOuterPack",formData);
+    }
+
+    /**外环境不同样本类型监测情况*/
+    public HashMap<String, Object> querySampleTypeTotal(final PageFormData formData){
+        return dao.queryForHashMap("reportTotal.querySampleTypeTotal",formData);
+    }
+
 }

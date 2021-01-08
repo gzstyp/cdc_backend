@@ -77,8 +77,53 @@
     <!-- 全省不同类型场所监测情况 -->
     <select id="querySiteTypeReport" resultType="HashMap" parameterType="HashMap">
         select area,GROUP_CONCAT(site_type) site_type,GROUP_CONCAT(type_total) type_total from (select sd.NAME site_type,lt.type_total,sa.name area from (
-            select site_type,city_id,count(site_type) type_total from bs_environment group by site_type,city_id ORDER BY site_type ASC) lt
+            select site_type,city_id,count(site_type) type_total from bs_environment
+            <trim prefix="WHERE" prefixOverrides="AND">
+                <if test="sampling_date_start != null">
+                    <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+                </if>
+                <if test="sampling_date_end != null">
+                    <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+                </if>
+            </trim>
+            group by site_type,city_id ORDER BY site_type ASC) lt
         left join sys_dict sd on sd.KID = lt.site_type
         left join sys_area sa on sa.KID = lt.city_id) gt group by area
+    </select>
+
+    <!--外环境样本监测情况-区分产品包装和其余外环境样本-->
+    <select id="queryEnvironmentOuterPack" resultType="HashMap" parameterType="HashMap">
+        SELECT area_name,GROUP_CONCAT(sample_total) sample_total,GROUP_CONCAT(sample_type) sample_type FROM
+            (select area_name,sample_type,SUM(sample_total) sample_total from (
+                select sa.name area_name,sample_type,sample_total from (
+                select CASE WHEN sample_type = '00000000606324b5ffffffffda634a10'
+                THEN '产品外包装样本'
+                ELSE '其余外环境样本'
+                END sample_type,city_id,count(sample_type) sample_total
+            from bs_environment
+            <trim prefix="WHERE" prefixOverrides="AND">
+                <if test="sampling_date_start != null">
+                    <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+                </if>
+                <if test="sampling_date_end != null">
+                    <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+                </if>
+            </trim>
+            group by sample_type,city_id ORDER BY sample_type ASC) oblt
+        left join sys_area sa on sa.KID = oblt.city_id) lt GROUP BY area_name,sample_type) gblt GROUP BY area_name
+    </select>
+
+    <!--  外环境不同样本类型监测情况,不通过group by分组来做行转列 -->
+    <select id="querySampleTypeTotal" resultType="HashMap" parameterType="HashMap">
+        select group_concat(sd.NAME) category,sum(1) total from
+        (select sample_type from bs_environment
+        <if test="sampling_date_start != null">
+            <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+        </if>
+        <if test="sampling_date_end != null">
+            <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+        </if>
+        group by sample_type ORDER BY sample_type ASC) lt
+        left join sys_dict sd on sd.KID = lt.sample_type
     </select>
 </mapper>
