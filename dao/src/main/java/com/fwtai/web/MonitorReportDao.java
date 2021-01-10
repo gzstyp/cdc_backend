@@ -39,4 +39,8 @@ public class MonitorReportDao{
         return dao.queryForHashMap("reportTotal.querySampleTypeTotal",formData);
     }
 
+    /**不同来源食品监测情况_进口_国产_中高风险地区*/
+    public List<HashMap<String,Object>> queryEntranceRisk(final PageFormData formData){
+        return dao.queryForListHashMap("reportTotal.queryEntranceRisk",formData);
+    }
 }
