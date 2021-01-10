@@ -147,8 +147,7 @@ public final class ToolWord{
     */
     protected static void createDocTable(final XWPFDocument doc,final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,final String startVerticalKey,final String startColumnText,final String totalKey,final String endColumnText){
         final XWPFTable table = doc.createTable();
-        HashMap<String,Object> map = new HashMap<>(cols);
-        map = listGetHashMap(listData,cols,horizontalKey,map);
+        final HashMap<String,Object> map = listGetHashMap(listData,cols,horizontalKey);
         //初始化表头行
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
         //填充表头行各单元格
@@ -171,10 +170,11 @@ public final class ToolWord{
     }
 
     /**从list元素中获取指定的元素*/
-    private static HashMap<String,Object> listGetHashMap(final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,HashMap<String,Object> map){
+    private static HashMap<String,Object> listGetHashMap(final List<HashMap<String,Object>> listData,final int maxColumn,final String horizontalKey){
+        HashMap<String,Object> map = new HashMap<String,Object>(maxColumn);
         for(int i = 0; i < listData.size(); i++){
             final String[] values = ((String) listData.get(i).get(horizontalKey)).split(",");
-            if(cols == values.length){
+            if(maxColumn == values.length){
                 map = listData.get(i);
                 break;
             }
@@ -332,8 +332,7 @@ public final class ToolWord{
      * @创建时间 2021/1/7 16:30
     */
     protected static String getItems(final List<HashMap<String,Object>> listData,final String horizontalKey,final int maxColumn){
-        HashMap<String,Object> result = new HashMap<>(maxColumn);
-        result = listGetHashMap(listData,maxColumn,horizontalKey,result);
+        final HashMap<String,Object> result = listGetHashMap(listData,maxColumn,horizontalKey);
         final String[] values = ((String)result.get(horizontalKey)).split(",");
         StringBuilder sb = new StringBuilder();
         for(int x = 0; x < values.length; x++){
