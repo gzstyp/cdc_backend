@@ -116,9 +116,31 @@ public final class WordExport{
         ToolWord.paragraph(doc,title40,14,true,true);
 
         final String title41 = "（一）切实做好外防输入工作。";
-        ToolWord.paragraph(doc,title41,14,false,true);
+        ToolWord.paragraph(doc,title41,13,false,true);
         final String title42 = "虽然我省目前所采集的外环境及从业人员样本中新冠病毒核酸检测结果均为阴性，但境外新冠肺炎疫情依然严峻，境内多地亦有散发、乃至聚集性疫情。我省依旧面临新冠肺炎输入传播风险。";
         ToolWord.paragraph(doc,title42,14,true,false);
+
+        final String title43 = "（二）摸清食品来源情况。";
+        ToolWord.paragraph(doc,title43,13,false,true);
+        final String title44 = "海关部门要加强进口食品检验检疫，商务、市场监管部门要摸清涉及场所以及分布底数，特别是要掌握进口、中高风险地区食品在我省流通环节情况。";
+        ToolWord.paragraph(doc,title44,14,true,false);
+
+        final String title45 = "（三）加强宣传，做好个人防护。";
+        ToolWord.paragraph(doc,title45,13,false,true);
+        final String title46 = "张贴和滚动播放宣传资料，工作人员佩戴口罩和加强手卫生，做到勤洗手、常通风，保持安全的社交距离。";
+        ToolWord.paragraph(doc,title46,14,true,false);
+
+        final String title47 = "（四）保持环境清洁，加强消毒措施。";
+        ToolWord.paragraph(doc,title47,13,false,true);
+        final String title48 = "做好源头管控，公共场所做好日常清洁和预防性消毒等应对措施。";
+        ToolWord.paragraph(doc,title48,14,true,false);
+
+        final String title49 = "（五）建立制度，加强监测。";
+        ToolWord.paragraph(doc,title49,13,false,true);
+        final String title50 = "建立员工健康监测制度，每日对员工健康状况进行登记；在市场入口外，增加体温测量设备，体温检测正常方可进入。";
+        ToolWord.paragraph(doc,title50,14,true,false);
+
+        ToolWord.singleRow(doc,new SimpleDateFormat("yyyy-MM-dd").format(new Date()),13,ParagraphAlignment.RIGHT,true,false);
 
         ToolWord.downloadWord(doc,fileName,response);
     }
