@@ -42,12 +42,15 @@ public class MonitorReportService{
         }
         final List<HashMap<String,Object>> listEmployee = monitorReportDao.queryEmployeeReport(formData);
         final List<HashMap<String,Object>> listSiteType = monitorReportDao.querySiteTypeReport(formData);
+        final List<HashMap<String,Object>> listEnvironmentOuterPack = monitorReportDao.queryEnvironmentOuterPack(formData);
+        final List<HashMap<String,Object>> listEntranceRisk = monitorReportDao.queryEntranceRisk(formData);
+        final HashMap<String, Object> sampleTypeTotal = monitorReportDao.querySampleTypeTotal(formData);
         try {
             if(listEmployee == null || listEmployee.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();

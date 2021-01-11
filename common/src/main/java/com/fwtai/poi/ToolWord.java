@@ -217,7 +217,7 @@ public final class ToolWord{
     /**
      * 最后一行的每一列计算合计,推荐使用,可以参考页面js!!!
      * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total,即填入 xxx_total 该值即可
-     * @param indexColumn 是列数的索引
+     * @param indexColumn 是列数的索引,通过 for(int i = 0; i < cols; i++){ cols是最大的行数,循环传入,值为:1,2,3……
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/1/7 19:44

@@ -20,7 +20,16 @@ import java.util.List;
 */
 public final class WordExport{
 
-    public static void exportWord(final String start,final String end,final String selectArea,final List<HashMap<String,Object>> listEmployee,final List<HashMap<String,Object>> listSiteType,final String fileName,final HttpServletResponse response) throws Exception{
+    public static void exportWord(final String start,
+                                  final String end,
+                                  final String selectArea,
+                                  final List<HashMap<String,Object>> listEmployee,
+                                  final List<HashMap<String,Object>> listSiteType,
+                                  final List<HashMap<String,Object>> listEnvironmentOuterPack,
+                                  final List<HashMap<String,Object>> listEntranceRisk,
+                                  final HashMap<String,Object> sampleTypeTotal,
+                                  final String fileName,
+                                  final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档
         final String title = "贵州省冷冻冷藏肉品新冠病毒监测结果报告";
         ToolWord.singleRow(doc,title,18,ParagraphAlignment.CENTER,true,true);
@@ -34,17 +43,27 @@ public final class WordExport{
         final String paragraph2 = "本周"+listEmployee.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
         ToolWord.paragraph(doc,paragraph2,14,true,true);
 
-        final String paragraph3 = "其中冷库食品xx份（其中冷库水产品xx份，其他冷冻肉类xx份），外环境样本xx份（其中产品外包装xx份），从业人员咽拭子xx份，共计xx份。监测结果见表1。";
-        ToolWord.paragraph(doc,paragraph3,14,true,false);
-
-        ToolWord.singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
-
         final int colsEmployee = ToolWord.getMax(listEmployee,"profession");
         final int colsSiteType = ToolWord.getMax(listSiteType,"site_type");
+        final int colsEntranceRisk = ToolWord.getMax(listEntranceRisk,"total");
+        final int colsEnvironmentOuterPack = ToolWord.getMax(listEnvironmentOuterPack,"sample_total");
 
-        ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
+        Integer itemTotal = 0;
+        for(int i = 0; i < colsEmployee; i++){
+            itemTotal += ToolWord.extractTotal(listEmployee,"profession_total",i);
+        }
 
-        ToolWord.newLine(doc);//换行
+        Integer itemEnvironmentOuterPack = 0;
+        for(int i = 0; i < colsEnvironmentOuterPack; i++){
+            itemEnvironmentOuterPack += ToolWord.extractTotal(listEnvironmentOuterPack,"sample_total",i);
+        }
+
+        final String paragraph3 = "其中冷库食品xx份（其中冷库水产品xx份，其他冷冻肉类xx份），外环境样本xx份（其中产品外包装xx份），从业人员咽拭子"+itemTotal+"份，共计xx份。监测结果见表1。";
+        ToolWord.paragraph(doc,paragraph3,14,true,false);
+
+        ToolWord.singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
+
+        //合并单元格
 
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
@@ -55,6 +74,51 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表2 全省不同类型场所监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
+
+        ToolWord.newLine(doc);//换行
+
+        final String table3Info = "(二)不同来源食品监测情况   本次监测的进口或中高风险地区来源的海产品、肉类要求全部采集并检测，其余的搭配一定数量抽检。本次无中高风险地区来源的食品（本周中高风险地区为"+selectArea+"）。详见表3。";
+
+        ToolWord.paragraph(doc,table3Info,14,true,false);
+
+        ToolWord.singleRow(doc,"表3  不同来源食品监测情况",14,ParagraphAlignment.CENTER,true,false);
+
+        //表3,不同来源食品监测情况
+        ToolWord.createDocTable(doc,listEntranceRisk,colsEntranceRisk,"entrance","name","地区","total","合计");
+
+        ToolWord.newLine(doc);//换行
+
+        final String table4Info = "（三）外环境不同样本类型监测情况   本次主要采集"+sampleTypeTotal.get("category")+"等"+sampleTypeTotal.get("total")+"类外环境样本类型。本次重点区分产品包装和其余外环境样本，共"+itemEnvironmentOuterPack+"份。详见表4。";
+
+        ToolWord.paragraph(doc,table4Info,14,true,false);
+
+        ToolWord.singleRow(doc,"表4  外环境样本监测情况",14,ParagraphAlignment.CENTER,true,false);
+
+        //表4  外环境样本监测情况[产品外包装样本	其余外环境样本	合计]
+        ToolWord.createDocTable(doc,listEnvironmentOuterPack,colsEnvironmentOuterPack,"sample_type","area_name","地区","sample_total","合计");
+
+        ToolWord.newLine(doc);//换行
+
+        final String title30 = "三、从业人员监测结果";
+        ToolWord.paragraph(doc,title30,14,true,true);
+
+        final String title31 = "本次监测主要采集销售、宰杀、加工、贮存、运输、管理员和其他7类从业人员的咽拭子样本。情况详见表5。";
+
+        ToolWord.paragraph(doc,title31,14,true,false);
+
+        ToolWord.singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
+
+        ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
+
+        ToolWord.newLine(doc);//换行
+
+        final String title40 = "四、下一步防控建议";
+        ToolWord.paragraph(doc,title40,14,true,true);
+
+        final String title41 = "（一）切实做好外防输入工作。";
+        ToolWord.paragraph(doc,title41,14,false,true);
+        final String title42 = "虽然我省目前所采集的外环境及从业人员样本中新冠病毒核酸检测结果均为阴性，但境外新冠肺炎疫情依然严峻，境内多地亦有散发、乃至聚集性疫情。我省依旧面临新冠肺炎输入传播风险。";
+        ToolWord.paragraph(doc,title42,14,true,false);
 
         ToolWord.downloadWord(doc,fileName,response);
     }
