@@ -140,7 +140,7 @@ public final class WordExport{
         final String title50 = "建立员工健康监测制度，每日对员工健康状况进行登记；在市场入口外，增加体温测量设备，体温检测正常方可进入。";
         ToolWord.paragraph(doc,title50,14,true,false);
 
-        ToolWord.singleRow(doc,new SimpleDateFormat("yyyy-MM-dd").format(new Date()),13,ParagraphAlignment.RIGHT,true,false);
+        ToolWord.singleRow(doc,new SimpleDateFormat("yyyy年MM月dd日").format(new Date()),13,ParagraphAlignment.RIGHT,true,false);
 
         ToolWord.downloadWord(doc,fileName,response);
     }
