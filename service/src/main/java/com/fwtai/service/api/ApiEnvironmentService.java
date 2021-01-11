@@ -190,6 +190,6 @@ public class ApiEnvironmentService{
         map.put("listIds",lists);
         final int rows = apiEnvironmentDao.updateBatchAudit(map);
         final String msg = (rows == lists.size()) ? "操作成功" : "操作成功"+rows+"条数,失败"+(lists.size()-rows)+"条数";
-        return ToolClient.executeRows(rows,msg,"数据已不存在,刷新重试");
+        return ToolClient.executeRows(rows,msg,"操作失败,已重复上报");
     }
 }
