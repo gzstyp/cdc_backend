@@ -134,10 +134,7 @@
         select name,GROUP_CONCAT(entrance,',','中高风险地区') entrance,GROUP_CONCAT(total,',',risk) total from (select name,GROUP_CONCAT(entrance) entrance,GROUP_CONCAT(total) total,SUM(risk) risk from (
         select name,entrance,count(risk) total,sum(risk) risk from (
         select sa.name,
-        CASE WHEN bet.entrance = 1
-        THEN '进口'
-        ELSE '国产'
-        END entrance,
+        CASE WHEN bet.entrance = 1 THEN '进口' ELSE '国产' END entrance,
         bme.risk from bs_environment bet
         left join bs_manage bme on bme.kid = bet.market_name
         left join sys_area sa on bet.city_id = sa.kid
