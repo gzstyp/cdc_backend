@@ -394,6 +394,9 @@
             <if test="site_letter != null">
                 AND bm.site_letter LIKE CONCAT(#{site_letter},'%')
             </if>
+            <if test="site_name != null">
+                AND bm.site_name LIKE CONCAT(#{site_name},'%')
+            </if>
             <if test="linkman != null">
                 AND bm.linkman LIKE CONCAT('%',#{linkman},'%')
             </if>
