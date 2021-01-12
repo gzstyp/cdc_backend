@@ -152,7 +152,7 @@
             </if>
         </trim>
         ) lt group by name,entrance
-        ) gt group by name) tt group by name,total order by name DESC
+        ) gt group by name) tt group by name,total order by name
     </select>
 
     <!-- 表3 不同来源食品监测情况_进口_国产_中高风险地区,中高风险地区肯定是在'进口_国产'!!! -->
@@ -171,11 +171,11 @@
                 <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
             </if>
         </trim>
-        ) lt group by name with rollup) gt order by name DESC
+        ) lt group by name with rollup) gt order by name
     </select>
 
-    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况-->
-    <select id="queryEnvironmentEmployee" resultType="HashMap" parameterType="HashMap">
+    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况,统计的是 阴性数、阳性数,仅供参考-->
+    <select id="queryEnvironmentEmployee_bakup" resultType="HashMap" parameterType="HashMap">
         select name,group_concat(type) type,group_concat(negative) negative,group_concat(positive) positive from (select name,
         sum(case when result = 2 then 1 else 0 end) negative,
 		sum(case when result = 3 then 1 else 0 end) positive,
@@ -192,6 +192,26 @@
             </if>
         </trim>
         ) lt
-        left join sys_area sa on lt.city_id = sa.kid) lt group by name,type order by type DESC) gt group by name
+        left join sys_area sa on lt.city_id = sa.kid) lt group by name,type order by type) gt group by name
+    </select>
+
+    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况,统计的是 检测数、阳性数-->
+    <select id="queryEnvironmentEmployee" resultType="HashMap" parameterType="HashMap">
+        select name,group_concat(total) total,group_concat(positive) positive,group_concat(type) type from (select sa.name,
+        sum(case when result != 1 then 1 else 0 end) total,
+	    sum(case when result = 3 then 1 else 0 end) positive,
+        lt.type from (select bet.city_id,bet.result,'外环境样子' type from bs_environment bet where result != 1 and flag = 1
+        union all
+        select bee.city_id,bee.result,'从业人员咽拭子' type from bs_employee bee where result != 1 and flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+            </if>
+        </trim>
+        ) lt
+        left join sys_area sa on lt.city_id = sa.kid group by sa.name,lt.type order by lt.type desc) gt group by name order by name ASC
     </select>
 </mapper>
