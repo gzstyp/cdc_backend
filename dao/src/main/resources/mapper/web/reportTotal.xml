@@ -195,14 +195,14 @@
         left join sys_area sa on lt.city_id = sa.kid) lt group by name,type order by type) gt group by name
     </select>
 
-    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况,统计的是 检测数、阳性数-->
+    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况,统计的是 检测数、阳性数,注意 其中type=2是外环境样子;type=3是从业人员咽拭子-->
     <select id="queryEnvironmentEmployee" resultType="HashMap" parameterType="HashMap">
         select name,group_concat(total) total,group_concat(positive) positive,group_concat(type) type from (select sa.name,
         sum(case when result != 1 then 1 else 0 end) total,
 	    sum(case when result = 3 then 1 else 0 end) positive,
-        lt.type from (select bet.city_id,bet.result,'外环境样子' type from bs_environment bet where result != 1 and flag = 1
+        lt.type from (select bet.city_id,bet.result,2 type from bs_environment bet where result != 1 and flag = 1
         union all
-        select bee.city_id,bee.result,'从业人员咽拭子' type from bs_employee bee where result != 1 and flag = 1
+        select bee.city_id,bee.result,3 type from bs_employee bee where result != 1 and flag = 1
         <trim prefix="AND" prefixOverrides="AND">
             <if test="sampling_date_start != null">
                 <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
@@ -212,6 +212,6 @@
             </if>
         </trim>
         ) lt
-        left join sys_area sa on lt.city_id = sa.kid group by sa.name,lt.type order by lt.type desc) gt group by name order by name ASC
+        left join sys_area sa on lt.city_id = sa.kid group by sa.name,lt.type order by lt.type) gt group by name order by name ASC
     </select>
 </mapper>
