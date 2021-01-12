@@ -192,6 +192,6 @@
             </if>
         </trim>
         ) lt
-        left join sys_area sa on lt.city_id = sa.kid) lt group by name,type) gt group by name
+        left join sys_area sa on lt.city_id = sa.kid) lt group by name,type order by type DESC) gt group by name
     </select>
 </mapper>
