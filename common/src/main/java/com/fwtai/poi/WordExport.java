@@ -28,6 +28,7 @@ public final class WordExport{
                                   final List<HashMap<String,Object>> listEnvironmentOuterPack,
                                   final List<HashMap<String,Object>> listEntranceRisk,
                                   final HashMap<String,Object> sampleTypeTotal,
+                                  final List<HashMap<String,Object>> listEnvironmentEmployee,
                                   final String fileName,
                                   final HttpServletResponse response) throws Exception{
         final XWPFDocument doc = new XWPFDocument();//创建新文档

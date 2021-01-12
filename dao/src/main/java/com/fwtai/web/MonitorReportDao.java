@@ -43,4 +43,9 @@ public class MonitorReportDao{
     public List<HashMap<String,Object>> queryEntranceRisk(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.queryEntranceRisk",formData);
     }
+
+    /**表1 全省食品、外环境（含包装）及相关从业人员监测情况*/
+    public List<HashMap<String,Object>> queryEnvironmentEmployee(final PageFormData formData){
+        return dao.queryForListHashMap("reportTotal.queryEnvironmentEmployee",formData);
+    }
 }

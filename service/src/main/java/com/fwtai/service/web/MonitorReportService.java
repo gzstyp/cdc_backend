@@ -44,13 +44,14 @@ public class MonitorReportService{
         final List<HashMap<String,Object>> listSiteType = monitorReportDao.querySiteTypeReport(formData);
         final List<HashMap<String,Object>> listEnvironmentOuterPack = monitorReportDao.queryEnvironmentOuterPack(formData);
         final List<HashMap<String,Object>> listEntranceRisk = monitorReportDao.queryEntranceRisk(formData);
+        final List<HashMap<String,Object>> listEnvironmentEmployee = monitorReportDao.queryEnvironmentEmployee(formData);
         final HashMap<String, Object> sampleTypeTotal = monitorReportDao.querySampleTypeTotal(formData);
         try {
             if(listEmployee == null || listEmployee.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,listEnvironmentEmployee,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
             }
         } catch (final Exception e){
             e.printStackTrace();
@@ -64,8 +65,10 @@ public class MonitorReportService{
         final List<HashMap<String,Object>> listSiteType = monitorReportDao.querySiteTypeReport(formData);
         final List<HashMap<String,Object>> listEnvironmentOuterPack = monitorReportDao.queryEnvironmentOuterPack(formData);
         final List<HashMap<String,Object>> listEntranceRisk = monitorReportDao.queryEntranceRisk(formData);
+        final List<HashMap<String,Object>> listEnvironmentEmployee = monitorReportDao.queryEnvironmentEmployee(formData);
         final HashMap<String, Object> sampleTypeTotal = monitorReportDao.querySampleTypeTotal(formData);
         final HashMap<String,Object> result = new HashMap<String,Object>();
+        result.put("listEnvironmentEmployee",listEnvironmentEmployee);//表1 全省食品、外环境（含包装）及相关从业人员监测情况
         result.put("listEmployee",listEmployee);//从业人员监测结果,表5
         result.put("listSiteType",listSiteType);//全省不同类型场所监测情况,表2
         result.put("listEnvironmentOuterPack",listEnvironmentOuterPack);//外环境不同样本类型监测情况[区分产品包装和其余外环境样本],表4

@@ -133,7 +133,7 @@
         left join sys_dict sd on sd.KID = lt.sample_type
     </select>
 
-    <!-- 不同来源食品监测情况_进口_国产_中高风险地区,中高风险地区肯定是在'进口_国产'!!! -->
+    <!-- 表3 不同来源食品监测情况_进口_国产_中高风险地区,中高风险地区肯定是在'进口_国产'!!! -->
     <select id="queryEntranceRisk" resultType="HashMap" parameterType="HashMap">
         select name,GROUP_CONCAT(entrance,',','中高风险地区') entrance,GROUP_CONCAT(total,',',risk) total from (select name,GROUP_CONCAT(entrance) entrance,GROUP_CONCAT(total) total,SUM(risk) risk from (
         select name,entrance,count(risk) total,sum(risk) risk from (
@@ -153,5 +153,45 @@
         </trim>
         ) lt group by name,entrance
         ) gt group by name) tt group by name,total order by name DESC
+    </select>
+
+    <!-- 表3 不同来源食品监测情况_进口_国产_中高风险地区,中高风险地区肯定是在'进口_国产'!!! -->
+    <select id="queryEntranceRisk_sample" resultType="HashMap" parameterType="HashMap">
+        select name,entrance,domestic,risk from (select name,
+        sum(case when entrance = 1 then 1 else 0 end) entrance,
+	    sum(case when entrance = 0 then 1 else 0 end) domestic,
+        sum(case when risk = 1 then 1 else 0 end) risk from (select sa.name,bet.entrance,bme.risk from bs_environment bet
+        left join bs_manage bme on bme.kid = bet.market_name
+        left join sys_area sa on bet.city_id = sa.kid where bet.flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+            </if>
+        </trim>
+        ) lt group by name with rollup) gt order by name DESC
+    </select>
+
+    <!--表1 全省食品、外环境（含包装）及相关从业人员监测情况-->
+    <select id="queryEnvironmentEmployee" resultType="HashMap" parameterType="HashMap">
+        select name,group_concat(type) type,group_concat(negative) negative,group_concat(positive) positive from (select name,
+        sum(case when result = 2 then 1 else 0 end) negative,
+		sum(case when result = 3 then 1 else 0 end) positive,
+        type from (
+            select sa.name,result,lt.type from (select bet.city_id,bet.result,'外环境样子' type from bs_environment bet where result != 1 and flag = 1
+        union all
+        select bee.city_id,bee.result,'从业人员咽拭子' type from bs_employee bee where result != 1 and flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+            </if>
+        </trim>
+        ) lt
+        left join sys_area sa on lt.city_id = sa.kid) lt group by name,type) gt group by name
     </select>
 </mapper>
