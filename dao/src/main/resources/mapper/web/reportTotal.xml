@@ -61,7 +61,8 @@
         select name,GROUP_CONCAT(profession) profession,GROUP_CONCAT(profession_total) profession_total from (
             select sa.name,sd.name profession,lt.profession_total from (
             select city_id,profession,count(profession) profession_total from bs_employee
-            <trim prefix="WHERE" prefixOverrides="AND">
+            where flag = 1
+            <trim prefix="AND" prefixOverrides="AND">
                 <if test="sampling_date_start != null">
                     <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
                 </if>
@@ -78,7 +79,8 @@
     <select id="querySiteTypeReport" resultType="HashMap" parameterType="HashMap">
         select area,GROUP_CONCAT(site_type) site_type,GROUP_CONCAT(type_total) type_total from (select sd.NAME site_type,lt.type_total,sa.name area from (
             select site_type,city_id,count(site_type) type_total from bs_environment
-            <trim prefix="WHERE" prefixOverrides="AND">
+            where flag = 1
+            <trim prefix="AND" prefixOverrides="AND">
                 <if test="sampling_date_start != null">
                     <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
                 </if>
@@ -101,7 +103,8 @@
                 ELSE '其余外环境样本'
                 END sample_type,city_id,count(sample_type) sample_total
             from bs_environment
-            <trim prefix="WHERE" prefixOverrides="AND">
+            where flag = 1
+            <trim prefix="AND" prefixOverrides="AND">
                 <if test="sampling_date_start != null">
                     <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
                 </if>
@@ -117,7 +120,8 @@
     <select id="querySampleTypeTotal" resultType="HashMap" parameterType="HashMap">
         select group_concat(sd.NAME) category,sum(1) total from
         (select sample_type from bs_environment
-        <trim prefix="WHERE" prefixOverrides="AND">
+        where flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
             <if test="sampling_date_start != null">
                 <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
             </if>
@@ -138,7 +142,8 @@
         bme.risk from bs_environment bet
         left join bs_manage bme on bme.kid = bet.market_name
         left join sys_area sa on bet.city_id = sa.kid
-        <trim prefix="WHERE" prefixOverrides="AND">
+        where bet.flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
             <if test="sampling_date_start != null">
                 <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
             </if>
