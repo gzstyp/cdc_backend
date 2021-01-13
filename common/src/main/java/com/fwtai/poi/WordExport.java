@@ -261,6 +261,5 @@ public final class WordExport{
                 }
             }
         }
-        //cellCenter(cell,values[x],12);
     }
 }
