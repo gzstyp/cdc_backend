@@ -208,12 +208,10 @@ public final class WordExport{
 
         for(int i = 0; i < list.size(); i++){
             final HashMap<String,Object> map = list.get(i);
-            System.out.println(map);
             final String areaName = (String)map.get("name");
             final String[] types = ((String)map.get("type")).split(",");
             final String[] positives = ((String)map.get("positive")).split(",");
             final String[] totals = ((String)map.get("total")).split(",");
-
             int totalRow = 0;
             for(int x = 0; x < totals.length; x++){
                 totalRow += Integer.parseInt(totals[x]);
