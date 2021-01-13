@@ -4,6 +4,7 @@ import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
@@ -69,7 +70,7 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //合并单元格
-        mergeTableCell(doc);
+        mergeTableCell(doc,listEnvironmentEmployee);
 
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
@@ -169,7 +170,7 @@ public final class WordExport{
     }
 
     //表1 全省食品、外环境（含包装）及相关从业人员监测情况
-    private static void mergeTableCell(final XWPFDocument doc){
+    private static void mergeTableCell(final XWPFDocument doc,final List<HashMap<String,Object>> list){
         final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格
         final XWPFTableCell cell00 = table.getRow(0).getCell(0);
         cell00.setText("地区");
@@ -204,5 +205,62 @@ public final class WordExport{
         ToolWord.mergeCellsColumn(table,0,5,6);
         ToolWord.mergeCellsRow(table,0,0,1);
         ToolWord.mergeCellsRow(table,7,0,1);
+
+        for(int i = 0; i < list.size(); i++){
+            final HashMap<String,Object> map = list.get(i);
+            System.out.println(map);
+            final String areaName = (String)map.get("name");
+            final String[] types = ((String)map.get("type")).split(",");
+            final String[] positives = ((String)map.get("positive")).split(",");
+            final String[] totals = ((String)map.get("total")).split(",");
+
+            int totalRow = 0;
+            for(int x = 0; x < totals.length; x++){
+                totalRow += Integer.parseInt(totals[x]);
+            }
+            for(int y = 0; y < positives.length; y++){
+                totalRow += Integer.parseInt(positives[y]);
+            }
+            final XWPFTableRow row = table.createRow();//在原有的表格上创建新行
+            for(int y=0;y<8;y++){
+                final XWPFTableCell cell = row.getCell(y);
+                ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell);
+                if(y==0){
+                    cell.setText(areaName);
+                }else{
+                    final int len = types.length;
+                    if(len == 1){
+                        final String type = types[0];
+                        if(type.equals("2")){
+                            if(y ==3){
+                                cell.setText(totals[0]);
+                            }else if(y ==4){
+                                cell.setText(positives[0]);
+                            }
+                        }else if(type.equals("3")){
+                            if(y ==5){
+                                cell.setText(totals[0]);
+                            }else if(y ==6){
+                                cell.setText(positives[0]);
+                            }
+                        }
+                    }else if(len == 2){
+                        if(y ==3){
+                            cell.setText(totals[0]);
+                        }else if(y ==4){
+                            cell.setText(positives[0]);
+                        }else if(y ==5){
+                            cell.setText(totals[1]);
+                        }else if(y ==6){
+                            cell.setText(positives[1]);
+                        }
+                    }
+                    if(y == 7){
+                        cell.setText(String.valueOf(totalRow));
+                    }
+                }
+            }
+        }
+        //cellCenter(cell,values[x],12);
     }
 }
