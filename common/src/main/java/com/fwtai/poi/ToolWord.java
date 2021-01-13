@@ -11,6 +11,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
@@ -344,6 +345,58 @@ public final class ToolWord{
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * word跨列合并单元格
+     * @param row 指定行,行是从0开始的
+     * @param start 指定开始列,是从0开始
+     * @param end 指定结束列,是从0开始
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/13 15:40
+    */
+    protected static void mergeCellsColumn(final XWPFTable table,final int row,final int start,final int end){
+        for (int cellIndex = start; cellIndex <= end; cellIndex++) {
+            final XWPFTableCell cell = table.getRow(row).getCell(cellIndex);
+            if (cellIndex == start){
+                cell.getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.RESTART);
+            }else{
+                cell.getCTTc().addNewTcPr().addNewHMerge().setVal(STMerge.CONTINUE);
+            }
+        }
+    }
+
+    /**
+     * word跨行并单元格
+     * @param col 指定列,行是从0开始
+     * @param start 开始行,从0开始
+     * @param end 结束行,从0开始
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/13 15:42
+    */
+    protected static void mergeCellsRow(final XWPFTable table,final int col,final int start,final int end){
+        for (int rowIndex = start; rowIndex <= end; rowIndex++) {
+            final XWPFTableCell cell = table.getRow(rowIndex).getCell(col);
+            if(rowIndex == start){
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.RESTART);
+            }else{
+                cell.getCTTc().addNewTcPr().addNewVMerge().setVal(STMerge.CONTINUE);
+            }
+        }
+    }
+
+    /**
+     * 获取单元格
+     * @param positionRow 行的位置,从0开始
+     * @param positionCell 列的位置,从0开始
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/13 16:24
+    */
+    protected static XWPFTableCell getRowCells(final XWPFTable table,final int positionRow,final int positionCell){
+        return table.getRow(positionRow).getCell(positionCell);
     }
 
     /**

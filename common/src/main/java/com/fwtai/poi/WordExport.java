@@ -2,6 +2,8 @@ package com.fwtai.poi;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -65,6 +67,7 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //合并单元格
+        mergeTableCell(doc);
 
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
@@ -161,5 +164,40 @@ public final class WordExport{
             date = start+"至"+new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         }
         return date;
+    }
+
+    private static void mergeTableCell(final XWPFDocument doc){
+        final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格
+        final XWPFTableCell cell00 = table.getRow(0).getCell(0);
+        cell00.setText("地区");
+        final XWPFTableCell cell01 = table.getRow(0).getCell(1);
+        cell01.setText("食品样本");
+        final XWPFTableCell cell03 = table.getRow(0).getCell(3);
+        cell03.setText("外环境样子");
+        final XWPFTableCell cell05 = table.getRow(0).getCell(5);
+        cell05.setText("从业人员咽拭子");
+        final XWPFTableCell cell07 = table.getRow(0).getCell(7);
+        cell07.setText("合计");
+
+        final XWPFTableCell cell11 = table.getRow(1).getCell(1);
+        cell11.setText("检测份数");
+        final XWPFTableCell cell12 = table.getRow(1).getCell(2);
+        cell12.setText("阳性份数");
+
+        final XWPFTableCell cell13 = table.getRow(1).getCell(3);
+        cell13.setText("检测份数");
+        final XWPFTableCell cell14 = table.getRow(1).getCell(4);
+        cell14.setText("阳性份数");
+
+        final XWPFTableCell cell15 = table.getRow(1).getCell(5);
+        cell15.setText("检测份数");
+        final XWPFTableCell cell16 = table.getRow(1).getCell(6);
+        cell16.setText("阳性份数");
+
+        ToolWord.mergeCellsColumn(table,0,1,2);
+        ToolWord.mergeCellsColumn(table,0,3,4);
+        ToolWord.mergeCellsColumn(table,0,5,6);
+        ToolWord.mergeCellsRow(table,0,0,1);
+        ToolWord.mergeCellsRow(table,7,0,1);
     }
 }
