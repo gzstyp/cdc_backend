@@ -223,7 +223,7 @@ public final class ToolWord{
      * @创建时间 2021/1/7 19:44
     */
     protected static Integer extractTotal(final List<HashMap<String,Object>> listData,final String totalKey,final int indexColumn){
-        Integer columnTotal = 0;
+        int columnTotal = 0;
         for(int i = 0; i < listData.size(); i++){
             final HashMap<String,Object> row = listData.get(i);
             final String[] values = ((String) row.get(totalKey)).split(",");
