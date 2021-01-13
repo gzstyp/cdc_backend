@@ -77,7 +77,7 @@ public final class ToolWord{
     protected static void fillRowData(final XWPFTableRow row,final String[] values,final String startColumnText,final int endColumnPosition,final String endColumnText){
         cellCenter(row.getCell(0),startColumnText,12);
         for(int x = 0; x < values.length; x++){
-            final XWPFTableCell cell = row.getCell(x+1);
+            final XWPFTableCell cell = row.getCell(x+1);//+1是因为第1列是地区区域
             cellCenter(cell,values[x],12);
         }
         cellCenter(row.getCell(endColumnPosition),endColumnText,12);
