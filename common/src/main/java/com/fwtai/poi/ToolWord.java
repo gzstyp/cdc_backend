@@ -121,6 +121,19 @@ public final class ToolWord{
         tblWidth.setW(BigInteger.valueOf(360*8));//宽度
     }
 
+    /**
+     * 批量设置单元格的样式
+     * @param cells 仅能放在最后一个参数的位置
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/13 16:31
+    */
+    protected static void cellsAlign(final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final XWPFTableCell... cells){
+        for(int x = 0; x < cells.length; x++){
+            rowCellAlign(cells[x],vertical,horizontal);
+        }
+    }
+
     /**设置单元格内容及样式*/
     protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final int fontSize,final String content){
         //给当前列中添加段落，就是给列添加内容

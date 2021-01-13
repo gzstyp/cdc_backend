@@ -4,6 +4,8 @@ import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -166,6 +168,7 @@ public final class WordExport{
         return date;
     }
 
+    //表1 全省食品、外环境（含包装）及相关从业人员监测情况
     private static void mergeTableCell(final XWPFDocument doc){
         final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格
         final XWPFTableCell cell00 = table.getRow(0).getCell(0);
@@ -193,6 +196,8 @@ public final class WordExport{
         cell15.setText("检测份数");
         final XWPFTableCell cell16 = table.getRow(1).getCell(6);
         cell16.setText("阳性份数");
+
+        ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell00,cell01,cell03,cell05,cell07,cell11,cell12,cell13,cell14,cell15,cell16);
 
         ToolWord.mergeCellsColumn(table,0,1,2);
         ToolWord.mergeCellsColumn(table,0,3,4);
