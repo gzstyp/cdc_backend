@@ -51,7 +51,8 @@ public class MonitorReportService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,listEnvironmentEmployee,new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+".docx",response);
+                final String fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"监测报告.docx";
+                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,listEnvironmentEmployee,fileName,response);
             }
         } catch (final Exception e){
             e.printStackTrace();

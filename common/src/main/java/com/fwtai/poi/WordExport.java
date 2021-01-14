@@ -89,7 +89,7 @@ public final class WordExport{
 
         final String table3Info = "(二)不同来源食品监测情况   本次监测的进口或中高风险地区来源的海产品、肉类要求全部采集并检测，其余的搭配一定数量抽检。本次无中高风险地区来源的食品（本周中高风险地区为"+selectArea+"）。详见表3。";
 
-        ToolWord.paragraph(doc,table3Info,14,true,false);
+        ToolWord.paragraph(doc,table3Info,14,false,false);
 
         ToolWord.singleRow(doc,"表3  不同来源食品监测情况",14,ParagraphAlignment.CENTER,true,false);
 
