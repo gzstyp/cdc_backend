@@ -170,7 +170,7 @@ public final class ToolWord{
         //填充数据行
         for(int i = 0; i < listData.size(); i++){
             final HashMap<String,Object> mapRow = listData.get(i);
-            final XWPFTableRow row = table.createRow();//创建新行
+            final XWPFTableRow row = table.createRow();//在原来的表格上新增1行,列数和上行一样
             final String[] vulues = ((String) mapRow.get(totalKey)).split(",");
             long itemTotal = 0;
             for(int x = 0; x < vulues.length; x++){
@@ -268,7 +268,7 @@ public final class ToolWord{
     }
 
     /**计算每列的总和*/
-    private static Integer calculateTotal(final ArrayList<HashMap<Integer,Integer>> listVales,final int indexColumn){
+    protected static Integer calculateTotal(final ArrayList<HashMap<Integer,Integer>> listVales,final int indexColumn){
         Integer columnTotal = 0;
         for(int i = 0; i < listVales.size(); i++){
             final HashMap<Integer,Integer> map = listVales.get(i);
