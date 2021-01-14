@@ -176,7 +176,7 @@ public final class ToolWord{
             for(int x = 0; x < vulues.length; x++){
                 itemTotal += Long.parseLong(vulues[x]);
             }
-            final String item = ((String) mapRow.get(startVerticalKey)).split(",")[0];
+            final String item = (String)mapRow.get(startVerticalKey);
             fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
             if(i == listData.size() - 1){
                 final ArrayList<HashMap<Integer,Integer>> listVales = extractColumnTotal(table,1,1);//因为第1行是表头字段,所以 int x = 1;
@@ -219,11 +219,9 @@ public final class ToolWord{
             final XWPFTableRow tableRow = table.getRow(x);
             final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
             final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
-            for(int y = startColumn; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
-                final XWPFTableCell tableCell = tableCells.get(y);
-                final List<XWPFParagraph> cellParagraphs = tableCell.getParagraphs();
-                final XWPFParagraph paragraph = cellParagraphs.get(0);
-                final String text = paragraph.getText();
+            for(int y = startColumn; y < tableCells.size(); y++){
+                final XWPFTableCell xwpfTableCell = tableCells.get(y);
+                final String text = xwpfTableCell.getText();
                 if(text.length() >0){
                     mapValues.put(y,Integer.parseInt(text));
                 }
