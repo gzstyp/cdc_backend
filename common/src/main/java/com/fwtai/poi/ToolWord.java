@@ -85,7 +85,7 @@ public final class ToolWord{
 
     /**
      * 指定单元格赋值文本内容及字体大小,默认的垂直居中和水平居中
-     * @注意事项 若不经过 XWPFRun.setText(content);文本内容的会取不到值!
+     * @注意事项 单元格若不经过 XWPFRun.setText(content);文本内容的会取不到值!
      * @param cell 单元格
      * @param content 文本内容
      * @param fontSize 字体大小
@@ -122,22 +122,6 @@ public final class ToolWord{
         tblWidth.setW(BigInteger.valueOf(360*8));//宽度
     }
 
-    protected static void cellContent(final XWPFTableCell cell,final String content){
-        //给当前列中添加段落，就是给列添加内容
-        final XWPFParagraph paragraph = cell.getParagraphs().get(0);
-        final XWPFRun run = paragraph.createRun();
-        run.setText(content);//设置内容
-        run.setFontSize(12);//设置大小
-    }
-
-    protected static void cellContent(final XWPFTableCell cell,final String content,final int fontSize){
-        //给当前列中添加段落，就是给列添加内容
-        final XWPFParagraph paragraph = cell.getParagraphs().get(0);
-        final XWPFRun run = paragraph.createRun();
-        run.setText(content);//设置内容
-        run.setFontSize(fontSize);//设置大小
-    }
-
     /**
      * 批量设置单元格的样式
      * @param cells 仅能放在最后一个参数的位置
@@ -151,7 +135,7 @@ public final class ToolWord{
         }
     }
 
-    /**设置单元格内容及样式*/
+    /**设置单元格内容及样式,若不使用 paragraph.createRun().setText(content); 获取不到单元格的文本内容*/
     protected static void rowCellAlign(final XWPFTableCell cell,final STVerticalJc.Enum vertical,final STJc.Enum horizontal,final int fontSize,final String content){
         //给当前列中添加段落，就是给列添加内容
         final XWPFParagraph paragraph = cell.getParagraphs().get(0);

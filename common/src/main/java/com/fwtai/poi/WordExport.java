@@ -72,6 +72,8 @@ public final class WordExport{
         //合并单元格
         mergeTableCell(doc,listEnvironmentEmployee);
 
+        ToolWord.newLine(doc);//换行
+
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
 
@@ -82,7 +84,7 @@ public final class WordExport{
 
         ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
 
-        ToolWord.newLine(doc);//换行
+        ToolWord.newLine(doc);
 
         final String table3Info = "(二)不同来源食品监测情况   本次监测的进口或中高风险地区来源的海产品、肉类要求全部采集并检测，其余的搭配一定数量抽检。本次无中高风险地区来源的食品（本周中高风险地区为"+selectArea+"）。详见表3。";
 
@@ -93,7 +95,7 @@ public final class WordExport{
         //表3,不同来源食品监测情况
         ToolWord.createDocTable(doc,listEntranceRisk,colsEntranceRisk,"entrance","name","地区","total","合计");
 
-        ToolWord.newLine(doc);//换行
+        ToolWord.newLine(doc);
 
         final String table4Info = "（三）外环境不同样本类型监测情况   本次主要采集"+sampleTypeTotal.get("category")+"等"+sampleTypeTotal.get("total")+"类外环境样本类型。本次重点区分产品包装和其余外环境样本，共"+itemEnvironmentOuterPack+"份。详见表4。";
 
@@ -104,7 +106,7 @@ public final class WordExport{
         //表4  外环境样本监测情况[产品外包装样本	其余外环境样本	合计]
         ToolWord.createDocTable(doc,listEnvironmentOuterPack,colsEnvironmentOuterPack,"sample_type","area_name","地区","sample_total","合计");
 
-        ToolWord.newLine(doc);//换行
+        ToolWord.newLine(doc);
 
         final String title30 = "三、从业人员监测结果";
         ToolWord.paragraph(doc,title30,14,true,true);
@@ -117,7 +119,7 @@ public final class WordExport{
 
         ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
 
-        ToolWord.newLine(doc);//换行
+        ToolWord.newLine(doc);
 
         final String title40 = "四、下一步防控建议";
         ToolWord.paragraph(doc,title40,14,true,true);
@@ -148,17 +150,6 @@ public final class WordExport{
         ToolWord.paragraph(doc,title50,14,true,false);
 
         ToolWord.singleRow(doc,new SimpleDateFormat("yyyy年MM月dd日").format(new Date()),13,ParagraphAlignment.RIGHT,true,false);
-
-        final List<XWPFTableRow> listRows = doc.getTables().get(0).getRows();
-        for(int x = 2; x < listRows.size(); x++){
-            final XWPFTableRow xwpfTableRow = listRows.get(x);
-            List<XWPFTableCell> tableCells = xwpfTableRow.getTableCells();
-            for(int y = 1; y < tableCells.size(); y++){
-                XWPFTableCell xwpfTableCell = tableCells.get(y);
-                String text = xwpfTableCell.getText();
-                System.out.println(text);
-            }
-        }
 
         ToolWord.downloadWord(doc,fileName,response);
     }
@@ -278,9 +269,21 @@ public final class WordExport{
                 }
             }
         }
+
+        //final List<XWPFTableRow> listRows = doc.getTables().get(0).getRows();
+        final List<XWPFTableRow> listRows = table.getRows();
+        for(int x = 2; x < listRows.size(); x++){
+            final XWPFTableRow xwpfTableRow = listRows.get(x);
+            List<XWPFTableCell> tableCells = xwpfTableRow.getTableCells();
+            for(int y = 1; y < tableCells.size(); y++){
+                XWPFTableCell xwpfTableCell = tableCells.get(y);
+                String text = xwpfTableCell.getText();
+                System.out.println(text);
+            }
+        }
     }
 
-    //动态创建单元格示例代码
+    //动态创建单元格示例代码,若获取不到单元格的值请检查是否使用 paragraph.createRun().setText(content); 或换个调用顺序
     private static void mergeTableCellExample(final XWPFDocument doc,final List<HashMap<String,Object>> list){
         final XWPFTable table = doc.createTable();
         final XWPFTableRow titleRow0 = table.getRow(0);//todo 创建表格的第1行,默认是创建1行1列的表格
