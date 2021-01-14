@@ -10,6 +10,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -269,138 +270,48 @@ public final class WordExport{
                 }
             }
         }
-
-        //final List<XWPFTableRow> listRows = doc.getTables().get(0).getRows();
+        //处理最后1行的合计数据
+        final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
         final List<XWPFTableRow> listRows = table.getRows();
         for(int x = 2; x < listRows.size(); x++){
             final XWPFTableRow xwpfTableRow = listRows.get(x);
             List<XWPFTableCell> tableCells = xwpfTableRow.getTableCells();
+            final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
             for(int y = 1; y < tableCells.size(); y++){
                 XWPFTableCell xwpfTableCell = tableCells.get(y);
                 String text = xwpfTableCell.getText();
-                System.out.println(text);
-            }
-        }
-    }
-
-    //动态创建单元格示例代码,若获取不到单元格的值请检查是否使用 paragraph.createRun().setText(content); 或换个调用顺序
-    private static void mergeTableCellExample(final XWPFDocument doc,final List<HashMap<String,Object>> list){
-        final XWPFTable table = doc.createTable();
-        final XWPFTableRow titleRow0 = table.getRow(0);//todo 创建表格的第1行,默认是创建1行1列的表格
-        final XWPFTableCell cell1 = titleRow0.getCell(0);
-        cell1.setText("阳性份数");
-        for(int i = 0; i < 7; i++){//todo 共8个单元格,因为默认是已创建titleRow0.getCell(0);所以仅需添加7列
-            final XWPFTableCell cell = titleRow0.addNewTableCell();//todo 在当前行继续创建新列
-            ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell);
-            cell.setText("阳性份数"+i);
-        }
-        final XWPFTableRow titleRow1 = table.createRow();//todo 在表的行了的列数上创建新行且列数是和上1行的列数一样,此处是第2行
-
-        /*//final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格,勿删
-        final XWPFTableCell cell00 = table.getRow(0).getCell(0);
-        cell00.setText("地区");
-        final XWPFTableCell cell01 = table.getRow(0).getCell(1);
-        cell01.setText("食品样本");
-        final XWPFTableCell cell03 = table.getRow(0).getCell(3);
-        cell03.setText("外环境样子");
-        final XWPFTableCell cell05 = table.getRow(0).getCell(5);
-        cell05.setText("从业人员咽拭子");
-        final XWPFTableCell cell07 = table.getRow(0).getCell(7);
-        cell07.setText("合计");
-
-        final XWPFTableCell cell11 = table.getRow(1).getCell(1);
-        cell11.setText("检测份数");
-        final XWPFTableCell cell12 = table.getRow(1).getCell(2);
-        cell12.setText("阳性份数");
-
-        final XWPFTableCell cell13 = table.getRow(1).getCell(3);
-        cell13.setText("检测份数");
-        final XWPFTableCell cell14 = table.getRow(1).getCell(4);
-        cell14.setText("阳性份数");
-
-        final XWPFTableCell cell15 = table.getRow(1).getCell(5);
-        cell15.setText("检测份数");
-        final XWPFTableCell cell16 = table.getRow(1).getCell(6);
-        cell16.setText("阳性份数");
-
-        ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell00,cell01,cell03,cell05,cell07,cell11,cell12,cell13,cell14,cell15,cell16);
-
-        ToolWord.mergeCellsColumn(table,0,1,2);
-        ToolWord.mergeCellsColumn(table,0,3,4);
-        ToolWord.mergeCellsColumn(table,0,5,6);
-        ToolWord.mergeCellsRow(table,0,0,1);
-        ToolWord.mergeCellsRow(table,7,0,1);
-
-        for(int i = 0; i < list.size(); i++){
-            final HashMap<String,Object> map = list.get(i);
-            final String areaName = (String)map.get("name");
-            final String[] types = ((String)map.get("type")).split(",");
-            final String[] positives = ((String)map.get("positive")).split(",");
-            final String[] totals = ((String)map.get("total")).split(",");
-            int totalRow = 0;
-            for(int x = 0; x < totals.length; x++){
-                totalRow += Integer.parseInt(totals[x]);
-            }
-            for(int y = 0; y < positives.length; y++){
-                totalRow += Integer.parseInt(positives[y]);
-            }
-            final XWPFTableRow row = table.createRow();//在原有的表格上创建新行
-            for(int y=0;y<8;y++){
-                final XWPFTableCell cell = row.getCell(y);
-                ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell);
-                if(y==0){
-                    cell.setText(areaName);
-                }else{
-                    final int len = types.length;
-                    if(len == 1){
-                        final String type = types[0];
-                        if(type.equals("2")){
-                            if(y ==3){
-                                cell.setText(totals[0]);
-                            }else if(y ==4){
-                                cell.setText(positives[0]);
-                            }
-                        }else if(type.equals("3")){
-                            if(y ==5){
-                                cell.setText(totals[0]);
-                            }else if(y ==6){
-                                cell.setText(positives[0]);
-                            }
-                        }
-                    }else if(len == 2){
-                        if(y ==3){
-                            cell.setText(totals[0]);
-                        }else if(y ==4){
-                            cell.setText(positives[0]);
-                        }else if(y ==5){
-                            cell.setText(totals[1]);
-                        }else if(y ==6){
-                            cell.setText(positives[1]);
-                        }
-                    }
-                    if(y == 7){
-                        cell.setText(String.valueOf(totalRow));
-                    }
-                }
-            }
-        }
-
-        final List<XWPFTableRow> listRows = table.getRows();//获取行数
-        final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
-        for(int x = 2; x < listRows.size(); x++){//因为...
-            final XWPFTableRow tableRow = table.getRow(x);
-            final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
-            final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
-            for(int y = 1; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
-                final XWPFTableCell tableCell = tableCells.get(y);
-                final List<XWPFParagraph> cellParagraphs = tableCell.getParagraphs();
-                final XWPFParagraph paragraph = cellParagraphs.get(0);
-                final String text = paragraph.getText();
                 if(text.length() >0){
                     mapValues.put(y,Integer.parseInt(text));
+                }else{
+                    mapValues.put(y,0);//没有就默认为0
                 }
             }
             listVales.add(mapValues);
-        }*/
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i < 7; i++){//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
+            final Integer total = ToolWord.calculateTotal(listVales,i);
+            if(sb.length() > 0){
+                sb.append(",").append(total);
+            }else{
+                sb = new StringBuilder(String.valueOf(total));//注意这个必须为 String 类型,否则得到的是空字符串""
+            }
+        }
+        final String[] values = sb.toString().split(",");
+        final int valueLength = values.length;
+        int totalAll = 0;
+        for(int x = 0; x < valueLength; x++){
+            totalAll += Integer.parseInt(values[x]);
+        }
+        final XWPFTableRow rowTotal = table.createRow();//在原来的表格上新增1行
+        final XWPFTableCell cellTotal = rowTotal.getCell(0);
+        ToolWord.cellCenter(cellTotal,"合计",12);
+        for(int x = 0; x < valueLength; x++){
+            final XWPFTableCell cell = rowTotal.getCell(x+1);// +1 是因为第1列是合计文本,即 rowTotal.getCell(0)
+            ToolWord.cellCenter(cell,values[x],12);
+        }
+        final XWPFTableCell cellEnd7 = rowTotal.getCell(7);
+        ToolWord.cellCenter(cellEnd7,String.valueOf(totalAll),12);
     }
 }
