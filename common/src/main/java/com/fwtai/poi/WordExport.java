@@ -2,8 +2,6 @@ package com.fwtai.poi;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -244,48 +242,46 @@ public final class WordExport{
             final XWPFTableRow row = table.createRow();//在原有的表格上创建新行
             for(int y=0;y<8;y++){
                 final XWPFTableCell cell = row.getCell(y);
-                final XWPFParagraph paragraph = cell.addParagraph();
-                final XWPFRun run = paragraph.createRun();
                 if(y==0){
-                    run.setText(areaName);
+                    ToolWord.cellCenter(cell,areaName,12);
                 }else{
                     final int len = types.length;
                     if(len == 1){
                         final String type = types[0];
                         if(type.equals("2")){
                             if(y ==3){
-                                run.setText(totals[0]);
+                                ToolWord.cellCenter(cell,totals[0],12);
                             }else if(y ==4){
-                                run.setText(positives[0]);
+                                ToolWord.cellCenter(cell,positives[0],12);
                             }
                         }else if(type.equals("3")){
                             if(y ==5){
-                                run.setText(totals[0]);
+                                ToolWord.cellCenter(cell,totals[0],12);
                             }else if(y ==6){
-                                run.setText(positives[0]);
+                                ToolWord.cellCenter(cell,positives[0],12);
                             }
                         }
                     }else if(len == 2){
                         if(y ==3){
-                            run.setText(totals[0]);
+                            ToolWord.cellCenter(cell,totals[0],12);
                         }else if(y ==4){
-                            run.setText(positives[0]);
+                            ToolWord.cellCenter(cell,positives[0],12);
                         }else if(y ==5){
-                            run.setText(totals[1]);
+                            ToolWord.cellCenter(cell,totals[1],12);
                         }else if(y ==6){
-                            run.setText(positives[1]);
+                            ToolWord.cellCenter(cell,positives[1],12);
                         }
                     }
                     if(y == 7){
-                        run.setText(String.valueOf(totalRow));
+                        ToolWord.cellCenter(cell,String.valueOf(totalRow),12);
                     }
                 }
             }
         }
     }
 
-    //动态创建单元格
-    private static void mergeTableCell000(final XWPFDocument doc,final List<HashMap<String,Object>> list){
+    //动态创建单元格示例代码
+    private static void mergeTableCellExample(final XWPFDocument doc,final List<HashMap<String,Object>> list){
         final XWPFTable table = doc.createTable();
         final XWPFTableRow titleRow0 = table.getRow(0);//todo 创建表格的第1行,默认是创建1行1列的表格
         final XWPFTableCell cell1 = titleRow0.getCell(0);
