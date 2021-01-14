@@ -160,7 +160,7 @@ public final class ToolWord{
      * @创建时间 2021/1/5 19:18
     */
     protected static void createDocTable(final XWPFDocument doc,final List<HashMap<String,Object>> listData,final int cols,final String horizontalKey,final String startVerticalKey,final String startColumnText,final String totalKey,final String endColumnText){
-        final XWPFTable table = doc.createTable();
+        final XWPFTable table = doc.createTable();//默认是创建1行1列的表格
         final HashMap<String,Object> map = listGetHashMap(listData,cols,horizontalKey);
         //初始化表头行
         final XWPFTableRow titleRow = table.getRow(0);//创建的的一行一列的表格，获取第一行
