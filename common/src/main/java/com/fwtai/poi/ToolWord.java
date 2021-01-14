@@ -179,12 +179,19 @@ public final class ToolWord{
             final String item = ((String) mapRow.get(startVerticalKey)).split(",")[0];
             fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
             if(i == listData.size() - 1){
-                extractTotal(table,cols,"合计");
+                final ArrayList<HashMap<Integer,Integer>> listVales = extractColumnTotal(table,1);//因为第1行是表头字段,所以 int x = 1;
+                final String[] values = extractEndTotal(listVales,cols+2);//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
+                fillRowData(table.createRow(),values,"合计",cols+1,null);//最后一个参数为 null 无需传,因为是填充数据行,该方法本身已给单元格赋值,无需指定最后一列的文本内容,否则会累加
             }
         }
     }
 
-    /**从list元素中获取指定的元素*/
+    /**
+     * 从list元素中获取指定的元素
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/14 17:38
+    */
     private static HashMap<String,Object> listGetHashMap(final List<HashMap<String,Object>> listData,final int maxColumn,final String horizontalKey){
         HashMap<String,Object> map = new HashMap<String,Object>(maxColumn);
         for(int i = 0; i < listData.size(); i++){
@@ -197,11 +204,17 @@ public final class ToolWord{
         return map;
     }
 
-    /**填充最后一行每一列计算合计,笨方法*/
-    private static void extractTotal(final XWPFTable table,final int cols,final String startColumnText){
+    /**
+     * 除去表头行之外计算每一行的每一列合计
+     * @param startRow 开始行,即除表头行之外,数据行开始
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/14 17:37
+    */
+    protected static ArrayList<HashMap<Integer,Integer>> extractColumnTotal(final XWPFTable table,final int startRow){
         final List<XWPFTableRow> listRows = table.getRows();//获取行数
         final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
-        for(int x = 1; x < listRows.size(); x++){//因为第1行是表头字段,所以 int x = 1;
+        for(int x = startRow; x < listRows.size(); x++){
             final XWPFTableRow tableRow = table.getRow(x);
             final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
             final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
@@ -216,21 +229,31 @@ public final class ToolWord{
             }
             listVales.add(mapValues);
         }
+        return listVales;
+    }
+
+    /**
+     * 最后1行为合计的最后1列的值的计算
+     * @param column 列总数,注意本项目里表格第1列是地区区域文本及最后1列是合计
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/1/14 17:35
+    */
+    protected static String[] extractEndTotal(final ArrayList<HashMap<Integer,Integer>> list,final int column){
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < cols+2; i++){//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
-            final Integer total = calculateTotal(listVales,i);
+        for(int i = 1; i < column; i++){
+            final Integer total = calculateTotal(list,i);
             if(sb.length() > 0){
                 sb.append(",").append(total);
             }else{
                 sb = new StringBuilder(String.valueOf(total));//注意这个必须为 String 类型,否则得到的是空字符串""
             }
         }
-        final String[] values = sb.toString().split(",");
-        fillRowData(table.createRow(),values,startColumnText,cols+1,null);//最后一个参数为 null 无需传,因为是填充数据行,该方法本身已给单元格赋值,无需指定最后一列的文本内容,否则会累加
+        return sb.toString().split(",");
     }
 
     /**
-     * 最后一行的每一列计算合计,推荐使用,可以参考页面js!!!
+     * 最后一行的每一列计算合计,适用于表头没有合并单元格的表格,可以参考页面js!!!
      * @param totalKey 一般是指count(xxx)的别名,如 count(xxx) as xxx_total,即填入 xxx_total 该值即可
      * @param indexColumn 是列数的索引,通过 for(int i = 0; i < cols; i++){ cols是最大的行数,循环传入,值为:1,2,3……
      * @作者 田应平

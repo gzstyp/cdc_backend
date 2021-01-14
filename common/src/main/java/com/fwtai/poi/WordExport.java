@@ -271,34 +271,8 @@ public final class WordExport{
             }
         }
         //处理最后1行的合计数据
-        final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
-        final List<XWPFTableRow> listRows = table.getRows();
-        for(int x = 2; x < listRows.size(); x++){
-            final XWPFTableRow xwpfTableRow = listRows.get(x);
-            List<XWPFTableCell> tableCells = xwpfTableRow.getTableCells();
-            final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
-            for(int y = 1; y < tableCells.size(); y++){
-                XWPFTableCell xwpfTableCell = tableCells.get(y);
-                String text = xwpfTableCell.getText();
-                if(text.length() >0){
-                    mapValues.put(y,Integer.parseInt(text));
-                }else{
-                    mapValues.put(y,0);//没有就默认为0
-                }
-            }
-            listVales.add(mapValues);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < 7; i++){//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
-            final Integer total = ToolWord.calculateTotal(listVales,i);
-            if(sb.length() > 0){
-                sb.append(",").append(total);
-            }else{
-                sb = new StringBuilder(String.valueOf(total));//注意这个必须为 String 类型,否则得到的是空字符串""
-            }
-        }
-        final String[] values = sb.toString().split(",");
+        final ArrayList<HashMap<Integer,Integer>> listVales = ToolWord.extractColumnTotal(table,2);//因前两行是表头行
+        final String[] values = ToolWord.extractEndTotal(listVales,7);
         final int valueLength = values.length;
         int totalAll = 0;
         for(int x = 0; x < valueLength; x++){
