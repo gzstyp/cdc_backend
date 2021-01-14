@@ -221,7 +221,7 @@ public final class ToolWord{
             final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
             for(int y = startColumn; y < tableCells.size(); y++){
                 final XWPFTableCell xwpfTableCell = tableCells.get(y);
-                final String text = xwpfTableCell.getText();
+                final String text = xwpfTableCell.getText();//若数据有误,可以试试 xwpfTableCell.getParagraphs().get(0).getText();
                 if(text.length() >0){
                     mapValues.put(y,Integer.parseInt(text));
                 }
