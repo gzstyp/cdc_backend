@@ -179,7 +179,7 @@ public final class ToolWord{
             final String item = ((String) mapRow.get(startVerticalKey)).split(",")[0];
             fillRowData(row,vulues,item,cols+1,String.valueOf(itemTotal));//cols+1,因为第1列是地区区域
             if(i == listData.size() - 1){
-                final ArrayList<HashMap<Integer,Integer>> listVales = extractColumnTotal(table,1);//因为第1行是表头字段,所以 int x = 1;
+                final ArrayList<HashMap<Integer,Integer>> listVales = extractColumnTotal(table,1,1);//因为第1行是表头字段,所以 int x = 1;
                 final String[] values = extractEndTotal(listVales,cols+2);//注意为什么要 cols+2 !!!,因为从 int i = 1,而不是从 int i = 0开始,再加上最后一列的合计
                 fillRowData(table.createRow(),values,"合计",cols+1,null);//最后一个参数为 null 无需传,因为是填充数据行,该方法本身已给单元格赋值,无需指定最后一列的文本内容,否则会累加
             }
@@ -207,18 +207,19 @@ public final class ToolWord{
     /**
      * 除去表头行之外计算每一行的每一列合计
      * @param startRow 开始行,即除表头行之外,数据行开始
+     * @param startColumn 开始列,一般第0列是地区或区域,所以从1开始
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/1/14 17:37
     */
-    protected static ArrayList<HashMap<Integer,Integer>> extractColumnTotal(final XWPFTable table,final int startRow){
+    protected static ArrayList<HashMap<Integer,Integer>> extractColumnTotal(final XWPFTable table,final int startRow,final int startColumn){
         final List<XWPFTableRow> listRows = table.getRows();//获取行数
         final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
         for(int x = startRow; x < listRows.size(); x++){
             final XWPFTableRow tableRow = table.getRow(x);
             final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
             final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
-            for(int y = 1; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
+            for(int y = startColumn; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
                 final XWPFTableCell tableCell = tableCells.get(y);
                 final List<XWPFParagraph> cellParagraphs = tableCell.getParagraphs();
                 final XWPFParagraph paragraph = cellParagraphs.get(0);

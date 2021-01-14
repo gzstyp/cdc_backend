@@ -271,7 +271,7 @@ public final class WordExport{
             }
         }
         //处理最后1行的合计数据
-        final ArrayList<HashMap<Integer,Integer>> listVales = ToolWord.extractColumnTotal(table,2);//因前两行是表头行
+        final ArrayList<HashMap<Integer,Integer>> listVales = ToolWord.extractColumnTotal(table,2,1);//因前两行是表头行
         final String[] values = ToolWord.extractEndTotal(listVales,7);
         final int valueLength = values.length;
         int totalAll = 0;
