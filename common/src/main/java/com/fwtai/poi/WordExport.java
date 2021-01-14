@@ -2,6 +2,8 @@ package com.fwtai.poi;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -149,6 +151,17 @@ public final class WordExport{
 
         ToolWord.singleRow(doc,new SimpleDateFormat("yyyy年MM月dd日").format(new Date()),13,ParagraphAlignment.RIGHT,true,false);
 
+        final List<XWPFTableRow> listRows = doc.getTables().get(0).getRows();
+        for(int x = 2; x < listRows.size(); x++){
+            final XWPFTableRow xwpfTableRow = listRows.get(x);
+            List<XWPFTableCell> tableCells = xwpfTableRow.getTableCells();
+            for(int y = 1; y < tableCells.size(); y++){
+                XWPFTableCell xwpfTableCell = tableCells.get(y);
+                String text = xwpfTableCell.getText();
+                System.out.println(text);
+            }
+        }
+
         ToolWord.downloadWord(doc,fileName,response);
     }
 
@@ -171,7 +184,120 @@ public final class WordExport{
 
     //表1 全省食品、外环境（含包装）及相关从业人员监测情况
     private static void mergeTableCell(final XWPFDocument doc,final List<HashMap<String,Object>> list){
-        final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格
+        final XWPFTable table = doc.createTable();
+        final XWPFTableRow row0 = table.getRow(0);//创建表格的第1行,默认是创建1行1列的表格
+        for(int i = 0; i < 7; i++){//共8个单元格,因为默认是已创建titleRow0.getCell(0);所以仅需添加7列
+            row0.addNewTableCell();//在当前行继续创建新列
+        }
+        final XWPFTableRow row1 = table.createRow();//在表的行了的列数上创建新行且列数是和上1行的列数一样,此处是第2行
+
+        final XWPFTableCell cell00 = row0.getCell(0);
+        cell00.setText("地区");
+
+        final XWPFTableCell cell01 = row0.getCell(1);
+        cell01.setText("食品样本");
+        final XWPFTableCell cell03 = row0.getCell(3);
+        cell03.setText("外环境样子");
+        final XWPFTableCell cell05 = row0.getCell(5);
+        cell05.setText("从业人员咽拭子");
+
+        final XWPFTableCell cell07 = row0.getCell(7);
+        cell07.setText("合计");
+
+        final XWPFTableCell cell11 = row1.getCell(1);
+        cell11.setText("检测份数");
+        final XWPFTableCell cell12 = row1.getCell(2);
+        cell12.setText("阳性份数");
+
+        final XWPFTableCell cell13 = row1.getCell(3);
+        cell13.setText("检测份数");
+        final XWPFTableCell cell14 = row1.getCell(4);
+        cell14.setText("阳性份数");
+
+        final XWPFTableCell cell15 = row1.getCell(5);
+        cell15.setText("检测份数");
+        final XWPFTableCell cell16 = row1.getCell(6);
+        cell16.setText("阳性份数");
+
+        ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell00,cell01,cell03,cell05,cell07,cell11,cell12,cell13,cell14,cell15,cell16);
+
+        ToolWord.mergeCellsColumn(table,0,1,2);
+        ToolWord.mergeCellsColumn(table,0,3,4);
+        ToolWord.mergeCellsColumn(table,0,5,6);
+        ToolWord.mergeCellsRow(table,0,0,1);
+        ToolWord.mergeCellsRow(table,7,0,1);
+
+        for(int i = 0; i < list.size(); i++){
+            final HashMap<String,Object> map = list.get(i);
+            final String areaName = (String)map.get("name");
+            final String[] types = ((String)map.get("type")).split(",");
+            final String[] positives = ((String)map.get("positive")).split(",");
+            final String[] totals = ((String)map.get("total")).split(",");
+
+            int totalRow = 0;
+            for(int x = 0; x < totals.length; x++){
+                totalRow += Integer.parseInt(totals[x]);
+            }
+            for(int y = 0; y < positives.length; y++){
+                totalRow += Integer.parseInt(positives[y]);
+            }
+            final XWPFTableRow row = table.createRow();//在原有的表格上创建新行
+            for(int y=0;y<8;y++){
+                final XWPFTableCell cell = row.getCell(y);
+                final XWPFParagraph paragraph = cell.addParagraph();
+                final XWPFRun run = paragraph.createRun();
+                if(y==0){
+                    run.setText(areaName);
+                }else{
+                    final int len = types.length;
+                    if(len == 1){
+                        final String type = types[0];
+                        if(type.equals("2")){
+                            if(y ==3){
+                                run.setText(totals[0]);
+                            }else if(y ==4){
+                                run.setText(positives[0]);
+                            }
+                        }else if(type.equals("3")){
+                            if(y ==5){
+                                run.setText(totals[0]);
+                            }else if(y ==6){
+                                run.setText(positives[0]);
+                            }
+                        }
+                    }else if(len == 2){
+                        if(y ==3){
+                            run.setText(totals[0]);
+                        }else if(y ==4){
+                            run.setText(positives[0]);
+                        }else if(y ==5){
+                            run.setText(totals[1]);
+                        }else if(y ==6){
+                            run.setText(positives[1]);
+                        }
+                    }
+                    if(y == 7){
+                        run.setText(String.valueOf(totalRow));
+                    }
+                }
+            }
+        }
+    }
+
+    //动态创建单元格
+    private static void mergeTableCell000(final XWPFDocument doc,final List<HashMap<String,Object>> list){
+        final XWPFTable table = doc.createTable();
+        final XWPFTableRow titleRow0 = table.getRow(0);//todo 创建表格的第1行,默认是创建1行1列的表格
+        final XWPFTableCell cell1 = titleRow0.getCell(0);
+        cell1.setText("阳性份数");
+        for(int i = 0; i < 7; i++){//todo 共8个单元格,因为默认是已创建titleRow0.getCell(0);所以仅需添加7列
+            final XWPFTableCell cell = titleRow0.addNewTableCell();//todo 在当前行继续创建新列
+            ToolWord.cellsAlign(STVerticalJc.CENTER,STJc.CENTER,cell);
+            cell.setText("阳性份数"+i);
+        }
+        final XWPFTableRow titleRow1 = table.createRow();//todo 在表的行了的列数上创建新行且列数是和上1行的列数一样,此处是第2行
+
+        /*//final XWPFTable table = doc.createTable(2,8);//创建一个2行8列的表格,勿删
         final XWPFTableCell cell00 = table.getRow(0).getCell(0);
         cell00.setText("地区");
         final XWPFTableCell cell01 = table.getRow(0).getCell(1);
@@ -259,5 +385,23 @@ public final class WordExport{
                 }
             }
         }
+
+        final List<XWPFTableRow> listRows = table.getRows();//获取行数
+        final ArrayList<HashMap<Integer,Integer>> listVales = new ArrayList<HashMap<Integer,Integer>>();
+        for(int x = 2; x < listRows.size(); x++){//因为...
+            final XWPFTableRow tableRow = table.getRow(x);
+            final List<XWPFTableCell> tableCells = tableRow.getTableCells();//获取每行的列数
+            final HashMap<Integer,Integer> mapValues = new HashMap<Integer,Integer>();
+            for(int y = 1; y < tableCells.size(); y++){//遍历每1行的每1列,因为第1列是区域地区,所以 y = 1
+                final XWPFTableCell tableCell = tableCells.get(y);
+                final List<XWPFParagraph> cellParagraphs = tableCell.getParagraphs();
+                final XWPFParagraph paragraph = cellParagraphs.get(0);
+                final String text = paragraph.getText();
+                if(text.length() >0){
+                    mapValues.put(y,Integer.parseInt(text));
+                }
+            }
+            listVales.add(mapValues);
+        }*/
     }
 }
