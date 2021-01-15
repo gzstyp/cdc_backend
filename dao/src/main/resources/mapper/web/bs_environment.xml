@@ -487,6 +487,43 @@
             #{item}
 		</foreach>
 	</delete>
+
+    <!-- 阴性发布 -->
+    <update id="editNegative" parameterType="HashMap">
+        UPDATE BS_ENVIRONMENT set result = 2 WHERE craete_userid = #{craete_userid}
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sample_code != null">
+                AND sample_code LIKE CONCAT('%',#{sample_code},'%')
+            </if>
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+            </if>
+            <if test="detection_date_start != null">
+                <![CDATA[ AND detection_date >= #{detection_date_start} ]]>
+            </if>
+            <if test="detection_date_end != null">
+                <![CDATA[ AND detection_date <= #{detection_date_end} ]]>
+            </if>
+            <if test="result != null">
+                AND result = #{result}
+            </if>
+            <if test="site_type != null">
+                AND site_type = #{site_type}
+            </if>
+        </trim>
+    </update>
 	
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">

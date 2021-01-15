@@ -53,6 +53,10 @@ public class EmployeeDao{
         return dao.execute("bs_employee.editPositive",list);
     }
 
+    public int editNegative(final PageFormData formData){
+        return dao.execute("bs_employee.editNegative",formData);
+    }
+
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"bs_employee.listData","bs_employee.listTotal");
     }

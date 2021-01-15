@@ -53,6 +53,10 @@ public class EnvironmentDao{
         return dao.execute("bs_environment.editPositive",list);
     }
 
+    public int editNegative(final PageFormData formData){
+        return dao.execute("bs_environment.editNegative",formData);
+    }
+
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"bs_environment.listData","bs_environment.listTotal");
     }

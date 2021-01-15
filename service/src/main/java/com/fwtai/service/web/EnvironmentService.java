@@ -2,6 +2,7 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.config.LocalUserId;
 import com.fwtai.poi.ToolExcel;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
@@ -121,12 +122,9 @@ public class EnvironmentService{
         if(formData.size() == 0){
             return ToolClient.createJson(ConfigFile.code199,"请选择搜索条件再发布");
         }
-        final String p_ids = "ids";
-        final String validate = ToolClient.validateField(formData,p_ids);
-        if(validate != null)return validate;
-        final String ids = formData.getString(p_ids);
-        final ArrayList<String> lists = ToolString.keysToList(ids);
-        return ToolClient.executeRows(1);
+        final String userId = LocalUserId.get();
+        formData.put("craete_userid",userId);
+        return ToolClient.executeRows(environmentDao.editNegative(formData));
     }
 
     public String listData(PageFormData formData){
