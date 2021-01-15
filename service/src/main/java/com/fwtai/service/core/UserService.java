@@ -45,7 +45,7 @@ public class UserService{
 
     // 仅仅获取用户userId的角色和权限
     public List<String> getRolePermissions(final String userId,final String url){
-        final HashMap<String,String> params = new HashMap<String,String>();
+        final HashMap<String,String> params = new HashMap<String,String>(2);
         params.put("url",url);
         params.put("userId",userId);
         return userDao.getRolePermissions(params);
