@@ -161,6 +161,14 @@
         </foreach>
     </update>
 
+    <!-- 批量删除-用户区域 -->
+    <update id="delListUserArea" parameterType="ArrayList">
+        DELETE FROM bs_user_area WHERE user_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
     <!--获取登录者的权限(暂时用不到) -->
     <select id="getPermission" resultType="String" parameterType="String">
         select permission from (

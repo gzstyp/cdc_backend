@@ -87,6 +87,7 @@ public class UserDao{
         dao.execute("sys_user.delListPassword",list);
         dao.execute("sys_user.delListUserMenu",list);
         dao.execute("sys_user.delListUserRole",list);
+        dao.execute("sys_user.delListUserArea",list);
         return row;
     }
 
