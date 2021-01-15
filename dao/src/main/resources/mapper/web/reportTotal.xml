@@ -9,7 +9,7 @@
            SUM(detection_total) detection,
            SUM(sampling_total) sampling
         from bs_crowd_total
-        where crowd_date = #{crowd_date}
+        where crowd_date = #{crowd_date} AND flag = 1
         <trim prefix="AND" prefixOverrides="AND">
             <if test="province_id != null">
                 AND province_id = #{province_id}
