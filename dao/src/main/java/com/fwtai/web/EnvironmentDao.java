@@ -49,6 +49,10 @@ public class EnvironmentDao{
         return dao.execute("bs_environment.delByKeys",list);
     }
 
+    public int editPositive(final ArrayList<String> list){
+        return dao.execute("bs_environment.editPositive",list);
+    }
+
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"bs_environment.listData","bs_environment.listTotal");
     }

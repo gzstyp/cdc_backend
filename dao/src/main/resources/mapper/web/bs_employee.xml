@@ -459,8 +459,17 @@
 	
 	<!-- 删除|批量删除-->
 	<delete id="delByKeys" parameterType="ArrayList">
-		DELETE FROM BS_EMPLOYEE WHERE 
+        UPDATE IGNORE BS_EMPLOYEE WHERE
 			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
+
+    <!--阳性发布-->
+    <delete id="editPositive" parameterType="ArrayList">
+        UPDATE BS_EMPLOYEE set result = 3 WHERE
+        kid IN
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
 		</foreach>

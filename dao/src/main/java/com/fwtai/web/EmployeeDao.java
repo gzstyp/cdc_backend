@@ -49,6 +49,10 @@ public class EmployeeDao{
         return dao.execute("bs_employee.delByKeys",list);
     }
 
+    public int editPositive(final ArrayList<String> list){
+        return dao.execute("bs_employee.editPositive",list);
+    }
+
     public HashMap<String,Object> listData(final PageFormData pageFormData){
         return dao.queryForPage(pageFormData,"bs_employee.listData","bs_employee.listTotal");
     }

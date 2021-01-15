@@ -128,7 +128,7 @@ public class EmployeeService{
         if(validate != null)return validate;
         final String ids = formData.getString(p_ids);
         final ArrayList<String> lists = ToolString.keysToList(ids);
-        return ToolClient.executeRows(1);
+        return ToolClient.executeRows(employeeDao.editPositive(lists),"操作成功","数据已不存在,刷新重试");
     }
 
     public String editNegative(final PageFormData formData){

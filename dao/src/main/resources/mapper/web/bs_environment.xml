@@ -478,6 +478,15 @@
             #{item}
 		</foreach>
 	</delete>
+
+    <!--阳性发布-->
+    <delete id="editPositive" parameterType="ArrayList">
+        UPDATE BS_ENVIRONMENT set result = 3 WHERE
+			kid IN
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+		</foreach>
+	</delete>
 	
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
