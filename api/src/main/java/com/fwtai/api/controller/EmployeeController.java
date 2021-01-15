@@ -105,7 +105,10 @@ public class EmployeeController{
         @ApiImplicitParam(name = "site_letter", value = "从业场所名称的首写字母[经营场所名称的首写字母]", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "sampling_date_start", value = "采样日期开始日期,格式为:2020-12-01", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "sampling_date_end", value = "采样日期结束日期,格式为:2020-12-01", dataType = "String", paramType = "query", required = false),
-        @ApiImplicitParam(name = "sample_code", value = "样本编号", dataType = "String", paramType = "query", required = false)
+        @ApiImplicitParam(name = "sample_code", value = "样本编号", dataType = "String", paramType = "query", required = false),
+        @ApiImplicitParam(name = "province_id", value = "对应的是登录成功后返回的areaData.province_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "city_id", value = "对应的是登录成功后返回的areaData.city_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "county_id", value = "对应的是登录成功后返回的areaData.county_id", dataType = "long", paramType = "query", required = false)
     })
     public void listDataPage(final ReqPage reqPage,final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.listDataPage(request),response);
@@ -115,7 +118,10 @@ public class EmployeeController{
     @PreAuthorize("hasRole('ROLE_APP')")
     @GetMapping("/listAllData")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "sampling_date", value = "采样日期,格式为:2021-01-05", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "sampling_date", value = "采样日期,格式为:2021-01-05", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "province_id", value = "对应的是登录成功后返回的areaData.province_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "city_id", value = "对应的是登录成功后返回的areaData.city_id", dataType = "long", paramType = "query", required = false),
+        @ApiImplicitParam(name = "county_id", value = "对应的是登录成功后返回的areaData.county_id", dataType = "long", paramType = "query", required = false)
     })
     public void listAllData(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.listAllData(request),response);
