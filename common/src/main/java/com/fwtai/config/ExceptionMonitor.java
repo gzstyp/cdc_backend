@@ -5,6 +5,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.mybatis.spring.MyBatisSystemException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -30,6 +32,8 @@ import java.net.SocketTimeoutException;
 */
 @RestControllerAdvice
 public class ExceptionMonitor{
+
+    private final static Logger logger = LoggerFactory.getLogger(ExceptionMonitor.class);
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public void notSupported(final HttpServletResponse response){
@@ -126,6 +130,7 @@ public class ExceptionMonitor{
             final int start = message.indexOf("Cause: java.sql.SQLException: Field '")+37;
             final int end = message.indexOf("' doesn't have a default value");
             final String field = message.substring(start,end);
+            logger.error("字段:"+field+"未传值*******************************---------------------------------");
             ToolClient.responseJson(ToolClient.exceptionJson("哥们,有个字段的值为空哦!"),response);
         }else{
             exception.printStackTrace();
