@@ -10,7 +10,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(final CorsRegistry registry){
         registry.addMapping("/**")
-            .allowedOrigins("https://cdc.humpsaas.com","http://192.168.3.108")
+            .allowedOrigins("https://cdc.humpsaas.com","https://api.humpsaas.com","http://192.168.3.108")
             .allowedMethods("GET","POST","OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true)
