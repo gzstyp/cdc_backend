@@ -131,7 +131,11 @@ public class EmployeeService{
         return ToolClient.executeRows(employeeDao.editPositive(lists),"操作成功","数据已不存在,刷新重试");
     }
 
+    //要带当前登录人的id么？
     public String editNegative(final PageFormData formData){
+        if(formData.size() == 0){
+            return ToolClient.createJson(ConfigFile.code199,"请选择搜索条件再发布");
+        }
         final String p_ids = "ids";
         final String validate = ToolClient.validateField(formData,p_ids);
         if(validate != null)return validate;

@@ -118,6 +118,9 @@ public class EnvironmentService{
     }
 
     public String editNegative(final PageFormData formData){
+        if(formData.size() == 0){
+            return ToolClient.createJson(ConfigFile.code199,"请选择搜索条件再发布");
+        }
         final String p_ids = "ids";
         final String validate = ToolClient.validateField(formData,p_ids);
         if(validate != null)return validate;
