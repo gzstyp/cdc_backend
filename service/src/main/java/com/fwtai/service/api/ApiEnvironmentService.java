@@ -44,14 +44,13 @@ public class ApiEnvironmentService{
         final String p_site_type = "site_type";
         final String p_market_name = "market_name";
         final String p_vendor_name = "vendor_name";
-        final String p_phone = "phone";
         final String p_entrance = "entrance";
         final String p_sample_name = "sample_name";
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_appid,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_result);
+        final String validate = ToolClient.validateField(formData,p_appid,p_sample_code,p_province_id,p_city_id,p_county_id,p_area_id,p_area_level,p_site_type,p_market_name,p_vendor_name,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_result);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_entrance,p_freeze_related,p_result);
         if(validateInteger != null)return validateInteger;
