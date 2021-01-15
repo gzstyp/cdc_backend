@@ -122,6 +122,24 @@ public class EmployeeService{
         return ToolClient.executeRows(employeeDao.delByKeys(lists),"操作成功","数据已不存在,刷新重试");
     }
 
+    public String editPositive(final PageFormData formData){
+        final String p_ids = "ids";
+        final String validate = ToolClient.validateField(formData,p_ids);
+        if(validate != null)return validate;
+        final String ids = formData.getString(p_ids);
+        final ArrayList<String> lists = ToolString.keysToList(ids);
+        return ToolClient.executeRows(1);
+    }
+
+    public String editNegative(final PageFormData formData){
+        final String p_ids = "ids";
+        final String validate = ToolClient.validateField(formData,p_ids);
+        if(validate != null)return validate;
+        final String ids = formData.getString(p_ids);
+        final ArrayList<String> lists = ToolString.keysToList(ids);
+        return ToolClient.executeRows(1);
+    }
+
     public String listData(PageFormData formData){
         final String p_iColumns = "iColumns";
         final String validate = ToolClient.validateField(formData,p_iColumns);

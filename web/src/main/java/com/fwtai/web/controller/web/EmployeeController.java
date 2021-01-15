@@ -101,4 +101,18 @@ public class EmployeeController{
     public void queryArea(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(userService.queryArea(ToolClient.getFormData(request)),response);
     }
+
+    /*阳性发布*/
+    @PreAuthorize("hasAuthority('employee_btn_positive')")
+    @PostMapping("/editPositive")
+    public void editPositive(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(employeeService.editPositive(ToolClient.getFormData(request)),response);
+    }
+
+    /*阴性发布*/
+    @PreAuthorize("hasAuthority('employee_btn_negative')")
+    @PostMapping("/editNegative")
+    public void editNegative(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(employeeService.editNegative(ToolClient.getFormData(request)),response);
+    }
 }

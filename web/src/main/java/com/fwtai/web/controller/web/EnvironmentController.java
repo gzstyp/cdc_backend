@@ -101,4 +101,18 @@ public class EnvironmentController{
     public void queryArea(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(userService.queryArea(ToolClient.getFormData(request)),response);
     }
+
+    /*阳性发布*/
+    @PreAuthorize("hasAuthority('environment_btn_positive')")
+    @PostMapping("/editPositive")
+    public void editPositive(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(environmentService.editPositive(ToolClient.getFormData(request)),response);
+    }
+
+    /*阴性发布*/
+    @PreAuthorize("hasAuthority('environment_btn_negative')")
+    @PostMapping("/editNegative")
+    public void editNegative(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(environmentService.editNegative(ToolClient.getFormData(request)),response);
+    }
 }
