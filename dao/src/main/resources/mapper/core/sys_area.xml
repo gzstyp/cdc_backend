@@ -142,10 +142,8 @@
         SELECT
             saa.kid,
             saa.name,
-            saa.type,
             saa.pid,
-            sa.name pName,
-            saa.level
+            sa.name pName
         FROM SYS_AREA saa
         left join SYS_AREA sa on sa.kid = saa.pid
 		<include refid="sql_where_listData"/>
