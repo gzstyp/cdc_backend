@@ -108,6 +108,7 @@ public class LoginAuthentication extends UsernamePasswordAuthenticationFilter{
             map.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId));
             map.put("menuData",ToolBean.getBean(request,MenuService.class).getMenuData(userId));
             map.put("userName",jwtUser.getUsername());
+            map.put("areaData",jwtUser.getAreaData());
         }else{
             map.put(ConfigFile.REFRESH_TOKEN,ToolJWT.buildRefreshToken(userId));
             map.put(ConfigFile.ACCESS_TOKEN,ToolJWT.buildAccessToken(userId));
