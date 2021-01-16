@@ -2,7 +2,6 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
-import com.fwtai.config.LocalUserId;
 import com.fwtai.poi.ToolExcel;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
@@ -122,12 +121,26 @@ public class EnvironmentService{
         if(formData.size() == 0){
             return ToolClient.createJson(ConfigFile.code199,"请选择搜索条件再发布");
         }
-        final String userId = LocalUserId.get();
-        formData.put("craete_userid",userId);
         return ToolClient.executeRows(environmentDao.editNegative(formData));
     }
 
     public String listData(PageFormData formData){
+        final Integer areaLevel = formData.getInteger("areaLevel");
+        final Object areaKid = formData.get("areaKid");
+        if(areaLevel != null)
+        switch (areaLevel){
+            case 1:
+                formData.put("areaProvince",areaKid);
+                break;
+            case 2:
+                formData.put("areaCity",areaKid);
+                break;
+            case 3:
+                formData.put("areaCounty",areaKid);
+                break;
+            default:
+                break;
+        }
         final String p_iColumns = "iColumns";
         final String validate = ToolClient.validateField(formData,p_iColumns);
         if(validate != null)return validate;

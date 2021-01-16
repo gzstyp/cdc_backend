@@ -490,8 +490,8 @@
 
     <!-- 阴性发布 -->
     <update id="editNegative" parameterType="HashMap">
-        UPDATE BS_ENVIRONMENT set result = 2 WHERE craete_userid = #{craete_userid}
-        <trim prefix="AND" prefixOverrides="AND">
+        UPDATE BS_ENVIRONMENT set result = 2
+        <trim prefix="WHERE" prefixOverrides="AND">
             <if test="sample_code != null">
                 AND sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
@@ -539,6 +539,15 @@
             </if>
             <if test="county_id != null">
                 AND bet.county_id = #{county_id}
+            </if>
+            <if test="areaProvince != null">
+                AND bet.province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND bet.city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND bet.county_id = #{areaCounty}
             </if>
             <if test="market_name != null">
                 AND bm.site_name LIKE CONCAT('%',#{market_name},'%')

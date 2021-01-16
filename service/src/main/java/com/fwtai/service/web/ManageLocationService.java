@@ -122,7 +122,6 @@ public class ManageLocationService{
         if(vallage_id != null){
             area_id = vallage_id;
         }
-        final String userId = LocalUserId.get();
         if(area_id != null){
             formData.put("area_id",area_id);
             final HashMap<String,Object> map = getAreaLevel(area_id);
@@ -133,6 +132,7 @@ public class ManageLocationService{
             site_letter = ToolChinese.getPinYinHeadChar(formData.getString(p_site_name));
         }
         formData.put("site_letter",site_letter);
+        final String userId = LocalUserId.get();
         formData.put("modify_userid",userId);
         return ToolClient.executeRows(managelocationDao.edit(formData));
     }
@@ -166,6 +166,22 @@ public class ManageLocationService{
     }
 
     public String listData(PageFormData formData){
+        final Integer areaLevel = formData.getInteger("areaLevel");
+        final Object areaKid = formData.get("areaKid");
+        if(areaLevel != null)
+        switch (areaLevel){
+            case 1:
+                formData.put("areaProvince",areaKid);
+                break;
+            case 2:
+                formData.put("areaCity",areaKid);
+                break;
+            case 3:
+                formData.put("areaCounty",areaKid);
+                break;
+            default:
+                break;
+        }
         final String p_iColumns = "iColumns";
         final String validate = ToolClient.validateField(formData,p_iColumns);
         if(validate != null)return validate;

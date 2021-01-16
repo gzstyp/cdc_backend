@@ -477,8 +477,8 @@
 
     <!-- 阴性发布 -->
     <update id="editNegative" parameterType="HashMap">
-        UPDATE BS_EMPLOYEE set result = 2 craete_userid = #{craete_userid}
-        <trim prefix="AND" prefixOverrides="AND">
+        UPDATE BS_EMPLOYEE set result = 2
+        <trim prefix="WHERE" prefixOverrides="AND">
             <if test="sample_code != null">
                 AND sample_code LIKE CONCAT('%',#{sample_code},'%')
             </if>
@@ -535,6 +535,15 @@
             </if>
             <if test="county_id != null">
                 AND bee.county_id = #{county_id}
+            </if>
+            <if test="areaProvince != null">
+                AND bee.province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND bee.city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND bee.county_id = #{areaCounty}
             </if>
             <if test="sampling_date_start != null">
                 <![CDATA[ AND bee.sampling_date >= #{sampling_date_start} ]]>
