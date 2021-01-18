@@ -29,7 +29,7 @@ import java.util.function.Function;
  * @创建时间 2020-02-12 23:53
  * @QQ号码 444141300
  * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
+ * @官网 <url>http://www.fwtai.com</url>
 */
 public final class ToolJWT implements Serializable{
 
@@ -41,7 +41,7 @@ public final class ToolJWT implements Serializable{
 
     private final static long app_refresh_token = 1000 * 60 * 60 * 24 * 7L;//7天
 
-    private final static String issuer = "富翁泰科技有限责任公司(www.fwtai.com)";//jwt签发者
+    private final static String issuer = "贵州富翁泰科技有限责任公司";//jwt签发者
 
     /**2048的密钥位的公钥*/
     private final static String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv3gl5RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGxdMgyYSOePHLzzizGcOH3t9cyHzLU9NGVsY3dPZttbOUmsjdUB8BvUzVoj+uADkTlIRQv+ZBHP0Ze/cBLn2Z+PgAUi/XGRHnDXkjo+NjeFysHjqkUJ5U30gkSCK16I/vlD6c9V3bW+ZrQZ8ahbv3klG3MqYMMf1M7SCUSwZ9ITDgD/z5NdEBin3374/bkXPUpO5bmeX5p5f6nWWDfS2xrEukt5GuvbCAFZb4QbPGCJVP/haXS7X6WgrjwCGtMu1JxmH5Y/SL4mprExeiwGCwIDAQAB";
