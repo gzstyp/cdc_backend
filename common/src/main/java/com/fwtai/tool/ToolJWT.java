@@ -33,17 +33,15 @@ import java.util.function.Function;
 */
 public final class ToolJWT implements Serializable{
 
-    //如设置Token过期时间15分钟，建议更换时间设置为Token前5分钟,通过try catch 获取过期
-    private final static long access_token = 1000 * 60 * 45L;//当 refreshToken 已过期了，再判断 accessToken 是否已过期,
+    private final static long access_token = 1000 * 60 * 45L;
 
-    /**一般更换新的accessToken小于5分钟则提示需要更换新的accessToken*/
-    private final static long refresh_token = 1000 * 60 * 1L;//仅做token的是否需要更换新的accessToken标识,小于5分钟则提示需要更换新的accessToken
+    private final static long refresh_token = 1000 * 60 * 40L;
 
     private final static long app_access_token = 1000 * 60 * 60 * 24 * 20L;//20天
 
     private final static long app_refresh_token = 1000 * 60 * 60 * 24 * 7L;//7天
 
-    private final static String issuer = "贵州富翁泰科技有限责任公司";//jwt签发者
+    private final static String issuer = "富翁泰科技有限责任公司(www.fwtai.com)";//jwt签发者
 
     /**2048的密钥位的公钥*/
     private final static String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv3gl5RjF9vTHCS2yr0zX3D50CKRiarMX+0qOpHAfcu24gWZ9bL39s48euPQniE2RhGxdMgyYSOePHLzzizGcOH3t9cyHzLU9NGVsY3dPZttbOUmsjdUB8BvUzVoj+uADkTlIRQv+ZBHP0Ze/cBLn2Z+PgAUi/XGRHnDXkjo+NjeFysHjqkUJ5U30gkSCK16I/vlD6c9V3bW+ZrQZ8ahbv3klG3MqYMMf1M7SCUSwZ9ITDgD/z5NdEBin3374/bkXPUpO5bmeX5p5f6nWWDfS2xrEukt5GuvbCAFZb4QbPGCJVP/haXS7X6WgrjwCGtMu1JxmH5Y/SL4mprExeiwGCwIDAQAB";
