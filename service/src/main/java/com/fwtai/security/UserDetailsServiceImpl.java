@@ -2,6 +2,7 @@ package com.fwtai.security;
 
 import com.fwtai.bean.JwtUser;
 import com.fwtai.bean.SysUser;
+import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUrl;
 import com.fwtai.config.Permissions;
 import com.fwtai.service.AsyncService;
@@ -37,6 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         final ArrayList<HashMap<String,Object>> areaData = new ArrayList<>(1);
         final HashMap<String,Object> data = new HashMap<>(6);
+        if(!username.equals(ConfigFile.KEY_SUPER))
         data.put("kid",user.getAreaId());//区域的id
         data.put("province_id",user.getProvinceId());//省级id
         data.put("county_id",user.getCountyId());//县（区）[sys_area的kid]
