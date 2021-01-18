@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reportTotal">
 
+    <!--常规日报查询-->
     <select id="getView" resultType="HashMap" parameterType="HashMap">
         select masculine,detection,sampling,crowdName,crowdType from (select lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
         from (select crowd_type_id,crowd_id,

@@ -14,6 +14,7 @@ public class ReportTotalDao{
     @Resource
     private DaoHandle dao;
 
+    /*常规日报查询*/
     public List<HashMap<String,Object>> getView(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.getView",formData);
     }
