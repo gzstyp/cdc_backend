@@ -60,6 +60,15 @@
             <if test="county_id != null">
                 AND county_id = #{county_id}
             </if>
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
         </trim>
         group by crowd_type_id,crowd_id) lt
         left join bs_crowd bc on bc.kid = lt.crowd_id

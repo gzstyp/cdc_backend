@@ -49,6 +49,7 @@ public class ReportTotalService{
             crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put(p_crowd_date,crowd_date);
         }
+        DataFilter.getAreaLevel(formData);
         final List<HashMap<String,Object>> list = reportTotalDao.queryDataExport(formData);
 
         final String province_id = formData.getString("province_id");
