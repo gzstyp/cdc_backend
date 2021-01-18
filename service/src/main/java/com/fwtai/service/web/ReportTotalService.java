@@ -28,6 +28,7 @@ public class ReportTotalService{
             crowd_date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             formData.put(p_crowd_date,crowd_date);
         }
+        DataFilter.getAreaLevel(formData);
         return ToolClient.queryJson(reportTotalDao.getView(formData));
     }
 

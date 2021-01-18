@@ -1,7 +1,6 @@
 package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
-import com.fwtai.config.AreaLevel;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.poi.ToolExcel;
 import com.fwtai.tool.ToolClient;
@@ -126,22 +125,7 @@ public class EnvironmentService{
     }
 
     public String listData(PageFormData formData){
-        final Integer areaLevel = AreaLevel.get();
-        final Object areaKid = formData.get("areaKid");
-        if(areaLevel != null)
-        switch (areaLevel){
-            case 1:
-                formData.put("areaProvince",areaKid);
-                break;
-            case 2:
-                formData.put("areaCity",areaKid);
-                break;
-            case 3:
-                formData.put("areaCounty",areaKid);
-                break;
-            default:
-                break;
-        }
+        DataFilter.getAreaLevel(formData);
         final String p_iColumns = "iColumns";
         final String validate = ToolClient.validateField(formData,p_iColumns);
         if(validate != null)return validate;
