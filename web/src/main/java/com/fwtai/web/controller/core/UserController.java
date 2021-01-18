@@ -39,7 +39,8 @@ public class UserController{
         final String access_token = formData.getString("accessToken");
         try {
             final String userId = ToolJWT.extractUserId(access_token);
-            final HashMap<String,String> result = userService.buildToken(userId);
+            final Object level = ToolJWT.getLevel(access_token,"area_level");
+            final HashMap<String,String> result = userService.buildToken(userId,level);
             ToolClient.responseJson(ToolClient.queryJson(result),response);
         } catch (final JwtException exception){
             ToolClient.responseJson(ToolClient.tokenInvalid(),response);

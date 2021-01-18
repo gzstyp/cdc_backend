@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.bean.UploadFile;
 import com.fwtai.bean.UploadObject;
+import com.fwtai.config.AreaLevel;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.FlagToken;
 import com.fwtai.config.LocalUrl;
@@ -619,6 +620,7 @@ public final class ToolClient implements Serializable{
 		}finally{
             FlagToken.remove();
             LocalUserId.remove();
+            AreaLevel.remove();
             RenewalToken.remove();
             LocalUrl.remove();
             Permissions.remove();

@@ -1,6 +1,7 @@
 package com.fwtai.security;
 
 import com.fwtai.bean.JwtUser;
+import com.fwtai.config.AreaLevel;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.FlagToken;
 import com.fwtai.config.LocalUserId;
@@ -45,7 +46,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
             }
             try {
                 final String userId = ToolJWT.extractUserId(access);
+                final Integer level = (Integer)ToolJWT.getLevel(access_token,"area_level");
                 LocalUserId.set(userId);
+                AreaLevel.set(level);
                 final JwtUser jwtUser = ToolBean.getBean(request,UserDetailsServiceImpl.class).getUserById(userId,uri.startsWith("/") ? uri.substring(1) : uri);
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(jwtUser.getUsername(),null,jwtUser.getAuthorities()));
                 super.doFilterInternal(request,response,chain);

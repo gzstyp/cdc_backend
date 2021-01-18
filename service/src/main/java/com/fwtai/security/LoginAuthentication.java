@@ -105,7 +105,9 @@ public class LoginAuthentication extends UsernamePasswordAuthenticationFilter{
         final Map<String,Object> map = new HashMap<>(6);
         if(type == null || type.isEmpty()){
             map.put(ConfigFile.REFRESH_TOKEN,ToolJWT.expireRefreshToken(userId));
-            map.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId));
+            final HashMap<String,Object> claims = new HashMap<String,Object>();
+            claims.put("area_level",jwtUser.getAreaData().get(0).get("area_level"));//绑定省市县级别
+            map.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId,claims));
             map.put("menuData",ToolBean.getBean(request,MenuService.class).getMenuData(userId));
             map.put("userName",jwtUser.getUsername());
             map.put("areaData",jwtUser.getAreaData());

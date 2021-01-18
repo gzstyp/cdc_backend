@@ -416,10 +416,12 @@ public class UserService{
     }
 
     //仅保存userId,userName,roles 即可
-    public HashMap<String,String> buildToken(final String userId){
+    public HashMap<String,String> buildToken(final String userId,final Object level){
         final HashMap<String,String> token = new HashMap<>(2);
         token.put(ConfigFile.REFRESH_TOKEN,ToolJWT.expireRefreshToken(userId));
-        token.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId));
+        final HashMap<String,Object> claim = new HashMap<String,Object>();
+        claim.put("area_level",level);//绑定省市县级别
+        token.put(ConfigFile.ACCESS_TOKEN,ToolJWT.expireAccessToken(userId,claim));
         return token;
     }
 

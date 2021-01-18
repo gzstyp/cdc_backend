@@ -1,6 +1,7 @@
 package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
+import com.fwtai.config.AreaLevel;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.core.UserDao;
@@ -166,7 +167,7 @@ public class ManageLocationService{
     }
 
     public String listData(PageFormData formData){
-        final Integer areaLevel = formData.getInteger("areaLevel");
+        final Integer areaLevel = AreaLevel.get();
         final Object areaKid = formData.get("areaKid");
         if(areaLevel != null)
         switch (areaLevel){
