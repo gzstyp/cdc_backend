@@ -71,4 +71,33 @@
             </if>
         </trim>
     </select>
+
+    <!--分类采样[最近7天数据]-->
+    <select id="typeSample7Day" resultType="HashMap" parameterType="HashMap">
+        select type,GROUP_CONCAT(DATE_FORMAT(sampling_date,'%m-%d') ORDER BY sampling_date ASC) dates,GROUP_CONCAT(total) total from (select type,sampling_date,sum(total) total from (
+        select type,sampling_date,total,province_id,city_id,county_id from (
+        SELECT sampling_date,count(kid) total,'外环境' type,province_id,city_id,county_id FROM bs_environment where
+        <![CDATA[ DATE_SUB(CURDATE(),INTERVAL 7 DAY) < date(sampling_date) ]]>
+        group by sampling_date,province_id,city_id,county_id
+        union all
+        SELECT sampling_date,count(kid) total,'从业人员' type,province_id,city_id,county_id FROM bs_employee where
+        <![CDATA[ DATE_SUB(CURDATE(),INTERVAL 7 DAY) < date(sampling_date) ]]>
+        group by sampling_date,province_id,city_id,county_id
+        union all
+        select crowd_date,sum(sampling_total) total,'核酸日报' type,province_id,city_id,county_id from bs_crowd_total where
+        <![CDATA[ DATE_SUB(CURDATE(),INTERVAL 7 DAY) < date(crowd_date) ]]>
+        group by crowd_date,province_id,city_id,county_id) lt group by type,sampling_date,total,province_id,city_id,county_id) lt
+        <trim prefix="where" prefixOverrides="AND">
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
+        group by type,sampling_date) lt group by type
+    </select>
 </mapper>

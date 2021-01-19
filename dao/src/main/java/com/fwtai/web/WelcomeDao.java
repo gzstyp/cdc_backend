@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class WelcomeDao{
@@ -23,5 +25,9 @@ public class WelcomeDao{
 
     public HashMap<String, Object> getCrowdTotal(final PageFormData formData){
         return dao.queryForHashMap("welcome.getCrowdTotal",formData);
+    }
+
+    public List<Map<String, Object>> typeSample7Day(final PageFormData formData){
+        return dao.queryForListMap("welcome.typeSample7Day",formData);
     }
 }
