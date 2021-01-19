@@ -2,12 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="welcome">
 
+    <!-- 统计不一定要用 group by 来实现,统计总采样数:0未检测数:0阴性数:0阳性数:0检测比例:0 -->
+    <select id="environmentBakup" resultType="HashMap" parameterType="HashMap">
+        select total,notest,negative,positive,test,ROUND((test/total) * 100,2) pc from (select count(kid) total,
+        sum(case when result = 1 then 1 else 0 end) notest,
+        sum(case when result = 2 then 1 else 0 end) negative,
+        sum(case when result = 3 then 1 else 0 end) positive,
+        sum(case when result != 1 then 1 else 0 end) test
+        from bs_environment where flag = 1) lt
+    </select>
+
     <select id="getEnvironment" resultType="HashMap" parameterType="HashMap">
         SELECT COUNT(0) total,
-		    sum(case when result='1' then 1 else 0 end) notest,
-		    sum(case when result='2' then 1 else 0 end) negative,
-		    sum(case when result='3' then 1 else 0 end) positive,
-		    ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2) pc
+		    sum(case when result=1 then 1 else 0 end) notest,
+		    sum(case when result=2 then 1 else 0 end) negative,
+		    sum(case when result=3 then 1 else 0 end) positive,
+		    ROUND(sum(case when result!=1 then 1 else 0 end)/count(0)*100,2) pc
         FROM bs_environment where flag = 1
         <trim prefix="AND" prefixOverrides="AND">
             <if test="areaProvince != null">
@@ -24,10 +34,10 @@
 
     <select id="getEmployee" resultType="HashMap" parameterType="HashMap">
          SELECT COUNT(0) total,
-		 sum(case when result='1' then 1 else 0 end) notest,
-		 sum(case when result='2' then 1 else 0 end) negative,
-		 sum(case when result='3' then 1 else 0 end) positive,
-		 ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2)pc
+		 sum(case when result=1 then 1 else 0 end) notest,
+		 sum(case when result=2 then 1 else 0 end) negative,
+		 sum(case when result=3 then 1 else 0 end) positive,
+		 ROUND(sum(case when result!=1 then 1 else 0 end)/count(0)*100,2)pc
          FROM bs_employee where flag = 1
         <trim prefix="AND" prefixOverrides="AND">
             <if test="areaProvince != null">
