@@ -15,6 +15,7 @@ public class WelcomeService{
     private WelcomeDao welcomeDao;
 
     public String getData(final PageFormData formData){
+        DataFilter.getAreaLevel(formData);
         final HashMap<String,Object> map = new HashMap<>();
         final HashMap<String, Object> environment = welcomeDao.getEnvironment(formData);
         final HashMap<String, Object> employee = welcomeDao.getEmployee(formData);

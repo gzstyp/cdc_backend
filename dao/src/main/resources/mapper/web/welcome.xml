@@ -9,6 +9,17 @@
 		    sum(case when result='3' then 1 else 0 end) positive,
 		    ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2) pc
         FROM bs_environment where flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
     </select>
 
     <select id="getEmployee" resultType="HashMap" parameterType="HashMap">
@@ -18,6 +29,17 @@
 		 sum(case when result='3' then 1 else 0 end) positive,
 		 ROUND(sum(case when result!='1' then 1 else 0 end)/count(0)*100,2)pc
          FROM bs_employee where flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
     </select>
 
     <select id="getCrowdTotal" resultType="HashMap" parameterType="HashMap">
@@ -27,5 +49,16 @@
             SUM(masculine_total) positive,
             ROUND(SUM(detection_total)/SUM(sampling_total)*100,2)pc
         from bs_crowd_total b where flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
     </select>
 </mapper>

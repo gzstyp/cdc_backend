@@ -8,6 +8,7 @@ public final class DataFilter{
     static void getAreaLevel(final PageFormData formData){
         final Integer areaLevel = AreaLevel.get();
         final Object areaKid = formData.get("areaKid");
+        formData.remove("areaKid");
         if(areaLevel != null)
         switch (areaLevel){
             case 1:
