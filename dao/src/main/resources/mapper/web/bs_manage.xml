@@ -403,6 +403,15 @@
             <if test="craete_userid != null">
                 AND su.user_name LIKE CONCAT('%',#{craete_userid},'%')
             </if>
+            <if test="province_id != null">
+                AND bm.province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND bm.city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND bm.county_id = #{county_id}
+            </if>
             <if test="areaProvince != null">
                 AND bm.province_id = #{areaProvince}
             </if>
