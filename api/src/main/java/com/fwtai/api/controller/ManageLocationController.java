@@ -88,7 +88,7 @@ public class ManageLocationController{
 
     /**获取分页数据*/
     @ApiOperation(value = "获取分页数据", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值,添加字段site_letter=经营场所首字母即可查询")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/listDataPage")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "site_letter", value = "经营场所首字母,仅返回前20个", dataType = "String", paramType = "query", required = false),

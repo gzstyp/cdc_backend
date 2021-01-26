@@ -99,7 +99,7 @@ public class EnvironmentController{
 
     /**获取分页数据*/
     @ApiOperation(value = "获取分页数据", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/listDataPage")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "market_name", value = "市场名称的名称[经营场所名称]", dataType = "String", paramType = "query", required = false),
@@ -116,7 +116,7 @@ public class EnvironmentController{
     }
 
     @ApiOperation(value = "获取指定采样日期获取全部数据", notes = "获取指定采样日期获取全部数据,仅返回flag=0的数据,必须指定采用日期")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/listAllData")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "sampling_date", value = "采样日期,格式为:2021-01-05", dataType = "String", paramType = "query", required = true),
