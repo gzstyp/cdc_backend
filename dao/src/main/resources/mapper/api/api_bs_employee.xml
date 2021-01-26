@@ -537,7 +537,7 @@
             modify_date,
             create_date
 		FROM BS_EMPLOYEE bee
-        where sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d') and craete_userid = #{craete_userid}
+        where sampling_date = STR_TO_DATE(#{sampling_date},'%Y-%m-%d')
         <trim prefix="AND" prefixOverrides="AND">
             <if test="province_id != null">
                 AND bee.province_id = #{province_id}
