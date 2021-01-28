@@ -107,6 +107,7 @@ public class CrowdTotalController{
     /**获取分页数据,todo 参数reqPage用不到请删除,否则swagger看不到请求的参数*/
     //@ApiOperation(value = "获取人群分类带分页", notes = "如需带条件搜索的自行添加对应的字段和值即可,支持多个字段和对应的值")
     @GetMapping("/listDataPage")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "crowd_date", value = "登记日期,格式为:2020-12-28", dataType = "String", paramType = "query", required = false)
     })
@@ -117,6 +118,7 @@ public class CrowdTotalController{
     //当日统计
     @ApiOperation(value = "获取统计日报数据", notes = "获取统计日报数据,可以通过指定人群分类的kid获取对应的人员类型的详细信息,若不传crowd_id则获取全部的统计信息")
     @GetMapping("/getListData")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "crowd_id", value = "人群分类的kid,如‘应检尽检’的对应的kid", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "province_id", value = "当前登录者的返回areaData里的province_id", dataType = "long", paramType = "query", required = false),
@@ -136,6 +138,7 @@ public class CrowdTotalController{
 
     @ApiOperation(value = "获取统计日报明细", notes = "获取统计日报明细,可以通过指定‘人群分类的kid’和人群类型的kid获取对应的人员类型的详细信息,若不传crowd_id、crowd_type_id则获取全部的统计信息")
     @GetMapping("/getListType")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "crowd_id", value = "人群分类的kid,如‘应检尽检’的对应的kid", dataType = "String", paramType = "query", required = false),
         @ApiImplicitParam(name = "crowd_type_id", value = "人群类型的kid,如‘企业人员’的对应的kid", dataType = "String", paramType = "query", required = false),
