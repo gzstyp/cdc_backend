@@ -48,7 +48,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter{
                 final String userId = ToolJWT.extractUserId(access);
                 final Integer level = (Integer)ToolJWT.getLevel(access,"area_level");
                 LocalUserId.set(userId);
-                AreaLevel.set(level);
+                if(level != null){
+                    AreaLevel.set(level);
+                }
                 final JwtUser jwtUser = ToolBean.getBean(request,UserDetailsServiceImpl.class).getUserById(userId,uri.startsWith("/") ? uri.substring(1) : uri);
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(jwtUser.getUsername(),null,jwtUser.getAuthorities()));
                 super.doFilterInternal(request,response,chain);
