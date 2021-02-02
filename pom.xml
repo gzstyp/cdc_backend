@@ -8,9 +8,7 @@
     <version>v1.0.0</version>
     <url>http://www.yinlz.com</url>
     <description>
-        前后端分离项目建议不要存储在session中，存储在redis中，redis存储需要一个key，key一同返回给前端用于验证输入
-
-        前后端分离的验证码解决方案 final版本,双token
+        前后端分离的验证码解决方案 双token
     </description>
     <modules>
         <module>api</module>
