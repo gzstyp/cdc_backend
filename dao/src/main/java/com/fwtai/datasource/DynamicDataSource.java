@@ -27,7 +27,7 @@ public class DynamicDataSource{
         hds.setMaximumPoolSize(128);//最大连接数，小于等于0会被重置为默认值10；大于零小于1会被重置为minimum-idle的值
         //如果idleTimeout+1秒>maxLifetime 且 maxLifetime>0，则会被重置为0（代表永远不会退出）；如果idleTimeout!=0且小于10秒，则会被重置为10秒
         hds.setIdleTimeout(idleTimeout);// 空闲连接超时时间，默认值600000（10分钟），如果大于等于max-lifetime且max-lifetime>0，会被重置为0；不等于0且小于10秒，会被重置为10秒
-        hds.setMinimumIdle(64);//最小空闲连接，默认值10，小于0或大于maximum-pool-size，都会重置为maximum-pool-size
+        hds.setMinimumIdle(120);//最小空闲连接，默认值10，小于0或大于maximum-pool-size，都会重置为maximum-pool-size
         hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
         return hds;
     }
@@ -40,7 +40,7 @@ public class DynamicDataSource{
         hds.setMaxLifetime(maxLifetime);
         hds.setMaximumPoolSize(129);
         hds.setIdleTimeout(idleTimeout);
-        hds.setMinimumIdle(64);
+        hds.setMinimumIdle(120);
         hds.setReadOnly(true);
         hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
         return hds;
@@ -54,7 +54,7 @@ public class DynamicDataSource{
         hds.setMaxLifetime(maxLifetime);
         hds.setMaximumPoolSize(130);
         hds.setIdleTimeout(idleTimeout);
-        hds.setMinimumIdle(64);
+        hds.setMinimumIdle(120);
         hds.setReadOnly(true);
         hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
         return hds;
