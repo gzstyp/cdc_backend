@@ -36,7 +36,7 @@
         left join bs_crowd_type bct on bct.kid = lt.crowd_type_id)t order by crowdType asc
     </select>
 
-    <!--导出Excel报表-->
+    <!--核酸日报表,导出Excel报表-->
     <select id="queryDataExport" resultType="HashMap" parameterType="HashMap">
         select crowdName,
             group_concat(crowdType)crowdType,
