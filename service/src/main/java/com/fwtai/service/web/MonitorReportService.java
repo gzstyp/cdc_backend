@@ -47,16 +47,11 @@ public class MonitorReportService{
         final List<HashMap<String,Object>> listEnvironmentEmployee = monitorReportDao.queryEnvironmentEmployee(formData);
         final HashMap<String, Object> sampleTypeTotal = monitorReportDao.querySampleTypeTotal(formData);
         try {
-            if(listEmployee == null || listEmployee.size() <= 0){
-                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
-                ToolClient.responseJson(json,response);
-            }else{
-                final String fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"监测报告.docx";
-                WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,listEnvironmentEmployee,fileName,response);
-            }
+            final String fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+"监测报告.docx";
+            WordExport.exportWord(start,end,selectArea,listEmployee,listSiteType,listEnvironmentOuterPack,listEntranceRisk,sampleTypeTotal,listEnvironmentEmployee,fileName,response);
         } catch (final Exception e){
             e.printStackTrace();
-            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,系统出现错误");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"出现错误,导出失败,换个日期试试");
             ToolClient.responseJson(json,response);
         }
     }

@@ -46,14 +46,27 @@ public final class WordExport{
 
         final String paragraph1 = "一、监测概况";
         ToolWord.paragraph(doc,paragraph1,14,true,true);
+        if(listEmployee.size() > 0){
+            final String paragraph2 = "本周"+listEmployee.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
+            ToolWord.paragraph(doc,paragraph2,14,true,true);
+        }
 
-        final String paragraph2 = "本周"+listEmployee.size()+"市（州）全部完成了采样及检测任务。本次共采集相关样本xx份，经新冠核酸检测均为阴性";
-        ToolWord.paragraph(doc,paragraph2,14,true,true);
-
-        final int colsEmployee = ToolWord.getMax(listEmployee,"profession");
-        final int colsSiteType = ToolWord.getMax(listSiteType,"site_type");
-        final int colsEntranceRisk = ToolWord.getMax(listEntranceRisk,"total");
-        final int colsEnvironmentOuterPack = ToolWord.getMax(listEnvironmentOuterPack,"sample_total");
+        int colsEmployee = 0;
+        if(listEmployee.size() > 0){
+            colsEmployee = ToolWord.getMax(listEmployee,"profession");
+        }
+        int colsSiteType = 0;
+        if(listSiteType.size() > 0){
+            colsSiteType = ToolWord.getMax(listSiteType,"site_type");
+        }
+        int colsEntranceRisk = 0;
+        if(listEntranceRisk.size() > 0){
+            colsEntranceRisk = ToolWord.getMax(listEntranceRisk,"total");
+        }
+        int colsEnvironmentOuterPack = 0;
+        if(listEnvironmentOuterPack.size()>0){
+            colsEnvironmentOuterPack = ToolWord.getMax(listEnvironmentOuterPack,"sample_total");
+        }
 
         Integer itemTotal = 0;
         for(int i = 0; i < colsEmployee; i++){
@@ -71,19 +84,25 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表1 全省食品、外环境（含包装）及相关从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //合并单元格
+        if(listEnvironmentEmployee.size() > 0)
         mergeTableCell(doc,listEnvironmentEmployee);
 
         ToolWord.newLine(doc);//换行
 
         final String paragraph20 = "二、食品及外环境样本监测结果";
         ToolWord.paragraph(doc,paragraph20,14,true,true);
+        String paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，暂无数据。详见表2。";
+        if(listSiteType.size() > 0){
+            paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，即"+ToolWord.getItems(listSiteType,"site_type",colsSiteType)+"。详见表2。";
+        }
 
-        final String paragraph21 = "（一）不同类型场所监测结果   本次共监测"+colsSiteType+"种类型的销售场所，即"+ToolWord.getItems(listSiteType,"site_type",colsSiteType)+"。详见表2。";
         ToolWord.paragraph(doc,paragraph21,14,true,false);
 
         ToolWord.singleRow(doc,"表2 全省不同类型场所监测情况",14,ParagraphAlignment.CENTER,true,false);
 
-        ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
+        if(listSiteType.size() > 0){
+            ToolWord.createDocTable(doc,listSiteType,colsSiteType,"site_type","area","地区","type_total","合计");
+        }
 
         ToolWord.newLine(doc);
 
@@ -94,7 +113,9 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表3  不同来源食品监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //表3,不同来源食品监测情况
-        ToolWord.createDocTable(doc,listEntranceRisk,colsEntranceRisk,"entrance","name","地区","total","合计");
+        if(listEntranceRisk.size() > 0){
+            ToolWord.createDocTable(doc,listEntranceRisk,colsEntranceRisk,"entrance","name","地区","total","合计");
+        }
 
         ToolWord.newLine(doc);
 
@@ -105,20 +126,30 @@ public final class WordExport{
         ToolWord.singleRow(doc,"表4  外环境样本监测情况",14,ParagraphAlignment.CENTER,true,false);
 
         //表4  外环境样本监测情况[产品外包装样本	其余外环境样本	合计]
-        ToolWord.createDocTable(doc,listEnvironmentOuterPack,colsEnvironmentOuterPack,"sample_type","area_name","地区","sample_total","合计");
+        if(listEnvironmentOuterPack.size()>0){
+            ToolWord.createDocTable(doc,listEnvironmentOuterPack,colsEnvironmentOuterPack,"sample_type","area_name","地区","sample_total","合计");
+        }
 
         ToolWord.newLine(doc);
 
         final String title30 = "三、从业人员监测结果";
         ToolWord.paragraph(doc,title30,14,true,true);
 
-        final String title31 = "本次监测主要采集销售、宰杀、加工、贮存、运输、管理员和其他7类从业人员的咽拭子样本。情况详见表5。";
+        if(listEmployee.size() > 0){
+            final String title31 = "本次监测主要采集销售、宰杀、加工、贮存、运输、管理员和其他7类从业人员的咽拭子样本。情况详见表5。";
+            ToolWord.paragraph(doc,title31,14,true,false);
+        }else{
+            final String title31 = "从业人员监测结果暂无数据";
+            ToolWord.paragraph(doc,title31,14,true,false);
+        }
 
-        ToolWord.paragraph(doc,title31,14,true,false);
+        if(listEmployee.size() > 0){
+            ToolWord.singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
+        }
 
-        ToolWord.singleRow(doc,"表5  不同从业人员监测情况",14,ParagraphAlignment.CENTER,true,false);
-
-        ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
+        if(listEmployee.size() > 0){
+            ToolWord.createDocTable(doc,listEmployee,colsEmployee,"profession","name","地区","profession_total","合计");
+        }
 
         ToolWord.newLine(doc);
 
