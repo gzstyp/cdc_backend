@@ -911,6 +911,437 @@ public final class ToolExcel{
         return wb;
     }
 
+    private static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
+        final XSSFWorkbook wb = new XSSFWorkbook();
+        final XSSFSheet sheet = wb.createSheet("核酸检测日报");
+        final Row labelRow = sheet.createRow(0);//第1行
+        labelRow.setHeightInPoints(30);
+        final Cell labelCell = labelRow.createCell(0);
+        final XSSFCellStyle styleCenter = wb.createCellStyle();
+        final Font labelFont = wb.createFont();
+        labelFont.setFontHeightInPoints((short)14);//设置字号
+        labelFont.setColor(IndexedColors.BLACK.getIndex());//设置字体颜色
+        labelFont.setBold(true);
+        styleCenter.setFont(labelFont);
+        styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        styleCenter.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
+        styleCenter.setWrapText(true);//自动换行显示,即非一行显示!!!
+        labelCell.setCellStyle(styleCenter);
+        labelCell.setCellValue(label);
+
+        final XSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellStyle.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
+        cellStyle.setWrapText(true);//自动换行显示,即非一行显示!!!
+
+        //采样文字样式
+        final XSSFCellStyle styleSampling = wb.createCellStyle();
+        styleSampling.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        styleSampling.setVerticalAlignment(VerticalAlignment.TOP);//靠上对齐
+        styleSampling.setWrapText(true);
+
+        final XSSFCellStyle cellCenterStyle = wb.createCellStyle();
+        cellCenterStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellCenterStyle.setVerticalAlignment(VerticalAlignment.CENTER);//靠上对齐
+        cellCenterStyle.setWrapText(true);//自动换行显示,即非一行显示!!!
+
+        int crowdTotalCell = 0;
+        final int tabsTotal = listType.size();
+        final HashMap<String,Integer> allTotal = allTotal(data);
+
+        long samplingTotal = allTotal.get("sampling");//总计采样数
+        long masculineTotal = allTotal.get("masculine");//总计检测数
+        long detectionTotal = allTotal.get("detection");//总计阳性数
+
+        for(int x = 0;x < listType.size();x++){
+            final HashMap<String,Object> map = listType.get(x);
+            final String sampling = (String)map.get("crowdType");
+            final String[] items = sampling.split(",");
+            crowdTotalCell = crowdTotalCell + items.length  * 3;
+        }
+
+        cellRangeAddress(sheet,0,0,0,(tabsTotal * 3 + 3) + crowdTotalCell - 1);//第1行标题,1是第一格的内容是'分类',但是不需要+1的,因为它是从0开始算起,而此处是从1算起;[x3的各项的合计;3是核酸总计]
+
+        final Row crowdRow = sheet.createRow(1);//第2行
+
+        final int cells = (tabsTotal * 3 + 3) + crowdTotalCell;
+
+        final XSSFCellStyle cellInfoStyle = wb.createCellStyle();
+        cellInfoStyle.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
+        cellInfoStyle.setVerticalAlignment(VerticalAlignment.CENTER);//靠上对齐
+        cellInfoStyle.setWrapText(true);//自动换行显示,即非一行显示
+
+        final Cell info = crowdRow.createCell(cells);//送样及检测情况 todo 所有的createCell和cellRangeAddress的 cells 和 下行的第3个参数,cells一致!!!
+        cellRangeAddress(sheet,1,2,cells,cells + 1);
+        info.setCellStyle(cellInfoStyle);
+        info.setCellValue("送样及检测情况");
+
+        crowdRow.setHeightInPoints(48);
+        final Row typeRow = sheet.createRow(2);//第3行,人群类型
+        typeRow.setHeightInPoints(48);//宽度
+        final Row rowTotal = sheet.createRow(3);//第4行,人群类型:已采样人数,已检测人数,检测阳性人数
+        rowTotal.setHeightInPoints(120);
+
+        final Cell infoToday = rowTotal.createCell(cells);//今日
+        infoToday.setCellStyle(cellInfoStyle);
+        infoToday.setCellValue("今日送样地点、送样份数、已检测份数");
+
+        final Cell infoFormer = rowTotal.createCell(cells+1);//往日
+        infoFormer.setCellStyle(cellInfoStyle);
+        infoFormer.setCellValue("往日外送样品已检测份数及结果更新情况");
+
+        final Row totalValue = sheet.createRow(4);//统计数据行
+        totalValue.setHeightInPoints(48);//高度
+
+        final Row rowRemark = sheet.createRow(5);//备注
+        final Cell remark = rowRemark.createCell(0);//往日
+        cellRangeAddress(sheet,5,5,0,1);
+        remark.setCellStyle(cellInfoStyle);
+        remark.setCellValue("备注");
+
+        cellRangeAddress(sheet,5,5,2,cells+1);
+        rowRemark.setHeightInPoints(40);//高度
+
+        final Row rowAuthor = sheet.createRow(6);//填表人
+        final Cell author = rowAuthor.createCell(4);
+        cellRangeAddress(sheet,6,6,4,10);
+        author.setCellValue("填表人：");
+        rowAuthor.setHeightInPoints(30);
+
+        final Cell phone = rowAuthor.createCell(11);//联系电话,todo 如果两个方法[.createCell和cellRangeAddress]在同时使用时createCell方法的参数比上一个方法cellRangeAddress的第4个参数要大1,勿删除!
+        if(listType.size() > 1){
+            cellRangeAddress(sheet,6,6,11,11+12);
+        }else{
+            cellRangeAddress(sheet,6,6,11,11+7);
+        }
+        phone.setCellValue("联系电话：");
+
+        final ArrayList<HashMap<String,Object>> listTypeTotal = typeTotal(data);
+
+        int crowdCell = 0;
+        for(int x = 0;x < listType.size();x++){//处理人员类型
+            final HashMap<String,Object> map = listType.get(x);
+            final String crowdName = (String)map.get("crowdName");
+            final String[] crowdType = ((String)map.get("crowdType")).split(",");
+
+            final int length = crowdType.length;
+            final Cell cell = crowdRow.createCell(crowdCell);//第1格子
+            cell.setCellStyle(cellCenterStyle);
+            cell.setCellValue(crowdName);
+
+            final int len = length * 3;
+            if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
+
+                final String typeName = (String)data.get(x).get("crowdName");
+
+                int totalSampling = 0;
+                int totalDetection = 0;
+                int totalMasculine = 0;
+
+                for(int i = 0; i < listTypeTotal.size(); i++){
+                    final HashMap<String,Object> typeTotal = listTypeTotal.get(i);
+                    final String crowd_name = (String)typeTotal.get("crowdName");
+                    if(typeName.equals(crowd_name)){
+                        totalMasculine = (Integer) typeTotal.get("masculine");
+                        totalDetection = (Integer) typeTotal.get("detection");
+                        totalSampling = (Integer) typeTotal.get("sampling");
+                        break;
+                    }
+                }
+
+                for(int z = 0; z < length; z++){
+                    final Cell _cell = typeRow.createCell(z*3+crowdCell);//人群类型
+                    cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);//人群类型
+                    _cell.setCellStyle(cellCenterStyle);
+                    final String name = crowdType[z];
+                    System.out.println(name);
+                    _cell.setCellValue(name);
+
+                    final Cell cellTotal0 = rowTotal.createCell(z*3+crowdCell+0);//*3是每项有3个,0第1个;1第2个;2第3个;
+                    cellTotal0.setCellStyle(styleSampling);
+                    cellTotal0.setCellValue("已采样人数");
+
+                    final Cell cellTotal1 = rowTotal.createCell(z*3+crowdCell+1);
+                    cellTotal1.setCellStyle(cellStyle);
+                    cellTotal1.setCellValue("已检测人数");
+
+                    final Cell cellTotal2 = rowTotal.createCell(z*3+crowdCell+2);
+                    cellTotal2.setCellStyle(cellStyle);
+                    cellTotal2.setCellValue("检测阳性人数");
+                    final HashMap<String,Integer> mapTypeName = getListTypeName(crowdName,name,data);
+                    //统计数值
+                    final Cell _cellValue0 = totalValue.createCell(z*3+crowdCell+0);
+                    _cellValue0.setCellStyle(cellCenterStyle);
+                    final Cell _cellValue1 = totalValue.createCell(z*3+crowdCell+1);
+                    _cellValue1.setCellStyle(cellCenterStyle);
+                    final Cell _cellValue2 = totalValue.createCell(z*3+crowdCell+2);
+                    _cellValue2.setCellStyle(cellCenterStyle);
+
+                    if(mapTypeName != null){
+                        _cellValue0.setCellValue(mapTypeName.getOrDefault("sampling",0));//采样数
+                        _cellValue1.setCellValue(mapTypeName.getOrDefault("detection",0));//检测人数
+                        _cellValue2.setCellValue(mapTypeName.getOrDefault("masculine",0));//阳性人数
+                    }else{
+                        _cellValue0.setCellValue(0);//采样数
+                        _cellValue1.setCellValue(0);//检测人数
+                        _cellValue2.setCellValue(0);//阳性人数
+                    }
+                    if(z == length - 1){
+                        final Cell cell_ = typeRow.createCell((z+1)*3+crowdCell);//合计,注意z+1
+                        cellRangeAddress(sheet,2,2,(z + 1)*3+crowdCell,(z+1)*3+2+crowdCell);//合计,注意z+1
+                        cell_.setCellStyle(cellCenterStyle);
+                        cell_.setCellValue(crowdName+"合计");
+
+                        final Cell total0 = rowTotal.createCell((z+1)*3+0+crowdCell);//注意z+1
+                        total0.setCellStyle(cellStyle);
+                        total0.setCellValue("已采样人数");
+
+                        final Cell total1 = rowTotal.createCell((z+1)*3+1+crowdCell);//注意z+1
+                        total1.setCellStyle(cellStyle);
+                        total1.setCellValue("已检测人数");
+
+                        final Cell total2 = rowTotal.createCell((z+1)*3+2+crowdCell);//注意z+1
+                        total2.setCellStyle(cellStyle);
+                        total2.setCellValue("检测阳性人数");
+
+                        //合计数值
+                        final Cell _cellValue0_ = totalValue.createCell((z+1)*3+0+crowdCell);
+                        _cellValue0_.setCellStyle(cellCenterStyle);
+                        _cellValue0_.setCellValue(totalSampling);
+                        final Cell _cellValue1_ = totalValue.createCell((z+1)*3+1+crowdCell);
+                        _cellValue1_.setCellStyle(cellCenterStyle);
+                        _cellValue1_.setCellValue(totalDetection);
+                        final Cell _cellValue2_ = totalValue.createCell((z+1)*3+2+crowdCell);
+                        _cellValue2_.setCellStyle(cellCenterStyle);
+                        _cellValue2_.setCellValue(totalMasculine);
+
+                        final Cell _cell_ = crowdRow.createCell((z+2)*3+crowdCell);//总计,只能是crowdRow,typeRow则无效,注意z+2
+                        cellRangeAddress(sheet,1,2,(z+2)*3+crowdCell,(z+2)*3+2+crowdCell);//总计,注意z+2
+
+                        _cell_.setCellStyle(cellCenterStyle);
+                        _cell_.setCellValue("核酸总计");
+
+                        final Cell _total0 = rowTotal.createCell((z+2)*3+0+crowdCell);//注意z+2
+                        _total0.setCellStyle(cellStyle);
+                        _total0.setCellValue("已采样人数");
+
+                        final Cell _total1 = rowTotal.createCell((z+2)*3+1+crowdCell);//注意z+2
+                        _total1.setCellStyle(cellStyle);
+                        _total1.setCellValue("已检测人数");
+
+                        final Cell _total2 = rowTotal.createCell((z+2)*3+2+crowdCell);//注意z+2
+                        _total2.setCellStyle(cellStyle);
+                        _total2.setCellValue("检测阳性人数");
+
+                        //总计数值
+                        final Cell cellValue0_ = totalValue.createCell((z+2)*3+0+crowdCell);
+                        cellValue0_.setCellStyle(cellCenterStyle);
+                        cellValue0_.setCellValue(samplingTotal);
+                        final Cell cellValue1_ = totalValue.createCell((z+2)*3+1+crowdCell);
+                        cellValue1_.setCellStyle(cellCenterStyle);
+                        cellValue1_.setCellValue(detectionTotal);
+                        final Cell cellValue2_ = totalValue.createCell((z+2)*3+2+crowdCell);
+                        cellValue2_.setCellStyle(cellCenterStyle);
+                        cellValue2_.setCellValue(masculineTotal);
+                    }
+                }
+                crowdCell = crowdCell + len + 3 + 3;
+                for(int k = 0; k < crowdCell; k++){
+                    sheet.setColumnWidth(k,4 * 256);//设置宽度是1个字符宽度，即 4 * 256是1个字符宽度
+                }
+            }else{
+                cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加合计,一个3是合计
+                crowdCell = crowdCell + len + 3;
+
+                final String typeName = (String)data.get(x).get("crowdName");
+
+                int totalSampling = 0;
+                int totalDetection = 0;
+                int totalMasculine = 0;
+
+                for(int i = 0; i < listTypeTotal.size(); i++){
+                    final HashMap<String,Object> typeTotal = listTypeTotal.get(i);
+                    final String crowd_name = (String)typeTotal.get("crowdName");
+                    if(typeName.equals(crowd_name)){
+                        totalMasculine = (Integer) typeTotal.get("masculine");
+                        totalDetection = (Integer) typeTotal.get("detection");
+                        totalSampling = (Integer) typeTotal.get("sampling");
+                        break;
+                    }
+                }
+
+                for(int z = 0; z < length; z++){
+
+                    final Cell _cell = typeRow.createCell(z*3);//人群类型
+                    cellRangeAddress(sheet,2,2,z*3,z*3+2);//人群类型
+                    _cell.setCellStyle(cellCenterStyle);
+                    final String name = crowdType[z];
+                    _cell.setCellValue(name);
+
+                    final Cell cellTotal0 = rowTotal.createCell(z*3+0);
+                    cellTotal0.setCellStyle(styleSampling);
+                    cellTotal0.setCellValue("已采样人数");
+
+                    final Cell cellTotal1 = rowTotal.createCell(z*3+1);
+                    cellTotal1.setCellStyle(cellStyle);
+                    cellTotal1.setCellValue("已检测人数");
+
+                    final Cell cellTotal2 = rowTotal.createCell(z*3+2);
+                    cellTotal2.setCellStyle(cellStyle);
+                    cellTotal2.setCellValue("检测阳性人数");
+
+                    final HashMap<String,Integer> mapTypeName = getListTypeName(crowdName,name,data);
+                    //统计数值
+                    final Cell cellValue0 = totalValue.createCell(z*3+0);
+                    cellValue0.setCellStyle(cellCenterStyle);
+                    final Cell cellValue1 = totalValue.createCell(z*3+1);
+                    cellValue1.setCellStyle(cellCenterStyle);
+                    final Cell cellValue2 = totalValue.createCell(z*3+2);
+                    cellValue2.setCellStyle(cellCenterStyle);
+
+                    if(mapTypeName != null){
+                        cellValue0.setCellValue(mapTypeName.getOrDefault("sampling",0));//采样数
+                        cellValue1.setCellValue(mapTypeName.getOrDefault("detection",0));//检测人数
+                        cellValue2.setCellValue(mapTypeName.getOrDefault("masculine",0));//阳性人数
+                    }else{
+                        cellValue0.setCellValue(0);//采样数
+                        cellValue1.setCellValue(0);//检测人数
+                        cellValue2.setCellValue(0);//阳性人数
+                    }
+
+                    if(z == length - 1){
+                        final Cell cell_ = typeRow.createCell((z + 1)*3);//合计
+                        cellRangeAddress(sheet,2,2,(z + 1)*3,(z + 1)*3+2);//合计
+                        cell_.setCellStyle(cellCenterStyle);
+                        cell_.setCellValue(crowdName+"合计");
+
+                        final Cell total0 = rowTotal.createCell((z+1)*3+0);
+                        total0.setCellStyle(cellStyle);
+                        total0.setCellValue("已采样人数");
+
+                        final Cell total1 = rowTotal.createCell((z+1)*3+1);
+                        total1.setCellStyle(cellStyle);
+                        total1.setCellValue("已检测人数");
+
+                        final Cell total2 = rowTotal.createCell((z+1)*3+2);
+                        total2.setCellStyle(cellStyle);
+                        total2.setCellValue("检测阳性人数");
+
+                        //合计数值
+                        final Cell _cellValue0 = totalValue.createCell((z+1)*3+0);
+                        _cellValue0.setCellStyle(cellCenterStyle);
+                        _cellValue0.setCellValue(totalSampling);
+                        final Cell _cellValue1 = totalValue.createCell((z+1)*3+1);
+                        _cellValue1.setCellStyle(cellCenterStyle);
+                        _cellValue1.setCellValue(totalDetection);
+                        final Cell _cellValue2 = totalValue.createCell((z+1)*3+2);
+                        _cellValue2.setCellStyle(cellCenterStyle);
+                        _cellValue2.setCellValue(totalMasculine);
+                    }
+                }
+            }
+        }
+        return wb;
+    }
+
+    /**
+     * 获取人群类型的采样数|检测人数|阳性人数
+     * @param crowdName 人群分类,应检尽检 或 愿检尽检
+     * @param typeName 人群类型,即人群分类的子分类
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/5 15:12
+    */
+    protected static HashMap<String,Integer> getListTypeName(final String crowdName,final String typeName,final List<HashMap<String,Object>> list){
+        for(int i = 0; i < list.size(); i++){
+            final HashMap<String,Object> map = list.get(i);
+            final String name = (String)map.get("crowdName");
+            if(crowdName.equals(name)){
+                final String[] arrays = ((String)map.get("crowdType")).split(",");
+                for(int x = 0; x < arrays.length; x++){
+                    final String array = arrays[x];
+                    if(typeName.equals(array)){
+                        final String[] masculine = ((String)map.get("masculine")).split(",");
+                        final String[] detection = ((String)map.get("detection")).split(",");
+                        final String[] sampling = ((String)map.get("sampling")).split(",");
+                        final HashMap<String,Integer> result = new HashMap<>();
+                        result.put("masculine",Integer.parseInt(masculine[x]));
+                        result.put("detection",Integer.parseInt(detection[x]));
+                        result.put("sampling",Integer.parseInt(sampling[x]));
+                        return result;
+                    }
+                }
+                break;
+            }
+        }
+        return null;
+    }
+
+    //获取各人群类型的采样数|检测人数|阳性人数的统计
+    protected static ArrayList<HashMap<String,Object>> typeTotal(final List<HashMap<String,Object>> list){
+        final ArrayList<HashMap<String,Object>> result = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            final HashMap<String,Object> map = list.get(i);
+            final HashMap<String,Object> m = new HashMap<>();
+            final String[] masculine = ((String)map.get("masculine")).split(",");
+            final String[] detection = ((String)map.get("detection")).split(",");
+            final String[] sampling = ((String)map.get("sampling")).split(",");
+            int valueMasculine = 0;
+            int valueDetection = 0;
+            int valueSampling = 0;
+            for(int x = 0; x < masculine.length; x++){
+                valueMasculine += Integer.parseInt(masculine[x]);
+            }
+            for(int x = 0; x < detection.length; x++){
+                valueDetection += Integer.parseInt(detection[x]);
+            }
+            for(int x = 0; x < sampling.length; x++){
+                valueSampling += Integer.parseInt(sampling[x]);
+            }
+            m.put("crowdName",map.get("crowdName"));
+            m.put("masculine",valueMasculine);
+            m.put("detection",valueDetection);
+            m.put("sampling",valueSampling);
+            result.add(m);
+        }
+        return result;
+    }
+
+    //获取人群分类的总统计
+    protected static HashMap<String,Integer> allTotal(final List<HashMap<String,Object>> list){
+        int totalMasculine = 0;
+        int totalDetection = 0;
+        int totalSampling = 0;
+        for(int i = 0; i < list.size(); i++){
+            final HashMap<String,Object> map = list.get(i);
+            final HashMap<String,Object> m = new HashMap<>();
+            final String[] masculine = ((String)map.get("masculine")).split(",");
+            final String[] detection = ((String)map.get("detection")).split(",");
+            final String[] sampling = ((String)map.get("sampling")).split(",");
+            int valueMasculine = 0;
+            int valueDetection = 0;
+            int valueSampling = 0;
+            for(int x = 0; x < masculine.length; x++){
+                valueMasculine += Integer.parseInt(masculine[x]);
+            }
+            for(int x = 0; x < detection.length; x++){
+                valueDetection += Integer.parseInt(detection[x]);
+            }
+            for(int x = 0; x < sampling.length; x++){
+                valueSampling += Integer.parseInt(sampling[x]);
+            }
+            totalMasculine += valueMasculine;
+            totalDetection += valueDetection;
+            totalSampling += valueSampling;
+        }
+        final HashMap<String,Integer> result = new HashMap<>();
+        result.put("masculine",totalMasculine);
+        result.put("detection",totalDetection);
+        result.put("sampling",totalSampling);
+        return result;
+    }
+
     public static void main(String[] args) throws Exception {
         //创建一个Excel
         final Workbook wb = new HSSFWorkbook();
@@ -955,8 +1386,8 @@ public final class ToolExcel{
         return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
     }
 
-    public static void exportExcel(final String label,final List<HashMap<String,Object>> data,final String fileName,final HttpServletResponse response) throws Exception {
-        downloadExcel(reportExcel(label,data),fileName,response);
+    public static void exportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,final String fileName,final HttpServletResponse response) throws Exception {
+        downloadExcel(reportExcel(label,data,listType),fileName,response);
     }
 
     /**

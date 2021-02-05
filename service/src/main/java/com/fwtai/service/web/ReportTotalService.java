@@ -50,6 +50,8 @@ public class ReportTotalService{
             formData.put(p_crowd_date,crowd_date);
         }
         DataFilter.getAreaLevel(formData);
+
+        final List<HashMap<String,Object>> listType = reportTotalDao.getAllType(formData);
         final List<HashMap<String,Object>> list = reportTotalDao.queryDataExport(formData);
 
         final String province_id = formData.getString("province_id");
@@ -89,7 +91,7 @@ public class ReportTotalService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolExcel.exportExcel(label,list,fileName,response);
+                ToolExcel.exportExcel(label,list,listType,fileName,response);
             }
         } catch (final Exception e){
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");

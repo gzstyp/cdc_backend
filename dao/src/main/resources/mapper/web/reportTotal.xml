@@ -233,4 +233,11 @@
         ) lt
         left join sys_area sa on lt.city_id = sa.kid group by sa.name,lt.type order by lt.type) gt group by name order by name ASC
     </select>
+
+    <!-- 获取全部人权类型 -->
+    <select id="getAllType" resultType="HashMap" parameterType="HashMap">
+        select bcd.name crowdName, group_concat(bct.name) crowdType from bs_crowd_type bct
+        left join bs_crowd bcd on bcd.kid = bct.crowd_id
+        group by bcd.name
+    </select>
 </mapper>

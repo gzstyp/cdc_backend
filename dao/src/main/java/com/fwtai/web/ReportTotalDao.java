@@ -19,6 +19,10 @@ public class ReportTotalDao{
         return dao.queryForListHashMap("reportTotal.getView",formData);
     }
 
+    public List<HashMap<String,Object>> getAllType(final PageFormData formData){
+        return dao.queryForListHashMap("reportTotal.getAllType",formData);
+    }
+
     public List<HashMap<String,Object>> queryDataExport(final PageFormData formData){
         return dao.queryForListHashMap("reportTotal.queryDataExport",formData);
     }
