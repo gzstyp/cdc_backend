@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="reportTotal">
 
-    <!--常规日报查询-->
+    <!--常规日报查询-页面查看-->
     <select id="getView" resultType="HashMap" parameterType="HashMap">
         select masculine,detection,sampling,crowdName,crowdType from (select lt.masculine,lt.detection,lt.sampling,bc.name crowdName,bct.name crowdType
         from (select crowd_type_id,crowd_id,
@@ -36,7 +36,7 @@
         left join bs_crowd_type bct on bct.kid = lt.crowd_type_id)t order by crowdType asc
     </select>
 
-    <!--常规日报查询-导出Excel报表-->
+    <!--常规日报查询-导出按钮-Excel报表-->
     <select id="queryDataExport" resultType="HashMap" parameterType="HashMap">
         select crowdName,
             group_concat(crowdType)crowdType,
@@ -49,7 +49,7 @@
         SUM(detection_total) detection,
         SUM(sampling_total) sampling
         from bs_crowd_total
-        where crowd_date = #{crowd_date}
+        where crowd_date = #{crowd_date} AND flag = 1
         <trim prefix="AND" prefixOverrides="AND">
             <if test="province_id != null">
                 AND province_id = #{province_id}
