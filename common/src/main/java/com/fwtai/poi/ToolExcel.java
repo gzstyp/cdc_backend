@@ -1032,9 +1032,11 @@ public final class ToolExcel{
             final int len = length * 3;
             if(x == tabsTotal -1){//处理最后一个人群类型时附加总计
                 cellRangeAddress(sheet,1,1,crowdCell,(crowdCell + len - 1) + 3);//附加总计;6 = 3 + 3,其中的一个3是合计，其中一个3是总计
-
-                final String typeName = (String)data.get(x).get("crowdName");
-
+                String typeName = null;
+                try {
+                    typeName = (String)data.get(x).get("crowdName");
+                } catch (final Exception e){
+                }
                 int totalSampling = 0;
                 int totalDetection = 0;
                 int totalMasculine = 0;
@@ -1042,7 +1044,7 @@ public final class ToolExcel{
                 for(int i = 0; i < listTypeTotal.size(); i++){
                     final HashMap<String,Object> typeTotal = listTypeTotal.get(i);
                     final String crowd_name = (String)typeTotal.get("crowdName");
-                    if(typeName.equals(crowd_name)){
+                    if(crowd_name.equals(typeName)){
                         totalMasculine = (Integer) typeTotal.get("masculine");
                         totalDetection = (Integer) typeTotal.get("detection");
                         totalSampling = (Integer) typeTotal.get("sampling");
@@ -1055,7 +1057,6 @@ public final class ToolExcel{
                     cellRangeAddress(sheet,2,2,z*3+crowdCell,z*3+2+crowdCell);//人群类型
                     _cell.setCellStyle(cellCenterStyle);
                     final String name = crowdType[z];
-                    System.out.println(name);
                     _cell.setCellValue(name);
 
                     final Cell cellTotal0 = rowTotal.createCell(z*3+crowdCell+0);//*3是每项有3个,0第1个;1第2个;2第3个;
