@@ -21,6 +21,7 @@ public class ReportTotalService{
     @Resource
     private ReportTotalDao reportTotalDao;
 
+    //常规日报-页面
     public String getView(final PageFormData formData){
         final String p_crowd_date = "crowd_date";
         String crowd_date = formData.getString(p_crowd_date);
@@ -38,7 +39,7 @@ public class ReportTotalService{
         return ToolClient.queryJson(permissions);
     }
 
-    //日报导出
+    //常规日报-导出按钮
     public void queryDataExport(final HttpServletRequest request,final HttpServletResponse response){
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
