@@ -540,8 +540,7 @@ public final class ToolClient implements Serializable{
 	*/
 	public static void responseException(final HttpServletResponse response){
 		responseJson(exceptionJson(),response);
-		return;
-	}
+    }
 
 	/**
 	 * 返回给客户端系统出现错误的提示信息,已返回给客户端,只能在controller层调用,用于增、删、改、查操作的异常返回给客户端
@@ -554,8 +553,7 @@ public final class ToolClient implements Serializable{
 	*/
 	public static void responseException(final HttpServletResponse response,final String msg){
 		responseJson(exceptionJson(msg),response);
-		return;
-	}
+    }
 
 	/**
 	 * 未登录提示信息,json格式
@@ -583,7 +581,7 @@ public final class ToolClient implements Serializable{
     public static void responseJson(final String json){
         try {
             responseJson(json,getResponse());
-        } catch (Exception e) {}
+        } catch (final Exception ignored) {}
     }
 
 	/**
