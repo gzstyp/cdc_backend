@@ -252,7 +252,6 @@ public class UserService{
     }
 
     public String saveUserArea(final PageFormData formData){
-
         final Long provinceId = formData.getLong("province_id");
         final String userId = formData.getString("user_id");
         if(provinceId == null){
@@ -430,5 +429,42 @@ public class UserService{
         token.put(ConfigFile.REFRESH_TOKEN,ToolJWT.buildRefreshToken(userId));
         token.put(ConfigFile.ACCESS_TOKEN,ToolJWT.buildAccessToken(userId));
         return token;
+    }
+
+    /**自行修改密码*/
+    public String editPassword(final PageFormData pageFormData){
+        final String p_original_password = "original_password";
+        final String p_new_password = "new_password";
+        final String p_verify_password = "verify_password";
+        final String validate = ToolClient.validateField(pageFormData,p_original_password,p_new_password,p_verify_password);
+        if(validate != null)return validate;
+        final String original_password = pageFormData.getString(p_original_password);
+        final String password = pageFormData.getString(p_new_password);
+        final String verify = pageFormData.getString(p_verify_password);
+        if(!password.equals(verify)){
+            return ToolClient.createJson(ConfigFile.code199,"输入的两次密码不一致");
+        }
+        final String userId = LocalUserId.get();
+        final String pwd = userDao.getPassword(userId);
+        final boolean bl = passworder.matches(original_password,pwd);
+        if(!bl){
+            return ToolClient.createJson(ConfigFile.code199,"你输入的原始密码不正确");
+        }
+        pageFormData.put("userId",userId);
+        pageFormData.put("password",passworder.encode(password));
+        final int rows = userDao.editPassword(pageFormData);
+        return ToolClient.executeRows(rows);
+    }
+
+    /**修改个人信息*/
+    public String editPersionInfo(final PageFormData formData){
+        final String p_real_name = "real_name";
+        final String p_affiliated_unit = "affiliated_unit";
+        final String validate = ToolClient.validateField(formData,p_real_name,p_affiliated_unit);
+        if(validate != null)return validate;
+        final String userId = LocalUserId.get();
+        formData.put("user_id",userId);
+        final int rows = userDao.editPersionInfo(formData);
+        return ToolClient.executeRows(rows);
     }
 }

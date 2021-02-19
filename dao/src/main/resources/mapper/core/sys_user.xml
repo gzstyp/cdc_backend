@@ -459,4 +459,36 @@
     <select id="getAreaLevel" resultType="HashMap" parameterType="HashMap">
         SELECT level,name FROM sys_area WHERE kid = #{kid} LIMIT 1
     </select>
+
+    <!-- 查询密码 -->
+    <select id="getPassword" resultType="String" parameterType="String">
+        SELECT user_password from sys_user_password WHERE user_id = #{userId} LIMIT 1
+    </select>
+
+    <!-- 自行修改密码 -->
+    <update id="updatePassword" parameterType="HashMap">
+        UPDATE sys_user_password SET user_password = #{password} WHERE user_id = #{userId} LIMIT 1
+    </update>
+
+    <!-- 修改个人信息 -->
+    <update id="editPersionInfo" parameterType="HashMap">
+        INSERT INTO sys_user_info (
+        <trim suffixOverrides=",">
+            <if test="user_id != null">user_id,</if>
+            <if test="real_name != null">real_name,</if>
+            <if test="affiliated_unit != null">affiliated_unit</if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="user_id != null">#{user_id},</if>
+            <if test="real_name != null">#{real_name},</if>
+            <if test="affiliated_unit != null">#{affiliated_unit}</if>
+        </trim>
+        )
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="real_name != null">real_name = #{real_name},</if>
+            <if test="affiliated_unit != null">affiliated_unit = #{affiliated_unit}</if>
+        </trim>
+    </update>
 </mapper>

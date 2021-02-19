@@ -184,4 +184,16 @@ public class UserDao{
     public HashMap<String,Object> getAreaLevel(final long kid){
         return dao.queryForHashMap("sys_user.getAreaLevel",kid);
     }
+
+    public String getPassword(final String userId){
+        return dao.queryForString("sys_user.getPassword",userId);
+    }
+
+    public int editPassword(final PageFormData formData){
+        return dao.execute("sys_user.updatePassword",formData);
+    }
+
+    public int editPersionInfo(final PageFormData formData){
+        return dao.execute("sys_user.editPersionInfo",formData);
+    }
 }

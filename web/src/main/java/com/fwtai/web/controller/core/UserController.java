@@ -151,6 +151,18 @@ public class UserController{
         ToolClient.responseJson(userService.queryArea(ToolClient.getFormData(request)),response);
     }
 
+    /**自行修改密码*/
+    @PostMapping("/editPassword")
+    public void editPassword(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(userService.editPassword(ToolClient.getFormData(request)),response);
+    }
+
+    /**修改个人信息*/
+    @PostMapping("/editPersionInfo")
+    public void editPersionInfo(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(userService.editPersionInfo(ToolClient.getFormData(request)),response);
+    }
+
     @GetMapping("/notAuthorized")
     public void notAuthorized(final HttpServletResponse response){
         ToolClient.responseJson(ToolClient.notAuthorized(),response);
