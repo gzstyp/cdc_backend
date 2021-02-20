@@ -22,7 +22,7 @@ public final class CategoryGeneral{
 
     static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
         final XSSFWorkbook wb = new XSSFWorkbook();
-        final XSSFSheet sheet = wb.createSheet("核酸检测日报");
+        final XSSFSheet sheet = wb.createSheet("日期分类统计");
         final Row labelRow = sheet.createRow(0);//第1行
         labelRow.setHeightInPoints(30);
         final Cell row0cell0 = labelRow.createCell(0);//第1行的第1个单元格

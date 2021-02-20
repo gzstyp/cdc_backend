@@ -75,8 +75,12 @@ public class DateCategoryService{
         if(date_start != null){
             _date += date_start;
         }
-        final String fileName = label + "核酸日报表"+_date+".xlsx";
-        label += "核酸日报表"+date_start+"-"+date_end;
+        if(date_end != null){
+            _date = _date + "至" +date_end;
+        }
+        final String fileName = label + "日期分类统计"+_date+".xlsx";
+        if(date_end != null)
+        label += "日期分类统计("+date_start+"至"+date_end+")";
         try {
             if(list == null || list.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
