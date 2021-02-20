@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="daily_manager">
+
+    <!--日期分类查询(含页面查看+导出按钮)-->
+    <select id="categoryGeneral" resultType="HashMap" parameterType="HashMap">
+        select lt.crowd_date,bc.name crowdName,group_concat(bct.name) crowdType, group_concat(masculine) masculine, group_concat(detection) detection, group_concat(sampling) sampling
+        from (
+        select
+        crowd_type_id,
+        crowd_id,
+        crowd_date,
+        SUM(masculine_total) masculine,
+        SUM(detection_total) detection,
+        SUM(sampling_total) sampling
+        from bs_crowd_total where flag = 1
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND crowd_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND crowd_date <= #{sampling_date_end} ]]>
+            </if>
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
+        group by crowd_type_id, crowd_id,crowd_date) lt
+        left join bs_crowd bc on bc.kid = lt.crowd_id
+        left join bs_crowd_type bct on bct.kid = lt.crowd_type_id group by crowdName,crowd_date
+    </select>
+</mapper>
