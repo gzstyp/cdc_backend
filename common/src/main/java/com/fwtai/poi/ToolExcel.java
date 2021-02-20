@@ -465,7 +465,7 @@ public final class ToolExcel{
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
 	*/
-	private static Workbook createWorkBook(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final String sheetName){
+    protected static Workbook createWorkBook(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final String sheetName){
 		final XSSFWorkbook wb = new XSSFWorkbook();
 		int count = 0;
 		int indexName = 1;
@@ -545,7 +545,7 @@ public final class ToolExcel{
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	private static XSSFSheet createSheet(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final XSSFWorkbook wb,final String sheetName){
+    protected static XSSFSheet createSheet(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final XSSFWorkbook wb,final String sheetName){
 		final XSSFSheet sheet = wb.createSheet(sheetName);
 		// 手动设置列宽。第一个参数表示要为第几列设,第二个参数表示列的宽度，n为列高的像素数。
 		for (int i = 0; i < fields.size();i++){
@@ -595,7 +595,7 @@ public final class ToolExcel{
 	}
 
 	/*单元格的样式*/
-    private static void rowCellStyle(final XSSFCellStyle style,final Font font){
+    protected static void rowCellStyle(final XSSFCellStyle style,final Font font){
         style.setFont(font);
         style.setBorderLeft(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
@@ -604,7 +604,7 @@ public final class ToolExcel{
         style.setAlignment(HorizontalAlignment.LEFT);
     }
 
-    private static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data){
+    protected static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("核酸检测日报");
         final Row labelRow = sheet.createRow(0);//第1行
@@ -1389,7 +1389,7 @@ public final class ToolExcel{
     }
 
     /**合并单元格,指定 4 个参数，起始行，结束行，起始列，结束列。这个区域将被合并;更复杂些的，需要自己计算好行与列即可*/
-    private static int cellRangeAddress(final XSSFSheet sheet,final int startRow,final int endRow,final int startCol,final int endCol){
+    protected static int cellRangeAddress(final XSSFSheet sheet,final int startRow,final int endRow,final int startCol,final int endCol){
         return sheet.addMergedRegion(new CellRangeAddress(startRow, endRow, startCol, endCol));
     }
 
@@ -1412,7 +1412,7 @@ public final class ToolExcel{
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	private static XSSFSheet createSheet(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final XSSFWorkbook wb,final String sheetName,int startRow,final String titleDescribe){
+    protected static XSSFSheet createSheet(final List<Map<String, Object>> list,final ArrayList<String> fields, final ArrayList<String> titles,final XSSFWorkbook wb,final String sheetName,int startRow,final String titleDescribe){
 		final XSSFSheet sheet = wb.createSheet(sheetName);
 		// 手动设置列宽。第一个参数表示要为第几列设,第二个参数表示列的宽度，n为列高的像素数。
 		for (int i = 0; i < fields.size();i++){
