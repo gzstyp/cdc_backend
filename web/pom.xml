@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>web</artifactId>
   <description>
-      <!--单独打包时取消注释,先在父工程执行clean或直接删除 $MAVEN_HOME\repository\com\fwtai\* 再打包-->
+  <!--单独打包时取消注释,先在父工程执行clean或直接删除 $MAVEN_HOME\repository\com\fwtai\* 再打包-->
   </description>
   <dependencies>
     <dependency>
@@ -24,7 +24,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>1.4.2.RELEASE</version>
         <executions>
           <execution>
             <goals>
