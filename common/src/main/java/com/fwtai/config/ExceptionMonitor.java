@@ -51,8 +51,7 @@ public class ExceptionMonitor{
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public void accessDeniedException(final Exception exception,final HttpServletResponse response){
-        System.out.println("方法accessDeniedException:"+exception.getClass());
+    public void accessDeniedException(final HttpServletResponse response){
         ToolClient.responseJson(ToolClient.notAuthorized(),response);
     }
 
