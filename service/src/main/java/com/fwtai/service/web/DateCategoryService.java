@@ -2,7 +2,7 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
-import com.fwtai.poi.ToolExcel;
+import com.fwtai.poi.CategoryGeneral;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.web.DateCategoryDao;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ public class DateCategoryService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
                 ToolClient.responseJson(json,response);
             }else{
-                ToolExcel.exportExcel(label,list,listType,fileName,response);
+                CategoryGeneral.exportExcel(label,list,listType,fileName,response);
             }
         } catch (final Exception e){
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
