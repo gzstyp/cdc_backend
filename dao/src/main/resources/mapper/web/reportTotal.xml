@@ -236,7 +236,7 @@
 
     <!-- 获取全部人群类型 -->
     <select id="getAllType" resultType="HashMap" parameterType="HashMap">
-        select bcd.name crowdName, group_concat(bct.name) crowdType from bs_crowd_type bct
+        select bcd.name crowdName, group_concat(bct.name) crowdType,count(bcd.name) crowdTotal from bs_crowd_type bct
         left join bs_crowd bcd on bcd.kid = bct.crowd_id
         group by bcd.name
     </select>
