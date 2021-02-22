@@ -31,10 +31,9 @@ public final class CategoryGeneral{
         for(int i = 0; i < listType.size(); i++){
             totalCell += (Long) listType.get(i).get("crowdTotal");
         }
-        totalCell = totalCell * 3 + (listType.size() * 3) + 3 + 1;//+1是第1行的第1个单元格;+3是总统计
+        totalCell = totalCell * 3 + (listType.size() * 3) + 3;//+1是第1行的第1个单元格;+3是总统计
         for (int j = 1; j <= totalCell; j++){
-            final Cell cell = labelRow0.createCell(j);
-            cell.setCellValue(label);
+            labelRow0.createCell(j);
         }
         //合并单元格
         ToolExcel.cellRangeAddress(sheet,0,0,1,totalCell);
@@ -52,8 +51,39 @@ public final class CategoryGeneral{
         labelCell.setCellValue(label);
 
         final Row row1 = sheet.createRow(1);//创建第2行
+        row1.setHeightInPoints(22);//高度
         final Cell row1cell1 = row1.createCell(0);//创建第2行的第1个单元格
         row1cell1.setCellValue("分类");
+
+        int intCrowdTypeCount = 0;
+        //计算总的单元格
+        for(int i = 0; i < listType.size(); i++){
+            final HashMap<String,Object> map = listType.get(i);
+            final long crowdTotal = (Long) map.get("crowdTotal");
+            intCrowdTypeCount += crowdTotal * 3 + 3;
+            for(int x = 0; x < intCrowdTypeCount;x++){
+                row1.createCell(x+1);
+            }
+        }
+
+        /*for(int i = 0; i < listType.size(); i++){
+            final HashMap<String,Object> map = listType.get(i);
+            final long crowdTotal = (Long) map.get("crowdTotal");
+            intCrowdTypeCount += crowdTotal * 3 + 3;
+            final String crowdName = (String) map.get("crowdName");
+            final String crowdType = (String) map.get("crowdType");
+            final String[] arrays = crowdType.split(",");
+            for(int x = 0; x <= intCrowdTypeCount;x++){
+                row1.createCell(x+1);
+            }
+            System.out.println(crowdTotal);
+            System.out.println(crowdTotal * 3 + 3 + 1);
+            if(i == 0){
+                ToolExcel.cellRangeAddress(sheet,1,1,1,intCrowdTypeCount);
+            }else{
+                ToolExcel.cellRangeAddress(sheet,1,1,58,intCrowdTypeCount);//(int)(crowdTotal * 3 + 3 + 1)
+            }
+        }*/
         return wb;
     }
 }
