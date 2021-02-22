@@ -25,7 +25,7 @@ public final class CategoryGeneral{
         final XSSFSheet sheet = wb.createSheet("日期分类统计");
         final Row labelRow = sheet.createRow(0);//第1行
         labelRow.setHeightInPoints(30);
-        final Cell row0cell0 = labelRow.createCell(0);//第1行的第1个单元格
+        final Cell row0cell0 = labelRow.createCell(0);//创建第1行的第1个单元格
         row0cell0.setCellValue("附件名称");
         int totalCell = 0;
         for(int i = 0; i < listType.size(); i++){
