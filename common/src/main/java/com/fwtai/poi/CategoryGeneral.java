@@ -20,11 +20,12 @@ public final class CategoryGeneral{
         ToolExcel.downloadExcel(reportExcel(label,data,listType),fileName,response);
     }
 
-    protected static void cellStyle(final XSSFWorkbook wb,final Cell cell){
+    protected static XSSFCellStyle cellStyle(final XSSFWorkbook wb,final Cell cell){
         final XSSFCellStyle styleCenter = wb.createCellStyle();
         styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         styleCenter.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
         cell.setCellStyle(styleCenter);
+        return styleCenter;
     }
 
     static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
@@ -62,7 +63,7 @@ public final class CategoryGeneral{
         row1.setHeightInPoints(22);//高度
         final Cell row1cell0 = row1.createCell(0);//创建第2行的第1个单元格
         cellStyle(wb,row1cell0);
-        row1cell0.setCellValue("分类");
+        row1cell0.setCellValue("人群分类");
 
         //第2行,计算并创建总的单元格
         for (int j = 1; j <= totalCell;j++){
@@ -92,7 +93,7 @@ public final class CategoryGeneral{
         row2.setHeightInPoints(50);//高度
         final Cell row2cell0 = row2.createCell(0);//创建第3行的第1个单元格
         cellStyle(wb,row2cell0);
-        row2cell0.setCellValue("类型");
+        row2cell0.setCellValue("人群类型");
 
         //创建第3行
         for (int j = 1; j <= totalCell;j++){
@@ -151,46 +152,33 @@ public final class CategoryGeneral{
         cellStyle(wb,cellTotal);
         cellTotal.setCellValue("核酸总计");
 
+        final Row row3 = sheet.createRow(3);//创建第4行
+        row3.setHeightInPoints(90);//高度
+        final Cell row3cell0 = row3.createCell(0);
+        cellStyle(wb,row3cell0);
+        row3cell0.setCellValue("统计项目");
+
         //人群类型
-        /*for (int j = 0; j < totalCell;j=j+3){
-            System.out.println(j+1);
-            row2.createCell(j+1);
+        for (int j = 0; j < totalCell;j=j+3){
             for(int z = 0; z < 3; z++){
-                //System.out.println(j+z+1);
+                final Cell cell = row3.createCell(j + z + 1);
+                final XSSFCellStyle style = cellStyle(wb,cell);
+                style.setWrapText(true);
+                switch (z){
+                    case 0:
+                        cell.setCellValue("已采样人数");
+                        break;
+                    case 1:
+                        cell.setCellValue("已检测人数");
+                        break;
+                    case 2:
+                        cell.setCellValue("检测阳性人数");
+                        break;
+                    default:
+                        break;
+                }
             }
-        }*/
-
-
-
-        int intCrowdTypeCount = 0;
-        //计算总的单元格
-        /*for(int i = 0; i < listType.size(); i++){
-            final HashMap<String,Object> map = listType.get(i);
-            final long crowdTotal = (Long) map.get("crowdTotal");
-            intCrowdTypeCount += crowdTotal * 3 + 3;
-            for(int x = 0; x < intCrowdTypeCount;x++){
-                row1.createCell(x+1);
-            }
-        }*/
-
-        /*for(int i = 0; i < listType.size(); i++){
-            final HashMap<String,Object> map = listType.get(i);
-            final long crowdTotal = (Long) map.get("crowdTotal");
-            intCrowdTypeCount += crowdTotal * 3 + 3;
-            final String crowdName = (String) map.get("crowdName");
-            final String crowdType = (String) map.get("crowdType");
-            final String[] arrays = crowdType.split(",");
-            for(int x = 0; x <= intCrowdTypeCount;x++){
-                row1.createCell(x+1);
-            }
-            System.out.println(crowdTotal);
-            System.out.println(crowdTotal * 3 + 3 + 1);
-            if(i == 0){
-                ToolExcel.cellRangeAddress(sheet,1,1,1,intCrowdTypeCount);
-            }else{
-                ToolExcel.cellRangeAddress(sheet,1,1,58,intCrowdTypeCount);//(int)(crowdTotal * 3 + 3 + 1)
-            }
-        }*/
+        }
         return wb;
     }
 }
