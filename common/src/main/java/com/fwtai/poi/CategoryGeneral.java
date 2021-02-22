@@ -23,9 +23,9 @@ public final class CategoryGeneral{
     static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("日期分类统计");
-        final Row labelRow = sheet.createRow(0);//第1行
-        labelRow.setHeightInPoints(30);
-        final Cell row0cell0 = labelRow.createCell(0);//创建第1行的第1个单元格
+        final Row labelRow0 = sheet.createRow(0);//第1行
+        labelRow0.setHeightInPoints(30);
+        final Cell row0cell0 = labelRow0.createCell(0);//创建第1行的第1个单元格
         row0cell0.setCellValue("附件名称");
         int totalCell = 0;
         for(int i = 0; i < listType.size(); i++){
@@ -33,12 +33,11 @@ public final class CategoryGeneral{
         }
         totalCell = totalCell * 3 + (listType.size() * 3) + 3 + 1;//+1是第1行的第1个单元格;+3是总统计
         for (int j = 1; j <= totalCell; j++){
-            final Cell cell = labelRow.createCell(j);
+            final Cell cell = labelRow0.createCell(j);
             cell.setCellValue(label);
         }
         //合并单元格
         ToolExcel.cellRangeAddress(sheet,0,0,1,totalCell);
-
         final XSSFCellStyle styleCenter = wb.createCellStyle();
         final Font labelFont = wb.createFont();
         labelFont.setFontHeightInPoints((short)14);//设置字号
@@ -48,10 +47,13 @@ public final class CategoryGeneral{
         styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
         styleCenter.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
         styleCenter.setWrapText(true);//自动换行显示,即非一行显示!!!
-        final Cell labelCell = labelRow.getCell(1);
+        final Cell labelCell = labelRow0.getCell(1);
         labelCell.setCellStyle(styleCenter);
         labelCell.setCellValue(label);
 
+        final Row row1 = sheet.createRow(1);//创建第2行
+        final Cell row1cell1 = row1.createCell(0);//创建第2行的第1个单元格
+        row1cell1.setCellValue("分类");
         return wb;
     }
 }
