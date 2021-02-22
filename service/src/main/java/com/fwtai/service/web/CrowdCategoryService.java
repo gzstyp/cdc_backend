@@ -32,6 +32,13 @@ public class CrowdCategoryService{
         final String p_name = "name";
         final String validate = ToolClient.validateField(formData,p_name);
         if(validate != null)return validate;
+        final String name = formData.getString(p_name);
+        if(name.contains("|")){
+            return ToolClient.createJson(ConfigFile.code199,"不能包含|特殊符合");
+        }
+        if(name.contains(",")){
+            return ToolClient.createJson(ConfigFile.code199,"不能包含,特殊符合");
+        }
         formData.put("kid",ToolString.getIdsChar32());
         return ToolClient.executeRows(crowdcategoryDao.add(formData));
     }
@@ -42,6 +49,13 @@ public class CrowdCategoryService{
         final String p_name = "name";
         final String validate = ToolClient.validateField(formData,p_name,p_kid);
         if(validate != null)return validate;
+        final String name = formData.getString(p_name);
+        if(name.contains("|")){
+            return ToolClient.createJson(ConfigFile.code199,"不能包含|特殊符合");
+        }
+        if(name.contains(",")){
+            return ToolClient.createJson(ConfigFile.code199,"不能包含,特殊符合");
+        }
         final String exist_key = crowdcategoryDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"数据已不存在,刷新重试");
