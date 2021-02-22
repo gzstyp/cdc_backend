@@ -31,7 +31,7 @@ public final class CategoryGeneral{
         for(int i = 0; i < listType.size(); i++){
             totalCell += (Long) listType.get(i).get("crowdTotal");
         }
-        totalCell = totalCell * 3 + (listType.size() * 3) + 3;//+1是第1行的第1个单元格;+3是总统计
+        totalCell = totalCell * 3 + (listType.size() * 3) + 3;//(listType.size() * 3)是人群分类;+3是总统计的各3项
         for (int j = 1; j <= totalCell; j++){
             labelRow0.createCell(j);
         }
