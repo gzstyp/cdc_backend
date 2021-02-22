@@ -55,9 +55,16 @@ public final class CategoryGeneral{
         final Cell row1cell1 = row1.createCell(0);//创建第2行的第1个单元格
         row1cell1.setCellValue("分类");
 
-        //计算总的单元格
+        //计算并创建总的单元格
         for (int j = 1; j <= totalCell;j++){
             row1.createCell(j);
+        }
+
+        //第2行合并单元格操作
+        for(int i = 0; i < listType.size(); i++){
+            final HashMap<String,Object> map = listType.get(i);
+            final long crowdTotal = (Long) map.get("crowdTotal");
+
         }
 
         int intCrowdTypeCount = 0;
