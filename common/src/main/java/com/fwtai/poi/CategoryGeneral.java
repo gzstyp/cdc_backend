@@ -31,6 +31,7 @@ public final class CategoryGeneral{
     static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet("日期分类统计");
+        sheet.setColumnWidth(0,(int) (35.7 * 100));
         final Row labelRow0 = sheet.createRow(0);//第1行
         labelRow0.setHeightInPoints(30);
         final Cell row0cell0 = labelRow0.createCell(0);//创建第1行的第1个单元格
@@ -179,6 +180,20 @@ public final class CategoryGeneral{
                 }
             }
         }
+        fillData(data,wb,sheet);
         return wb;
+    }
+
+    //填充数据
+    private static void fillData(final List<HashMap<String,Object>> list,final XSSFWorkbook wb,final XSSFSheet sheet){
+        for(int i = 0; i < list.size(); i++){
+            final Row row = sheet.createRow(4+i);//4++数据行
+            row.setHeightInPoints(20);
+            final HashMap<String,Object> map = list.get(i);
+            final String crowd_date = String.valueOf(map.get("crowd_date"));
+            final Cell cellDate = row.createCell(0);
+            cellStyle(wb,cellDate);
+            cellDate.setCellValue(crowd_date);
+        }
     }
 }
