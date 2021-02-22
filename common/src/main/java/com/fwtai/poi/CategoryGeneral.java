@@ -195,5 +195,9 @@ public final class CategoryGeneral{
             cellStyle(wb,cellDate);
             cellDate.setCellValue(crowd_date);
         }
+        final Row row = sheet.createRow(4+list.size());//累计数
+        final Cell cellTotal = row.createCell(0);
+        cellStyle(wb,cellTotal);
+        cellTotal.setCellValue("累计数");
     }
 }

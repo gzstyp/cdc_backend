@@ -18,15 +18,11 @@ public class DateCategoryDao{
         return dao.queryForListHashMap("reportTotal.getAllType",formData);
     }
 
-    /*常规日报查询-页面显示*/
-    public List<HashMap<String,Object>> getView(final PageFormData formData){
-        return dao.queryForListHashMap("daily_manager.categoryGeneral",formData);
+    /*常规日报查询-页面显示|导出按钮*/
+    public List<HashMap<String,Object>> getCategoryGeneral(final PageFormData formData){
+        return dao.queryForListHashMap("daily_manager.categoryTotalGeneral",formData);
     }
 
-    /*常规日报查询-导出按钮*/
-    public List<HashMap<String,Object>> queryDataExport(final PageFormData formData){
-        return dao.queryForListHashMap("daily_manager.categoryGeneral",formData);
-    }
 
     /**查询登录者所拥有的权限*/
     public List<String> queryPermissions(){

@@ -22,7 +22,7 @@ public class DateCategoryService{
     //常规日报-页面
     public String getView(final PageFormData formData){
         DataFilter.getAreaLevel(formData);
-        return ToolClient.queryJson(dateCategoryDao.getView(formData));
+        return ToolClient.queryJson(dateCategoryDao.getCategoryGeneral(formData));
     }
 
     /**查询登录者所拥有的权限*/
@@ -43,7 +43,7 @@ public class DateCategoryService{
         DataFilter.getAreaLevel(formData);
 
         final List<HashMap<String,Object>> listType = dateCategoryDao.getAllType(formData);
-        final List<HashMap<String,Object>> list = dateCategoryDao.queryDataExport(formData);
+        final List<HashMap<String,Object>> list = dateCategoryDao.getCategoryGeneral(formData);
 
         final String province_id = formData.getString("province_id");
         final String city_id = formData.getString("city_id");
@@ -89,6 +89,7 @@ public class DateCategoryService{
                 CategoryGeneral.exportExcel(label,list,listType,fileName,response);
             }
         } catch (final Exception e){
+            e.printStackTrace();
             final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
             ToolClient.responseJson(json,response);
         }
