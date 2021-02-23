@@ -280,27 +280,6 @@ public final class CategoryGeneral{
             final String value = cell.getStringCellValue();
             if(value.length() > 0)
             if(!(crowd_name+"合计").equals(value)){
-                //Cell cell = row.getCell(rowIndex);
-
-                /*final String[] crowdNames = ((String)map.get("crowdName")).split("\\|");//愿检尽检人群|应检尽检人群
-                final String[] crowdTypes = ((String)map.get("crowdType")).split("\\|");
-                final String[] masculine = ((String)map.get("masculine")).split("\\|");
-                final String[] detection = ((String)map.get("detection")).split("\\|");
-                final String[] sampling = ((String)map.get("sampling")).split("\\|");
-                final String[] totalMasculine = ((String)map.get("totalMasculine")).split("\\|");
-                final String[] totalDetection = ((String)map.get("totalDetection")).split("\\|");
-                final String[] totalSampling = ((String)map.get("totalSampling")).split("\\|");
-                final String crowdName = crowdNames[tabIndex];
-                System.out.println(crowdName);
-                System.out.println(crowdTypes[tabIndex]);
-                System.out.println(masculine[tabIndex]);
-                System.out.println(detection[tabIndex]);
-                System.out.println(sampling[tabIndex]);
-                System.out.println(totalMasculine[tabIndex]);
-                System.out.println(totalDetection[tabIndex]);
-                System.out.println(totalSampling[tabIndex]);*/
-
-                final String crowdName = getIndexData(map,"crowdName",tabIndex);
                 final String crowdType = getIndexData(map,"crowdType",tabIndex);
                 final String masculine = getIndexData(map,"masculine",tabIndex);
                 final String detection = getIndexData(map,"detection",tabIndex);
@@ -309,11 +288,32 @@ public final class CategoryGeneral{
                 final String[] masculines = masculine.split(",");
                 final String[] detections = detection.split(",");
                 final String[] samplings = sampling.split(",");
-
-                final String[] values = crowdType.split(",");
+                final String[] values = crowdType.split(",");//应检尽检发热门诊就诊患者
                 for(int x = 0; x < values.length; x++){
                     final String v = values[x];
-                    if((crowd_name+v).equals(value)){
+                    final int funs = funs(sheet,cells,crowd_name + v);
+                    if(funs != -1){
+                        System.out.println(crowd_name + v+",funs = " + funs);
+                        /*for(int z = 1; z <= 3; z++){
+                            final Cell rowCell = row.getCell(j + z + 1);
+                            switch (z){
+                                case 1:
+                                    rowCell.setCellValue(samplings[x]);
+                                    break;
+                                case 2:
+                                    rowCell.setCellValue(detections[x]);
+                                    break;
+                                case 3:
+                                    rowCell.setCellValue(masculines[x]);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }*/
+                    }
+                    /*if((crowd_name+v).equals(value)){
+                        System.out.println("index = " + index);
+                        break;
                         //System.out.println(j + ",value = " + value + "-->"+crowd_name+v);//为空字符串的是'核酸总计'
                         //System.out.println(j + ",value = " + value + ",");
                         for(int z = 0; z < 3; z++){
@@ -332,7 +332,7 @@ public final class CategoryGeneral{
                                     break;
                             }
                         }
-                    }
+                    }*/
                 }
             }else{
                 final Cell cellTotal1 = row.getCell(j + 1);
@@ -346,6 +346,18 @@ public final class CategoryGeneral{
                 cellTotal3.setCellValue(totalMasculine);
             }
         }
+    }
+
+    private static int funs(final XSSFSheet sheet,final int cells,final String value){
+        for (int j = 1; j <= cells;j++){
+            final XSSFRow xssfRow = sheet.getRow(2);//人群类型
+            final XSSFCell cell = xssfRow.getCell(j);
+            final String v = cell.getStringCellValue();
+            if(value.equals(v)){
+                return j;
+            }
+        }
+        return -1;
     }
 
     private static String getIndexData(final HashMap<String,Object> map,final String key,final int tabIndex){
