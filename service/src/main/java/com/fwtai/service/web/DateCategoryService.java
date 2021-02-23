@@ -83,14 +83,14 @@ public class DateCategoryService{
         label += "日期分类统计("+date_start+"至"+date_end+")";
         try {
             if(list == null || list.size() <= 0){
-                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区县试试");
+                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区域试试");
                 ToolClient.responseJson(json,response);
             }else{
                 CategoryGeneral.exportExcel(label,list,listType,fileName,response);
             }
         } catch (final Exception e){
             e.printStackTrace();
-            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区县试试");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"导出失败,请换个日期或区域试试");
             ToolClient.responseJson(json,response);
         }
     }
