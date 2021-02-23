@@ -234,7 +234,9 @@ public final class CategoryGeneral{
             cellStyle(wb,cellDate);
             cellDate.setCellValue(crowd_date);
             for (int j = 1; j <= cells;j++){
-                row.createCell(j);//创建空单元格
+                final Cell cell = row.createCell(j);//创建空单元格
+                cellStyle(wb,cell);
+                cell.setCellValue(0);
             }
             int masculine = 0;
             int detection = 0;
@@ -304,17 +306,33 @@ public final class CategoryGeneral{
                 final String detection = getIndexData(map,"detection",tabIndex);
                 final String sampling = getIndexData(map,"sampling",tabIndex);
 
+                final String[] masculines = masculine.split(",");
+                final String[] detections = detection.split(",");
+                final String[] samplings = sampling.split(",");
+
                 final String[] values = crowdType.split(",");
                 for(int x = 0; x < values.length; x++){
                     final String v = values[x];
-                    System.out.println(v);
-                }
-
-                //System.out.println(j + ",value = " + value + ","+crowd_name);//为空字符串的是'核酸总计'
-                System.out.println(j + ",value = " + value + ",");
-
-                for(int z = 0; z < 3; z++){
-                    final Cell rowCell = row.getCell(j + z + 1);
+                    if((crowd_name+v).equals(value)){
+                        //System.out.println(j + ",value = " + value + "-->"+crowd_name+v);//为空字符串的是'核酸总计'
+                        //System.out.println(j + ",value = " + value + ",");
+                        for(int z = 0; z < 3; z++){
+                            final Cell rowCell = row.getCell(j + z + 1);
+                            switch (z){
+                                case 0:
+                                    rowCell.setCellValue(samplings[x]);
+                                    break;
+                                case 1:
+                                    rowCell.setCellValue(detections[x]);
+                                    break;
+                                case 2:
+                                    rowCell.setCellValue(masculines[x]);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                 }
             }else{
                 final Cell cellTotal1 = row.getCell(j + 1);
