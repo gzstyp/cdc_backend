@@ -156,7 +156,7 @@ public final class CategoryGeneral{
         cellTotal.setCellValue("核酸总计");
 
         final Row row3 = sheet.createRow(3);//创建第4行
-        row3.setHeightInPoints(90);//高度
+        row3.setHeightInPoints(36);
         final Cell row3cell0 = row3.createCell(0);
         cellStyle(wb,row3cell0);
         row3cell0.setCellValue("统计项目");
@@ -304,10 +304,17 @@ public final class CategoryGeneral{
                 final String detection = getIndexData(map,"detection",tabIndex);
                 final String sampling = getIndexData(map,"sampling",tabIndex);
 
-                //System.out.println(j + ",value = " + value + ","+crowd_name+crowdName);//为空字符串的是'核酸总计'
+                final String[] values = crowdType.split(",");
+                for(int x = 0; x < values.length; x++){
+                    final String v = values[x];
+                    System.out.println(v);
+                }
+
+                //System.out.println(j + ",value = " + value + ","+crowd_name);//为空字符串的是'核酸总计'
+                System.out.println(j + ",value = " + value + ",");
 
                 for(int z = 0; z < 3; z++){
-                    //final Cell cell = row3.createCell(j + z + 1);
+                    final Cell rowCell = row.getCell(j + z + 1);
                 }
             }else{
                 final Cell cellTotal1 = row.getCell(j + 1);
