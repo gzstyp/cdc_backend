@@ -278,72 +278,59 @@ public final class CategoryGeneral{
             final XSSFRow xssfRow = sheet.getRow(2);//人群类型
             final XSSFCell cell = xssfRow.getCell(index);
             final String value = cell.getStringCellValue();
-            if(value.length() > 0)
-            if(!(crowd_name+"合计").equals(value)){
-                final String crowdType = getIndexData(map,"crowdType",tabIndex);
-                final String masculine = getIndexData(map,"masculine",tabIndex);
-                final String detection = getIndexData(map,"detection",tabIndex);
-                final String sampling = getIndexData(map,"sampling",tabIndex);
+            if(value.length() > 0){
+                if(!(crowd_name+"合计").equals(value)){
+                    final String crowdType = getIndexData(map,"crowdType",tabIndex);
+                    final String masculine = getIndexData(map,"masculine",tabIndex);
+                    final String detection = getIndexData(map,"detection",tabIndex);
+                    final String sampling = getIndexData(map,"sampling",tabIndex);
 
-                final String[] masculines = masculine.split(",");
-                final String[] detections = detection.split(",");
-                final String[] samplings = sampling.split(",");
-                final String[] values = crowdType.split(",");//应检尽检发热门诊就诊患者
-                for(int x = 0; x < values.length; x++){
-                    final String v = values[x];
-                    final int funs = funs(sheet,cells,crowd_name + v);
-                    if(funs != -1){
-                        System.out.println(crowd_name + v+",funs = " + funs);
-                        /*for(int z = 1; z <= 3; z++){
-                            final Cell rowCell = row.getCell(j + z + 1);
-                            switch (z){
-                                case 1:
-                                    rowCell.setCellValue(samplings[x]);
-                                    break;
-                                case 2:
-                                    rowCell.setCellValue(detections[x]);
-                                    break;
-                                case 3:
-                                    rowCell.setCellValue(masculines[x]);
-                                    break;
-                                default:
-                                    break;
+                    final String[] samplings = sampling.split(",");//已采样
+                    final String[] detections = detection.split(",");//已检测
+                    final String[] masculines = masculine.split(",");//阳性人数
+                    final String[] values = crowdType.split(",");//应检尽检发热门诊就诊患者
+                    for(int x = 0; x < values.length; x++){
+                        final String v = values[x];
+                        final int funs = funs(sheet,cells,crowd_name + v);
+                        if(funs != -1){
+                            System.out.println(crowd_name + v+",funs = " + funs);
+                            System.out.println(samplings[x]+","+detections[x]+","+masculines[x]);
+                            System.out.println("----------------");
+                        }
+                        /*if((crowd_name+v).equals(value)){
+                            System.out.println("index = " + index);
+                            break;
+                            //System.out.println(j + ",value = " + value + "-->"+crowd_name+v);//为空字符串的是'核酸总计'
+                            //System.out.println(j + ",value = " + value + ",");
+                            for(int z = 0; z < 3; z++){
+                                final Cell rowCell = row.getCell(j + z + 1);
+                                switch (z){
+                                    case 0:
+                                        rowCell.setCellValue(samplings[x]);
+                                        break;
+                                    case 1:
+                                        rowCell.setCellValue(detections[x]);
+                                        break;
+                                    case 2:
+                                        rowCell.setCellValue(masculines[x]);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         }*/
                     }
-                    /*if((crowd_name+v).equals(value)){
-                        System.out.println("index = " + index);
-                        break;
-                        //System.out.println(j + ",value = " + value + "-->"+crowd_name+v);//为空字符串的是'核酸总计'
-                        //System.out.println(j + ",value = " + value + ",");
-                        for(int z = 0; z < 3; z++){
-                            final Cell rowCell = row.getCell(j + z + 1);
-                            switch (z){
-                                case 0:
-                                    rowCell.setCellValue(samplings[x]);
-                                    break;
-                                case 1:
-                                    rowCell.setCellValue(detections[x]);
-                                    break;
-                                case 2:
-                                    rowCell.setCellValue(masculines[x]);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }*/
+                }else{
+                    final Cell cellTotal1 = row.getCell(j + 1);
+                    final Cell cellTotal2 = row.getCell(j + 2);
+                    final Cell cellTotal3 = row.getCell(j + 3);
+                    final String totalMasculine = getIndexData(map,"totalMasculine",tabIndex);
+                    final String totalDetection = getIndexData(map,"totalDetection",tabIndex);
+                    final String totalSampling = getIndexData(map,"totalSampling",tabIndex);
+                    cellTotal1.setCellValue(totalSampling);
+                    cellTotal2.setCellValue(totalDetection);
+                    cellTotal3.setCellValue(totalMasculine);
                 }
-            }else{
-                final Cell cellTotal1 = row.getCell(j + 1);
-                final Cell cellTotal2 = row.getCell(j + 2);
-                final Cell cellTotal3 = row.getCell(j + 3);
-                final String totalMasculine = getIndexData(map,"totalMasculine",tabIndex);
-                final String totalDetection = getIndexData(map,"totalDetection",tabIndex);
-                final String totalSampling = getIndexData(map,"totalSampling",tabIndex);
-                cellTotal1.setCellValue(totalSampling);
-                cellTotal2.setCellValue(totalDetection);
-                cellTotal3.setCellValue(totalMasculine);
             }
         }
     }
