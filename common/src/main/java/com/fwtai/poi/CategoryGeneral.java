@@ -31,6 +31,13 @@ public final class CategoryGeneral{
         ToolExcel.downloadExcel(reportExcel(label,data,listType),fileName,response);
     }
 
+    /**
+     * 单元格水平垂直居中
+     * @param 
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/23 22:53
+    */
     protected static XSSFCellStyle cellStyle(final XSSFWorkbook wb,final Cell cell){
         final XSSFCellStyle styleCenter = wb.createCellStyle();
         styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
@@ -122,11 +129,11 @@ public final class CategoryGeneral{
             final String[] arrays = crowdType.split(",");
             if(i==0){
                 for(int x = 0; x < arrays.length; x++){
-                    final String array = arrays[x];
+                    final String typeName = arrays[x];
                     final int tab = (x * 3) + 1;//1-3;4-6;7-9
                     final Cell cell = row2.getCell((x == 0) ? 1 : tab);//1、4、7、10
                     cellStyle(wb,cell);
-                    cell.setCellValue(crowdName+array);
+                    cell.setCellValue(crowdName+typeName);//'人群(大)分类'+'人群类型'拼接组合的"人群类型",最后crowdTypeName();还原
                     final boolean bl = (x == 0);
                     ToolExcel.cellRangeAddress(sheet,2,2,(bl?1:tab),(bl?3:tab+2));
                     if(x == arrays.length-1){
@@ -139,11 +146,11 @@ public final class CategoryGeneral{
                 }
             }else{
                 for(int x = 0; x < arrays.length; x++){
-                    final String array = arrays[x];
+                    final String typeName = arrays[x];
                     final int tab = (x * 3) + 1;
                     final Cell cell = row2.getCell((x == 0) ? intCrowdType+1 : intCrowdType+tab);
                     cellStyle(wb,cell);
-                    cell.setCellValue(crowdName+array);
+                    cell.setCellValue(crowdName+typeName);//拼接组合的"人群类型"
                     final boolean bl = (x == 0);
                     ToolExcel.cellRangeAddress(sheet,2,2,(bl?(intCrowdType+1):intCrowdType+tab),(bl?(intCrowdType+3):intCrowdType+tab+2));
                     if(x == arrays.length-1){
@@ -192,18 +199,14 @@ public final class CategoryGeneral{
             }
         }
         splitData(data,totalCell,wb,sheet);
-        cutType(listType,row2);
+        crowdTypeName(listType,row2);
         return wb;
     }
     
     /**
-     * 处理类型+分类的组合
-     * @param 
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/2/23 14:57
+     * 处理已生成'人群(大)分类'+'人群类型'拼接的"人群类型"的还原,即第3行的数据
     */
-    static void cutType(final List<HashMap<String,Object>> listType,final Row row){
+    static void crowdTypeName(final List<HashMap<String,Object>> listType,final Row row){
         int cutCrowdType = 0;
         for(int i = 0; i < listType.size(); i++){
             final HashMap<String,Object> map = listType.get(i);
@@ -230,7 +233,9 @@ public final class CategoryGeneral{
         }
     }
 
-    //填充数据
+    /**
+     * 填充以日期的数据行
+    */
     private static void splitData(final List<HashMap<String,Object>> list,final int cells,final XSSFWorkbook wb,final XSSFSheet sheet){
         for(int i = 0; i < list.size(); i++){
             final int rowIndex = 4+i;//4++数据行
@@ -267,11 +272,7 @@ public final class CategoryGeneral{
     }
 
     /**
-     * 每行的总计
-     * @param
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/2/23 16:29
+     * 每行的总计显示
     */
     private static void rowTotal(final Row row,final int cells,final int sampling,final int detection,final int masculine){
         final Cell cellTotal2 = row.getCell(cells - 2);//倒数第3个
@@ -282,30 +283,8 @@ public final class CategoryGeneral{
         cellTotal0.setCellValue(masculine);
     }
 
-    private static void renderDataRow(final XSSFSheet sheet,final Row row,final int cells,final HashMap<String,Object> map){
-        System.out.println("--8--");
-        final String crowdName = (String) map.get("crowdName");
-        final String crowdType = (String) map.get("crowdType");
-        final String[] crowdNames = crowdName.split("\\|");
-        final String[] crowdTypes = crowdType.split("\\|");
-        for(int x = 0; x < crowdNames.length; x++){
-            final String name = crowdNames[x];
-            for(int z = 0; z < crowdTypes.length; z++){
-                final String type = crowdTypes[z];
-                final int position = dataGetPosition(sheet,cells,name + type);
-                if(position != -1){
-                    //final Cell cell = row.getCell(position);
-                    System.out.println(position+","+(name + type));
-                }
-            }
-        }
-    }
-
     /**
      * 每行的数据填充
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/2/23 21:50
     */
     private static void renderDataRow(final XSSFSheet sheet,final Row row,final int cells,final HashMap<String,Object> map,final int tabIndex){
         final String crowdType = getIndexData(map,"crowdType",tabIndex);
@@ -344,7 +323,9 @@ public final class CategoryGeneral{
         }
     }
 
-    //计算每行的合计
+    /**
+     * 计算每行的合计
+    */
     private static void renderTotalData(final XSSFSheet sheet,final Row row,final String crowd_name,final int cells,final HashMap<String,Object> map,final int tabIndex){
         for (int j = 0; j < cells;j=j+3){
             final int index = j + 1;
@@ -367,6 +348,9 @@ public final class CategoryGeneral{
         }
     }
 
+    /**
+     * 获取人群类型的位置
+    */
     private static int dataGetPosition(final XSSFSheet sheet,final int cells,final String value){
         for (int j = 1; j <= cells;j++){
             final XSSFRow xssfRow = sheet.getRow(2);
@@ -384,7 +368,7 @@ public final class CategoryGeneral{
         return values[tabIndex];
     }
 
-    private static void renderDataRow0(final XSSFSheet sheet,final Row row,final String crowd_name,final int cells,final HashMap<String,Object> map,final int tabIndex){
+    private static void render_data_row(final XSSFSheet sheet,final Row row,final String crowd_name,final int cells,final HashMap<String,Object> map,final int tabIndex){
         for (int j = 0; j < cells;j=j+3){
             final int index = j + 1;
             final XSSFRow xssfRow = sheet.getRow(2);//人群类型,应检尽检->第1遍是正确的;
