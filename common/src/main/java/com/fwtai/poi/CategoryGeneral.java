@@ -199,10 +199,58 @@ public final class CategoryGeneral{
             }
         }
         splitData(data,totalCell,wb,sheet);
+
+        final Row totalRow = sheet.createRow(4+data.size());//累计数
+        final Cell cellEnd = totalRow.createCell(0);
+        cellStyle(wb,cellEnd);
+        cellEnd.setCellValue("累计数");
+
         crowdTypeName(listType,row2);
+        handleTotal(sheet,totalRow,totalCell,data.size());
         return wb;
     }
-    
+
+    /**
+     * 计算最后行的累计统计
+     * @param row 累计数
+     * @param cells 总人群类型数量
+     * @param number 数据的行数
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/24 10:32
+    */
+    private static void handleTotal(final XSSFSheet sheet,final Row row,final int cells,final int number){
+        for(int i = 1; i <= cells; i++){
+            final int value = handle2DValue(sheet,cells,number,i);
+            final Cell cell = row.createCell(i);
+            cellStyle(sheet.getWorkbook(),cell);
+            cell.setCellValue(value);
+        }
+    }
+
+    /**
+     * 计算每一行的第几个单元格的合计|总计
+     * @param
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/24 19:31
+    */
+    private static int handle2DValue(final XSSFSheet sheet,final int cells,final int number,final int position){
+        int result = 0;
+        for(int i = 0; i < number; i++){
+            final XSSFRow xssfRow = sheet.getRow(4+i);
+            for(int x = 1; x <= cells; x++){
+                if(x == position){
+                    final XSSFCell cell = xssfRow.getCell(x);
+                    final double value = Double.parseDouble(String.valueOf(cell));
+                    result += value;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * 处理已生成'人群(大)分类'+'人群类型'拼接的"人群类型"的还原,即第3行的数据
     */
@@ -265,10 +313,6 @@ public final class CategoryGeneral{
             }
             rowTotal(row,cells,sampling,detection,masculine);
         }
-        final Row row = sheet.createRow(4+list.size());//累计数
-        final Cell cellTotal = row.createCell(0);
-        cellStyle(wb,cellTotal);
-        cellTotal.setCellValue("累计数");
     }
 
     /**
@@ -300,9 +344,6 @@ public final class CategoryGeneral{
             final String v = values[x];
             final int position = dataGetPosition(sheet,cells,(crowd_name + v));
             if(position != -1){
-                System.out.println(crowd_name + v+",position = " + position);
-                System.out.println(samplings[x]+","+detections[x]+","+masculines[x]);
-                System.out.println("----------------");
                 for(int z = 0; z < 3; z++){
                     final Cell rowCell = row.getCell(position + z);
                     switch (z){
