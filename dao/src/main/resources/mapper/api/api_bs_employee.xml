@@ -413,7 +413,7 @@
                 AND bee.real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
             <if test="id_card != null">
-                AND bee.id_card LIKE CONCAT('%',#{id_card},'%')
+                AND bee.id_card LIKE CONCAT(#{id_card},'%')
             </if>
             <if test="market_name != null">
                 AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
