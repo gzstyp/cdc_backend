@@ -19,6 +19,7 @@
             <if test="real_name != null">real_name,</if>
             <if test="phone != null">phone,</if>
             <if test="gender != null">gender,</if>
+            <if test="id_card != null">id_card,</if>
             <if test="age != null">age,</if>
             <if test="work_site != null">work_site,</if>
             <if test="work_type != null">work_type,</if>
@@ -47,6 +48,7 @@
 			<if test="real_name != null">#{real_name},</if>
 			<if test="phone != null">#{phone},</if>
 			<if test="gender != null">#{gender},</if>
+			<if test="id_card != null">#{id_card},</if>
 			<if test="age != null">#{age},</if>
 			<if test="work_site != null">#{work_site},</if>
 			<if test="work_type != null">#{work_type},</if>
@@ -84,6 +86,7 @@
             <if test="real_name != null">real_name,</if>
             <if test="phone != null">phone,</if>
             <if test="gender != null">gender,</if>
+            <if test="id_card != null">id_card,</if>
             <if test="age != null">age,</if>
             <if test="work_site != null">work_site,</if>
             <if test="work_type != null">work_type,</if>
@@ -112,6 +115,7 @@
             <if test="real_name != null">#{real_name},</if>
             <if test="phone != null">#{phone},</if>
             <if test="gender != null">#{gender},</if>
+            <if test="id_card != null">#{id_card},</if>
             <if test="age != null">#{age},</if>
             <if test="work_site != null">#{work_site},</if>
             <if test="work_type != null">#{work_type},</if>
@@ -337,6 +341,7 @@
             <if test="real_name != null">real_name = #{real_name},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="gender != null">gender = #{gender},</if>
+            <if test="id_card != null">id_card = #{id_card},</if>
             <if test="age != null">age = #{age},</if>
             <if test="work_site != null">work_site = #{work_site},</if>
             <if test="work_type != null">work_type = #{work_type},</if>
@@ -369,6 +374,7 @@
             real_name,
             phone,
             gender,
+            id_card,
             age,
             work_site,
             work_type,
@@ -405,6 +411,9 @@
 		<trim prefix="WHERE" prefixOverrides="AND">
             <if test="real_name != null">
                 AND bee.real_name LIKE CONCAT('%',#{real_name},'%')
+            </if>
+            <if test="id_card != null">
+                AND bee.id_card LIKE CONCAT('%',#{id_card},'%')
             </if>
             <if test="market_name != null">
                 AND bm.site_name LIKE CONCAT('%',#{market_name},'%')
@@ -449,6 +458,7 @@
             bee.real_name,
             bee.phone,
             bee.gender,
+            bee.id_card,
             bee.age,
             bm.site_name,
             bee.work_site,
@@ -522,6 +532,7 @@
             real_name,
             phone,
             gender,
+            id_card,
             age,
             work_site,
             work_type,

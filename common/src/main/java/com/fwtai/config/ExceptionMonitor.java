@@ -1,5 +1,6 @@
 package com.fwtai.config;
 
+import com.fwtai.bean.IdCardException;
 import com.fwtai.tool.ToolClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -97,6 +98,12 @@ public class ExceptionMonitor{
     public void socketTimeoutException(final Exception exception,final HttpServletResponse response){
         exception.printStackTrace();
         ToolClient.responseJson(ToolClient.exceptionJson(),response);
+    }
+
+    @ExceptionHandler(IdCardException.class)
+    public void idCardException(final Exception exception,final HttpServletResponse response){
+        final String message = exception.getMessage();
+        ToolClient.responseJson(ToolClient.exceptionJson(message),response);
     }
 
     @ExceptionHandler(PersistenceException.class)

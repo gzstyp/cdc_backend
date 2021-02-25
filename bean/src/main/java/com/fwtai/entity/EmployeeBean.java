@@ -30,9 +30,11 @@ public final class EmployeeBean implements Serializable{
     private String real_name;
     @ApiModelProperty(required = false,value = "联系电话")
     private String phone;
-    @ApiModelProperty(required = true,value = "人员性别(1男;2女)")
+    @ApiModelProperty(required = false,value = "人员性别(1男;2女)")
     private Integer gender;
-    @ApiModelProperty(required = true,value = "人员年龄")
+    @ApiModelProperty(required = true,value = "身份证号码")
+    private String id_card;
+    @ApiModelProperty(required = false,value = "人员年龄")
     private Integer age;
     @ApiModelProperty(required = true,value = "从业场所名称[即经营场所名称],通过首写字母搜索得下拉列表获取保存所选的kid")
     private String work_site;
@@ -157,6 +159,14 @@ public final class EmployeeBean implements Serializable{
 
     public void setGender(Integer gender){
         this.gender = gender;
+    }
+
+    public String getId_card(){
+        return id_card;
+    }
+
+    public void setId_card(String id_card){
+        this.id_card = id_card;
     }
 
     public Integer getAge(){

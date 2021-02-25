@@ -1,12 +1,14 @@
 package com.fwtai.service.api;
 
 import com.fwtai.api.ApiEmployeeDao;
+import com.fwtai.bean.IdentityCard;
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.entity.EmployeeBean;
 import com.fwtai.entity.PublishBean;
 import com.fwtai.tool.ToolClient;
+import com.fwtai.tool.ToolIdCard;
 import com.fwtai.tool.ToolString;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +44,7 @@ public class ApiEmployeeService{
         final String p_county_id = "county_id";
         final String p_area_level = "area_level";
         final String p_real_name = "real_name";
-        final String p_gender = "gender";
-        final String p_age = "age";
+        final String p_id_card = "id_card";
         final String p_work_site = "work_site";
         final String p_work_type = "work_type";
         final String p_profession = "profession";
@@ -51,9 +52,9 @@ public class ApiEmployeeService{
         final String p_sample_type = "sample_type";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_appid,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_gender,p_age,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_result);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_area_id,p_appid,p_province_id,p_city_id,p_county_id,p_area_level,p_real_name,p_work_site,p_work_type,p_profession,p_cold_chain,p_sample_type,p_result);
         if(validate != null)return validate;
-        final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_gender,p_cold_chain,p_result);
+        final String validateInteger = ToolClient.validateInteger(formData,p_area_level,p_cold_chain,p_result);
         if(validateInteger != null)return validateInteger;
         String detection_date = formData.getString(p_detection_date);
         if(detection_date == null){
@@ -65,6 +66,13 @@ public class ApiEmployeeService{
                 return ToolClient.createJsonFail("检测日期格式不对");
             }
         }
+        final String idCard = formData.getString(p_id_card);
+        if(idCard == null){
+            return ToolClient.createJsonFail("请输入身份证号");
+        }
+        final IdentityCard identityCard = ToolIdCard.extractIdInfo(idCard);
+        formData.put("gender",identityCard.getSex().getCode());
+        formData.put("age",identityCard.getAge());
         final String userId = LocalUserId.get();
         final String kid = ToolString.getIdsChar32();
         formData.put("kid",kid);
@@ -86,14 +94,13 @@ public class ApiEmployeeService{
     public String edit(final HttpServletRequest request){
         final PageFormData formData = new PageFormData(request);
         final String p_kid = "kid";
-        final String p_gender = "gender";
-        final String p_age = "age";
         final String p_cold_chain = "cold_chain";
         final String p_detection_date = "detection_date";
+        final String p_id_card = "id_card";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_gender,p_age,p_cold_chain,p_result,p_kid);
+        final String validate = ToolClient.validateField(formData,p_cold_chain,p_result,p_kid);
         if(validate != null)return validate;
-        final String validateInteger = ToolClient.validateInteger(formData,p_gender,p_cold_chain,p_result);
+        final String validateInteger = ToolClient.validateInteger(formData,p_cold_chain,p_result);
         if(validateInteger != null)return validateInteger;
         final String exist_key = apiEmployeeDao.queryExistById(formData.getString(p_kid));
         if(exist_key == null){
@@ -112,6 +119,12 @@ public class ApiEmployeeService{
             if(!bl){
                 return ToolClient.createJsonFail("检测日期格式不对");
             }
+        }
+        final String idCard = formData.getString(p_id_card);
+        if(idCard !=null){
+            final IdentityCard identityCard = ToolIdCard.extractIdInfo(idCard);
+            formData.put("gender",identityCard.getSex().getCode());
+            formData.put("age",identityCard.getAge());
         }
         final String userId = LocalUserId.get();
         formData.put("modify_userid",userId);
