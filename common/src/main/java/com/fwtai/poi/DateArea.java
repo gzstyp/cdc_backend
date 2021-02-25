@@ -73,6 +73,9 @@ public final class DateArea{
             if(j == 0){
                 cell.setCellValue("地区");
             }else if(j == totalCell - 1){
+                final XSSFCellStyle styleCenter = cellStyle(wb,cell);
+                styleCenter.setAlignment(HorizontalAlignment.LEFT);//居左
+                cell.setCellStyle(styleCenter);
                 cell.setCellValue("备注");
             }
         }
@@ -109,19 +112,17 @@ public final class DateArea{
                     for(int x = 1; x < 5; x++){
                         itemArea(wb,x,rowDate.createCell(tab + x + 4));
                     }
+                    //处理最后一个单元格
+                    final Cell cell = rowDate.createCell(totalCell-1);//-1是因为第一个单元格已被创建
+                    final XSSFCellStyle styleCenter = cellStyle(wb,cell);
+                    styleCenter.setAlignment(HorizontalAlignment.LEFT);//居左
+                    cell.setCellStyle(styleCenter);
+                    cell.setCellValue("风险区域");
                 }
             }
         }
-
         //数据行
-        final Row rowData = sheet.createRow(3);//第4行,日期的数据行
-        rowData.setHeightInPoints(20);
-        final Cell row3cell0 = rowData.createCell(0);//创建第4行的第1个单元格
-        cellStyle(wb,row3cell0);
-        row3cell0.setCellValue("2021-02-25");
-
-        //splitData(data,totalCell,wb,sheet);
-
+        splitData(data,totalCell,wb,sheet);
         return wb;
     }
 
@@ -134,17 +135,17 @@ public final class DateArea{
             final Row row = sheet.createRow(rowIndex);
             row.setHeightInPoints(20);
             final HashMap<String,Object> map = list.get(i);
-            final String crowd_date = String.valueOf(map.get("crowd_date"));
-            final String[] crowdNames = ((String)map.get("crowdName")).split("\\|");
+            final String crowd_date = String.valueOf(map.get("sampling_date"));
+            final String[] crowdNames = ((String)map.get("name")).split(",");
             final Cell cellDate = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
             cellStyle(wb,cellDate);
             cellDate.setCellValue(crowd_date);
-            for (int j = 1; j <= cells;j++){
+            for (int j = 1; j < cells-1;j++){// j = 1是因为第1个单元格是日期; cells-1 是最后一个单元格是备注
                 final Cell cell = row.createCell(j);//创建空单元格
                 cellStyle(wb,cell);
                 cell.setCellValue(0);
             }
-            int masculine = 0;
+            /*int masculine = 0;
             int detection = 0;
             int sampling = 0;
             for(int x = 0; x < crowdNames.length; x++){
@@ -155,7 +156,7 @@ public final class DateArea{
                 detection += Integer.parseInt(getIndexData(map,"totalDetection",x));
                 sampling += Integer.parseInt(getIndexData(map,"totalSampling",x));
             }
-            rowTotal(row,cells,sampling,detection,masculine);
+            rowTotal(row,cells,sampling,detection,masculine);*/
         }
     }
     
