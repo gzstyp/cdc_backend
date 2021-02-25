@@ -130,7 +130,7 @@ public final class DateArea{
      */
     private static void splitData(final List<HashMap<String,Object>> list,final int cells,final XSSFWorkbook wb,final XSSFSheet sheet){
         for(int i = 0; i < list.size(); i++){
-            final int rowIndex = 4+i;//4++数据行
+            final int rowIndex = 3+i;//3++都是数据行
             final Row row = sheet.createRow(rowIndex);
             row.setHeightInPoints(20);
             final HashMap<String,Object> map = list.get(i);

@@ -2,7 +2,7 @@ package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
-import com.fwtai.poi.CategoryGeneral;
+import com.fwtai.poi.DateArea;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.web.DateAreaDao;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class DateAreaService{
         String date_end = formData.getString(p_date_end);
         DataFilter.getAreaLevel(formData);
 
-        final List<HashMap<String,Object>> listType = dateAreaDao.getAllType(formData);
+        final List<String> listType = dateAreaDao.getAllType(formData);
         final List<HashMap<String,Object>> list = dateAreaDao.getCategoryGeneral(formData);
 
         final String province_id = formData.getString("province_id");
@@ -86,7 +86,7 @@ public class DateAreaService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区域试试");
                 ToolClient.responseJson(json,response);
             }else{
-                CategoryGeneral.exportExcel(label,list,listType,fileName,response);
+                DateArea.exportExcel("中高风险地区入黔返黔人员核酸检测统计汇总表"+(date_start!= null ? "（"+date_start+"起）" : ""),list,listType,fileName,response);
             }
         } catch (final Exception e){
             e.printStackTrace();

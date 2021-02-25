@@ -142,7 +142,7 @@
     </sql>
 
     <!-- 查询地区(中高风险地区) -->
-    <select id="getMediumHighArea" resultType="HashMap" parameterType="HashMap">
+    <select id="getMediumHighArea" resultType="String" parameterType="HashMap">
         select
             sa.name
         from bs_employee bee

@@ -14,8 +14,8 @@ public class DateAreaDao{
     @Resource
     private DaoHandle dao;
 
-    public List<HashMap<String,Object>> getAllType(final PageFormData formData){
-        return dao.queryForListHashMap("daily_manager.getMediumHighArea",formData);
+    public List<String> getAllType(final PageFormData formData){
+        return dao.queryListString("daily_manager.getMediumHighArea",formData);
     }
 
     /*常规日报查询-页面显示|导出按钮*/
