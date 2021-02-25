@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -140,10 +141,30 @@ public final class DateArea{
             final Cell cellDate = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
             cellStyle(wb,cellDate);
             cellDate.setCellValue(crowd_date);
+            final BigDecimal totalWeijiance = (BigDecimal) map.get("totalWeijiance");
+            final BigDecimal totalYinxing = (BigDecimal) map.get("totalYinxing");
+            final BigDecimal totalYangxing = (BigDecimal) map.get("totalYangxing");
+            final BigDecimal sampling = totalWeijiance.add(totalYinxing).add(totalYangxing);
             for (int j = 1; j < cells-1;j++){// j = 1是因为第1个单元格是日期; cells-1 是最后一个单元格是备注
                 final Cell cell = row.createCell(j);//创建空单元格
                 cellStyle(wb,cell);
-                cell.setCellValue(0);
+                switch (cells - j){
+                    case 2://倒数第2个单元格
+                        cell.setCellValue(totalWeijiance.intValue());
+                        break;
+                    case 3://倒数第3个单元格
+                        cell.setCellValue(totalYangxing.intValue());
+                        break;
+                    case 4:
+                        cell.setCellValue(totalYinxing.intValue());
+                        break;
+                    case 5://倒数第5个单元格
+                        cell.setCellValue(sampling.intValue());
+                        break;
+                    default:
+                        cell.setCellValue(0);
+                        break;
+                }
             }
             /*int masculine = 0;
             int detection = 0;
