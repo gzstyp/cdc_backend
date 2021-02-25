@@ -17,6 +17,7 @@
         flag,
         freeze_type,
         gender,
+        id_card,
         kid,
         modify_date,
         modify_userid,
@@ -51,6 +52,7 @@
             <if test="flag != null">flag,</if>
             <if test="freeze_type != null">freeze_type,</if>
             <if test="gender != null">gender,</if>
+            <if test="id_card != null">id_card,</if>
             <if test="kid != null">kid,</if>
             <if test="modify_date != null">modify_date,</if>
             <if test="modify_userid != null">modify_userid,</if>
@@ -82,6 +84,7 @@
 			<if test="flag != null">#{flag},</if>
 			<if test="freeze_type != null">#{freeze_type},</if>
 			<if test="gender != null">#{gender},</if>
+			<if test="id_card != null">#{id_card},</if>
 			<if test="kid != null">#{kid},</if>
 			<if test="modify_date != null">#{modify_date},</if>
 			<if test="modify_userid != null">#{modify_userid},</if>
@@ -122,6 +125,7 @@
             <if test="flag != null">flag,</if>
             <if test="freeze_type != null">freeze_type,</if>
             <if test="gender != null">gender,</if>
+            <if test="id_card != null">id_card,</if>
             <if test="kid != null">kid,</if>
             <if test="modify_date != null">modify_date,</if>
             <if test="modify_userid != null">modify_userid,</if>
@@ -153,6 +157,7 @@
             <if test="flag != null">#{flag},</if>
             <if test="freeze_type != null">#{freeze_type},</if>
             <if test="gender != null">#{gender},</if>
+            <if test="id_card != null">#{id_card},</if>
             <if test="kid != null">#{kid},</if>
             <if test="modify_date != null">#{modify_date},</if>
             <if test="modify_userid != null">#{modify_userid},</if>
@@ -185,6 +190,7 @@
             <if test="flag != null">flag = #{flag},</if>
             <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
             <if test="gender != null">gender = #{gender},</if>
+            <if test="id_card != null">id_card = #{id_card},</if>
             <if test="modify_date != null">modify_date = #{modify_date},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
             <if test="phone != null">phone = #{phone},</if>
@@ -221,6 +227,7 @@
                     <if test="item.flag != null">flag,</if>
                     <if test="item.freeze_type != null">freeze_type,</if>
                     <if test="item.gender != null">gender,</if>
+                    <if test="item.id_card != null">id_card,</if>
                     <if test="item.kid != null">kid,</if>
                     <if test="item.modify_date != null">modify_date,</if>
                     <if test="item.modify_userid != null">modify_userid,</if>
@@ -256,6 +263,7 @@
                 <if test="item.flag != null">#{item.flag},</if>
                 <if test="item.freeze_type != null">#{item.freeze_type},</if>
                 <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.id_card != null">#{item.id_card},</if>
                 <if test="item.kid != null">#{item.kid},</if>
                 <if test="item.modify_date != null">#{item.modify_date},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid},</if>
@@ -291,6 +299,7 @@
                 <if test="item.flag != null">flag = values(flag),</if>
                 <if test="item.freeze_type != null">freeze_type = values(freeze_type),</if>
                 <if test="item.gender != null">gender = values(gender),</if>
+                <if test="item.id_card != null">id_card = values(id_card),</if>
                 <if test="item.kid != null">kid = values(kid),</if>
                 <if test="item.modify_date != null">modify_date = values(modify_date),</if>
                 <if test="item.modify_userid != null">modify_userid = values(modify_userid),</if>
@@ -330,6 +339,7 @@
                         <if test="item.flag != null">flag,</if>
                         <if test="item.freeze_type != null">freeze_type,</if>
                         <if test="item.gender != null">gender,</if>
+                        <if test="item.id_card != null">id_card,</if>
                         <if test="item.kid != null">kid,</if>
                         <if test="item.modify_date != null">modify_date,</if>
                         <if test="item.modify_userid != null">modify_userid,</if>
@@ -365,6 +375,7 @@
                 <if test="item.flag != null">#{item.flag},</if>
                 <if test="item.freeze_type != null">#{item.freeze_type},</if>
                 <if test="item.gender != null">#{item.gender},</if>
+                <if test="item.id_card != null">#{item.id_card},</if>
                 <if test="item.kid != null">#{item.kid},</if>
                 <if test="item.modify_date != null">#{item.modify_date},</if>
                 <if test="item.modify_userid != null">#{item.modify_userid},</if>
@@ -402,6 +413,7 @@
             <if test="flag != null">flag = #{flag},</if>
             <if test="freeze_type != null">freeze_type = #{freeze_type},</if>
             <if test="gender != null">gender = #{gender},</if>
+            <if test="id_card != null">id_card = #{id_card},</if>
             <if test="modify_date != null">modify_date = #{modify_date},</if>
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
             <if test="phone != null">phone = #{phone},</if>
@@ -436,6 +448,7 @@
             flag,
             freeze_type,
             gender,
+            id_card,
             modify_date,
             modify_userid,
             phone,
@@ -566,6 +579,9 @@
             <if test="real_name != null">
                 AND bee.real_name LIKE CONCAT('%',#{real_name},'%')
             </if>
+            <if test="id_card != null">
+                AND bee.id_card LIKE CONCAT(#{id_card},'%')
+            </if>
             <if test="work_type != null">
                 AND bee.work_type = #{work_type}
             </if>
@@ -581,6 +597,7 @@
         county.name county_id,
         bee.real_name,
         bee.gender,
+        bee.id_card,
         bee.age,
         bm.site_name work_site,
         wte.name work_type,
@@ -635,6 +652,7 @@
             county.name county_id,
             bee.real_name,
             bee.phone,
+            bee.id_card,
             CASE WHEN bee.gender = 1 THEN '男'
             WHEN bee.gender = 2 THEN '女'
             ELSE '' END AS gender,
