@@ -79,242 +79,125 @@ public final class DateArea{
         //填充地区
         for(int i = 0; i < listType.size();i++){
             if(i == 0){
-                final Cell cell = rowArea.getCell(1);
-                cell.setCellValue(listType.get(i));
-                ToolExcel.cellRangeAddress(sheet,1,1,1,4);//第0个,合并单元格
+                createTabArea(sheet,rowArea,1,4,listType.get(i));//处理行的第1个
             }else{
                 final int tab = i * 4;
-                final Cell cell = rowArea.getCell(tab + 1);
-                cell.setCellValue(listType.get(i));
-                ToolExcel.cellRangeAddress(sheet,1,1,(tab + 1),(tab + 4));//合并单元格
+                createTabArea(sheet,rowArea,(tab + 1),(tab + 4),listType.get(i));
                 if(i == listType.size()-1){//处理最后的合计
-                    final Cell total_cell = rowArea.getCell(tab + 1 + 4);
-                    total_cell.setCellValue("合计");
-                    ToolExcel.cellRangeAddress(sheet,1,1,(tab + 1 + 4),(tab + 4 + 4));
+                    createTabArea(sheet,rowArea,(tab + 1 + 4),(tab + 4 + 4),"合计");//处理最后一个的合计
                 }
             }
         }
+
         final Row rowDate = sheet.createRow(2);//第3行,时间
         rowDate.setHeightInPoints(40);
-        final Cell row2cell0 = rowDate.createCell(0);//创建第1行的第1个单元格
+        final Cell row2cell0 = rowDate.createCell(0);//创建第3行的第1个单元格
         cellStyle(wb,row2cell0);
         row2cell0.setCellValue("时间");
 
         for(int i = 0; i < listType.size();i++){
-            if(i == 0){
+            if(i == 0){//处理行的第1个
                 for(int x = 1; x < 5; x++){
-                    final Cell cell = rowDate.createCell(i + x);
-                    final XSSFCellStyle style = cellStyle(wb,cell);
-                    style.setWrapText(true);
-                    switch (x){
-                        case 1:
-                            cell.setCellValue("采样数");
-                            break;
-                        case 2:
-                            cell.setCellValue("阴性");
-                            break;
-                        case 3:
-                            cell.setCellValue("阳性");
-                            break;
-                        case 4:
-                            cell.setCellValue("待出");
-                            break;
-                        default:
-                            break;
-                    }
+                    itemArea(wb,x,rowDate.createCell(i + x));
                 }
             }else{
                 final int tab = i * 4;
                 for(int x = 1; x < 5; x++){
-                    final Cell cell = rowDate.createCell(tab + x);
-                    final XSSFCellStyle style = cellStyle(wb,cell);
-                    style.setWrapText(true);
-                    switch (x){
-                        case 1:
-                            cell.setCellValue("采样数");
-                            break;
-                        case 2:
-                            cell.setCellValue("阴性");
-                            break;
-                        case 3:
-                            cell.setCellValue("阳性");
-                            break;
-                        case 4:
-                            cell.setCellValue("待出");
-                            break;
-                        default:
-                            break;
-                    }
+                    itemArea(wb,x,rowDate.createCell(tab + x));
                 }
-                if(i == listType.size()-1){//处理最后的合计
+                if(i == listType.size()-1){//处理最后一个的合计
                     for(int x = 1; x < 5; x++){
-                        final Cell cell = rowDate.createCell(tab + x + 4);
-                        final XSSFCellStyle style = cellStyle(wb,cell);
-                        style.setWrapText(true);
-                        switch (x){
-                            case 1:
-                                cell.setCellValue("采样数");
-                                break;
-                            case 2:
-                                cell.setCellValue("阴性");
-                                break;
-                            case 3:
-                                cell.setCellValue("阳性");
-                                break;
-                            case 4:
-                                cell.setCellValue("待出");
-                                break;
-                            default:
-                                break;
-                        }
+                        itemArea(wb,x,rowDate.createCell(tab + x + 4));
                     }
                 }
             }
         }
 
-        /*final XSSFCellStyle styleCenter = wb.createCellStyle();
-        final Font labelFont = wb.createFont();
-        labelFont.setFontHeightInPoints((short)14);//设置字号
-        labelFont.setColor(IndexedColors.BLACK.getIndex());//设置字体颜色
-        labelFont.setBold(true);
-        styleCenter.setFont(labelFont);
-        styleCenter.setAlignment(HorizontalAlignment.CENTER_SELECTION);//水平居中
-        styleCenter.setVerticalAlignment(VerticalAlignment.CENTER);//垂直居中
-        styleCenter.setWrapText(true);//自动换行显示,即非一行显示!!!
-        final Cell labelCell = labelRow0.getCell(1);
-        labelCell.setCellStyle(styleCenter);
-        labelCell.setCellValue(label);
-
-        final Row row1 = sheet.createRow(1);//创建第2行
-        row1.setHeightInPoints(22);//高度
-        final Cell row1cell0 = row1.createCell(0);//创建第2行的第1个单元格
-        cellStyle(wb,row1cell0);
-        row1cell0.setCellValue("人群分类");
-
-        //第2行,计算并创建总的单元格
-        for (int j = 1; j <= totalCell;j++){
-            row1.createCell(j);
-        }*/
-        //第2行合并单元格操作
-        int intCrowdTypeTotal = 0;
-        /*for(int i = 0; i < listType.size(); i++){
-            final HashMap<String,Object> map = listType.get(i);
-            final String crowdName = (String) map.get("crowdName");
-            final long crowdTotal = (Long) map.get("crowdTotal")*3;
-            final int tabs = (int) crowdTotal + 3;
-            if(i==0){
-                ToolExcel.cellRangeAddress(sheet,1,1,1,tabs);//第1个分类
-                final Cell cell = row1.getCell(1);
-                cellStyle(wb,cell);
-                cell.setCellValue(crowdName);
-            }else {
-                final Cell cell = row1.getCell(intCrowdTypeTotal+1);
-                cellStyle(wb,cell);
-                cell.setCellValue(crowdName);
-                ToolExcel.cellRangeAddress(sheet,1,1,intCrowdTypeTotal+1,(intCrowdTypeTotal+tabs));//此处要-3;+1是因为要比上一次循环的位置上移1个单元格
-            }
-            intCrowdTypeTotal = intCrowdTypeTotal + tabs;//此处+3,每个分类的合计需要3个单元格
-        }
-        final Row row2 = sheet.createRow(2);//创建第3行
-        row2.setHeightInPoints(50);//高度
-        final Cell row2cell0 = row2.createCell(0);//创建第3行的第1个单元格
-        cellStyle(wb,row2cell0);
-        row2cell0.setCellValue("人群类型");
-
-        //创建第3行
-        for (int j = 1; j <= totalCell;j++){
-            row2.createCell(j);
-        }
-
-        int intCrowdType = 0;
-        for(int i = 0; i < listType.size(); i++){
-            final HashMap<String,Object> map = listType.get(i);
-            final String crowdName = (String) map.get("crowdName");
-            final String crowdType = (String) map.get("crowdType");
-            final long crowdTotal = (Long) map.get("crowdTotal")*3;
-            final int tabs = (int) crowdTotal + 3;
-            final String[] arrays = crowdType.split(",");
-            if(i==0){
-                for(int x = 0; x < arrays.length; x++){
-                    final String typeName = arrays[x];
-                    final int tab = (x * 3) + 1;//1-3;4-6;7-9
-                    final Cell cell = row2.getCell((x == 0) ? 1 : tab);//1、4、7、10
-                    cellStyle(wb,cell);
-                    cell.setCellValue(crowdName+typeName);//'人群(大)分类'+'人群类型'拼接组合的"人群类型",最后crowdTypeName();还原
-                    final boolean bl = (x == 0);
-                    ToolExcel.cellRangeAddress(sheet,2,2,(bl?1:tab),(bl?3:tab+2));
-                    if(x == arrays.length-1){
-                        final int tab3 = tab+3;
-                        final Cell cellTotal = row2.getCell(tab3);
-                        cellStyle(wb,cellTotal);
-                        cellTotal.setCellValue(crowdName+"合计");
-                        ToolExcel.cellRangeAddress(sheet,2,2,tab3,tab3+2);
-                    }
-                }
-            }else{
-                for(int x = 0; x < arrays.length; x++){
-                    final String typeName = arrays[x];
-                    final int tab = (x * 3) + 1;
-                    final Cell cell = row2.getCell((x == 0) ? intCrowdType+1 : intCrowdType+tab);
-                    cellStyle(wb,cell);
-                    cell.setCellValue(crowdName+typeName);//拼接组合的"人群类型"
-                    final boolean bl = (x == 0);
-                    ToolExcel.cellRangeAddress(sheet,2,2,(bl?(intCrowdType+1):intCrowdType+tab),(bl?(intCrowdType+3):intCrowdType+tab+2));
-                    if(x == arrays.length-1){
-                        final int tab3 = intCrowdType+tab+3;
-                        final Cell cellTotal = row2.getCell(tab3);
-                        cellStyle(wb,cellTotal);
-                        cellTotal.setCellValue(crowdName+"合计");
-                        ToolExcel.cellRangeAddress(sheet,2,2,tab3,tab3+2);
-                    }
-                }
-            }
-            intCrowdType = intCrowdType + tabs;
-        }
-        //总计-合并单元格
-        final int minus3Plus1 = totalCell - 3 + 1;
-        ToolExcel.cellRangeAddress(sheet,1,2,minus3Plus1,totalCell);//核酸总计
-        final Cell cellTotal = row1.getCell(minus3Plus1);
-        cellStyle(wb,cellTotal);
-        cellTotal.setCellValue("核酸总计");
-
-        final Row row3 = sheet.createRow(3);//创建第4行
-        row3.setHeightInPoints(36);
-        final Cell row3cell0 = row3.createCell(0);
+        //数据行
+        final Row rowData = sheet.createRow(3);//第4行,日期的数据行
+        rowData.setHeightInPoints(20);
+        final Cell row3cell0 = rowData.createCell(0);//创建第4行的第1个单元格
         cellStyle(wb,row3cell0);
-        row3cell0.setCellValue("统计项目");
+        row3cell0.setCellValue("2021-02-25");
 
-        //人群类型
-        for (int j = 0; j < totalCell;j=j+3){
-            for(int z = 0; z < 3; z++){
-                final Cell cell = row3.createCell(j + z + 1);
-                final XSSFCellStyle style = cellStyle(wb,cell);
-                style.setWrapText(true);
-                switch (z){
-                    case 0:
-                        cell.setCellValue("已采样人数");
-                        break;
-                    case 1:
-                        cell.setCellValue("已检测人数");
-                        break;
-                    case 2:
-                        cell.setCellValue("检测阳性人数");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        splitData(data,totalCell,wb,sheet);
+        //splitData(data,totalCell,wb,sheet);
 
-        final Row totalRow = sheet.createRow(4+data.size());//累计数
-        final Cell cellEnd = totalRow.createCell(0);
-        cellStyle(wb,cellEnd);
-        cellEnd.setCellValue("累计数");
-
-        crowdTypeName(listType,row2);
-        handleTotal(sheet,totalRow,totalCell,data.size());*/
         return wb;
+    }
+
+    /**
+     * 填充以日期的数据行
+     */
+    private static void splitData(final List<HashMap<String,Object>> list,final int cells,final XSSFWorkbook wb,final XSSFSheet sheet){
+        for(int i = 0; i < list.size(); i++){
+            final int rowIndex = 4+i;//4++数据行
+            final Row row = sheet.createRow(rowIndex);
+            row.setHeightInPoints(20);
+            final HashMap<String,Object> map = list.get(i);
+            final String crowd_date = String.valueOf(map.get("crowd_date"));
+            final String[] crowdNames = ((String)map.get("crowdName")).split("\\|");
+            final Cell cellDate = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
+            cellStyle(wb,cellDate);
+            cellDate.setCellValue(crowd_date);
+            for (int j = 1; j <= cells;j++){
+                final Cell cell = row.createCell(j);//创建空单元格
+                cellStyle(wb,cell);
+                cell.setCellValue(0);
+            }
+            int masculine = 0;
+            int detection = 0;
+            int sampling = 0;
+            for(int x = 0; x < crowdNames.length; x++){
+                final String crowdName = crowdNames[x];//愿检尽检人群|应检尽检人群
+                renderTotalData(sheet,row,crowdName,cells,map,x);//每行的合计或总计
+                renderDataRow(sheet,row,cells,map,x);//每行的数据填充
+                masculine += Integer.parseInt(getIndexData(map,"totalMasculine",x));
+                detection += Integer.parseInt(getIndexData(map,"totalDetection",x));
+                sampling += Integer.parseInt(getIndexData(map,"totalSampling",x));
+            }
+            rowTotal(row,cells,sampling,detection,masculine);
+        }
+    }
+    
+    /**
+     * 地区或合计
+     * @param 
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/25 23:16
+    */
+    private static void createTabArea(final XSSFSheet sheet,final Row row,final int startCol,final int endCol,final String area){
+        final Cell cell = row.getCell(startCol);
+        cell.setCellValue(area);
+        ToolExcel.cellRangeAddress(sheet,1,1,startCol,endCol);
+    }
+
+    /**
+     * 处理每个地区的合计及检测结果
+     * @param 
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/25 23:13
+    */
+    private static void itemArea(final XSSFWorkbook wb,final int tabIndex,final Cell cell){
+        final XSSFCellStyle style = cellStyle(wb,cell);
+        style.setWrapText(true);
+        switch (tabIndex){
+            case 1:
+                cell.setCellValue("采样数");
+                break;
+            case 2:
+                cell.setCellValue("阴性");
+                break;
+            case 3:
+                cell.setCellValue("阳性");
+                break;
+            case 4:
+                cell.setCellValue("待出");
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -356,70 +239,6 @@ public final class DateArea{
             }
         }
         return result;
-    }
-
-    /**
-     * 处理已生成'人群(大)分类'+'人群类型'拼接的"人群类型"的还原,即第3行的数据
-    */
-    static void crowdTypeName(final List<HashMap<String,Object>> listType,final Row row){
-        int cutCrowdType = 0;
-        for(int i = 0; i < listType.size(); i++){
-            final HashMap<String,Object> map = listType.get(i);
-            final String crowdType = (String) map.get("crowdType");
-            final long crowdTotal = (Long) map.get("crowdTotal")*3;
-            final int tabs = (int) crowdTotal + 3;
-            final String[] arrays = crowdType.split(",");
-            if(i==0){
-                for(int x = 0; x < arrays.length; x++){
-                    final String array = arrays[x];
-                    final int tab = (x * 3) + 1;
-                    final Cell cell = row.getCell((x == 0) ? 1 : tab);
-                    cell.setCellValue(array);
-                }
-            }else{
-                for(int x = 0; x < arrays.length; x++){
-                    final String array = arrays[x];
-                    final int tab = (x * 3) + 1;
-                    final Cell cell = row.getCell((x == 0) ? cutCrowdType+1 : cutCrowdType+tab);
-                    cell.setCellValue(array);
-                }
-            }
-            cutCrowdType = cutCrowdType + tabs;
-        }
-    }
-
-    /**
-     * 填充以日期的数据行
-    */
-    private static void splitData(final List<HashMap<String,Object>> list,final int cells,final XSSFWorkbook wb,final XSSFSheet sheet){
-        for(int i = 0; i < list.size(); i++){
-            final int rowIndex = 4+i;//4++数据行
-            final Row row = sheet.createRow(rowIndex);
-            row.setHeightInPoints(20);
-            final HashMap<String,Object> map = list.get(i);
-            final String crowd_date = String.valueOf(map.get("crowd_date"));
-            final String[] crowdNames = ((String)map.get("crowdName")).split("\\|");
-            final Cell cellDate = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
-            cellStyle(wb,cellDate);
-            cellDate.setCellValue(crowd_date);
-            for (int j = 1; j <= cells;j++){
-                final Cell cell = row.createCell(j);//创建空单元格
-                cellStyle(wb,cell);
-                cell.setCellValue(0);
-            }
-            int masculine = 0;
-            int detection = 0;
-            int sampling = 0;
-            for(int x = 0; x < crowdNames.length; x++){
-                final String crowdName = crowdNames[x];//愿检尽检人群|应检尽检人群
-                renderTotalData(sheet,row,crowdName,cells,map,x);//每行的合计或总计
-                renderDataRow(sheet,row,cells,map,x);//每行的数据填充
-                masculine += Integer.parseInt(getIndexData(map,"totalMasculine",x));
-                detection += Integer.parseInt(getIndexData(map,"totalDetection",x));
-                sampling += Integer.parseInt(getIndexData(map,"totalSampling",x));
-            }
-            rowTotal(row,cells,sampling,detection,masculine);
-        }
     }
 
     /**
