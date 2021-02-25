@@ -111,4 +111,68 @@
         left join bs_crowd bc on bc.kid = lt.crowd_id
         left join bs_crowd_type bct on bct.kid = lt.crowd_type_id group by crowdName,crowd_date) lt group by crowd_date ORDER BY crowd_date
     </select>
+
+    <sql id="mediumHighWhere">
+        <trim prefix="AND" prefixOverrides="AND">
+            <if test="sampling_date_start != null">
+                <![CDATA[ AND sampling_date >= #{sampling_date_start} ]]>
+            </if>
+            <if test="sampling_date_end != null">
+                <![CDATA[ AND sampling_date <= #{sampling_date_end} ]]>
+            </if>
+            <if test="province_id != null">
+                AND province_id = #{province_id}
+            </if>
+            <if test="city_id != null">
+                AND city_id = #{city_id}
+            </if>
+            <if test="county_id != null">
+                AND county_id = #{county_id}
+            </if>
+            <if test="areaProvince != null">
+                AND province_id = #{areaProvince}
+            </if>
+            <if test="areaCity != null">
+                AND city_id = #{areaCity}
+            </if>
+            <if test="areaCounty != null">
+                AND county_id = #{areaCounty}
+            </if>
+        </trim>
+    </sql>
+
+    <!-- 查询地区(中高风险地区) -->
+    <select id="getMediumHighArea" resultType="HashMap" parameterType="HashMap">
+        select
+            sa.name
+        from bs_employee bee
+        left join sys_area sa on sa.kid = bee.county_id
+        where bee.flag = 1 and bee.area_level = 3
+        <include refid="mediumHighWhere"/>
+        group by name
+    </select>
+
+    <!-- 中高风险地区数据统计 -->
+    <select id="getMediumHighEmployee" resultType="HashMap" parameterType="HashMap">
+        SELECT sampling_date,
+            group_concat(name) name,
+            group_concat(weijiance)weijiance,
+            group_concat(yinxing) yinxing,
+            group_concat(yangxing) yangxing,
+            group_concat(total) total from (select
+            name,
+            sampling_date,
+            sum(case when result = 1 then 1 else 0 end) weijiance,
+            sum(case when result = 2 then 1 else 0 end) yinxing,
+            sum(case when result = 3 then 1 else 0 end) yangxing,
+            count(1) total from (select
+            bee.result,
+            sa.name,
+            bee.sampling_date
+        from bs_employee bee
+        left join sys_area sa on sa.kid = bee.county_id
+        where bee.flag = 1 and bee.area_level = 3
+        <include refid="mediumHighWhere"/>
+        ) lt group by name,sampling_date) lt group by sampling_date
+    </select>
 </mapper>

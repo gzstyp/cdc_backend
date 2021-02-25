@@ -12,12 +12,15 @@ public final class DataFilter{
         if(areaLevel != null)
         switch (areaLevel){
             case 1:
+                if(areaKid != null)
                 formData.put("areaProvince",areaKid);
                 break;
             case 2:
+                if(areaKid != null)
                 formData.put("areaCity",areaKid);
                 break;
             case 3:
+                if(areaKid != null)
                 formData.put("areaCounty",areaKid);
                 break;
             default:
