@@ -154,12 +154,18 @@
 
     <!-- 中高风险地区数据统计 -->
     <select id="getMediumHighEmployee" resultType="HashMap" parameterType="HashMap">
-        SELECT sampling_date,
+        SELECT
+            sampling_date,
             group_concat(name) name,
             group_concat(weijiance)weijiance,
             group_concat(yinxing) yinxing,
             group_concat(yangxing) yangxing,
-            group_concat(total) total from (select
+            group_concat(total) total,
+            sum(weijiance) totalWeijiance,
+            sum(yinxing) totalYinxing,
+            sum(yangxing) totalYangxing
+        from (
+        select
             name,
             sampling_date,
             sum(case when result = 1 then 1 else 0 end) weijiance,
