@@ -256,18 +256,6 @@ public final class DateArea{
         return result;
     }
 
-    /**
-     * 每行的总计显示
-    */
-    private static void rowTotal(final Row row,final int cells,final int sampling,final int detection,final int masculine){
-        final Cell cellTotal2 = row.getCell(cells - 2);//倒数第3个
-        final Cell cellTotal1 = row.getCell(cells - 1);//倒数第2个
-        final Cell cellTotal0 = row.getCell(cells - 0);//倒数第1个
-        cellTotal2.setCellValue(sampling);
-        cellTotal1.setCellValue(detection);
-        cellTotal0.setCellValue(masculine);
-    }
-
     protected static String[] splitArray(final HashMap<String,Object> map,final String key){
         return ((String) map.get(key)).split(",");
     }
@@ -309,31 +297,6 @@ public final class DateArea{
     }
 
     /**
-     * 计算每行的合计
-    */
-    private static void renderTotalData(final XSSFSheet sheet,final Row row,final String crowd_name,final int cells,final HashMap<String,Object> map,final int tabIndex){
-        for (int j = 0; j < cells;j=j+3){
-            final int index = j + 1;
-            final XSSFRow xssfRow = sheet.getRow(2);
-            final XSSFCell cell = xssfRow.getCell(index);
-            final String value = cell.getStringCellValue();
-            if(value.length() > 0){
-                if((crowd_name+"合计").equals(value)){
-                    final Cell cellTotal1 = row.getCell(j + 1);
-                    final Cell cellTotal2 = row.getCell(j + 2);
-                    final Cell cellTotal3 = row.getCell(j + 3);
-                    final String totalMasculine = getIndexData(map,"totalMasculine",tabIndex);
-                    final String totalDetection = getIndexData(map,"totalDetection",tabIndex);
-                    final String totalSampling = getIndexData(map,"totalSampling",tabIndex);
-                    cellTotal1.setCellValue(totalSampling);
-                    cellTotal2.setCellValue(totalDetection);
-                    cellTotal3.setCellValue(totalMasculine);
-                }
-            }
-        }
-    }
-
-    /**
      * 获取人群类型的位置
     */
     private static int dataGetPosition(final XSSFSheet sheet,final int cells,final String value){
@@ -346,10 +309,5 @@ public final class DateArea{
             }
         }
         return -1;
-    }
-
-    private static String getIndexData(final HashMap<String,Object> map,final String key,final int tabIndex){
-        final String[] values = ((String)map.get(key)).split("\\|");
-        return values[tabIndex];
     }
 }
