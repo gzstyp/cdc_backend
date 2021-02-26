@@ -27,8 +27,8 @@ import java.util.List;
 */
 public final class AreaDay{
 
-    public static void exportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,final String fileName,final HttpServletResponse response) throws Exception {
-        ToolExcel.downloadExcel(reportExcel(label,data,listType),fileName,response);
+    public static void exportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,final String fileName,final HttpServletResponse response) throws Exception {
+        ToolExcel.downloadExcel(reportExcel(label,sheetName,data,listType),fileName,response);
     }
 
     /**
@@ -46,9 +46,9 @@ public final class AreaDay{
         return styleCenter;
     }
 
-    static XSSFWorkbook reportExcel(final String label,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
+    static XSSFWorkbook reportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
         final XSSFWorkbook wb = new XSSFWorkbook();
-        final XSSFSheet sheet = wb.createSheet("日期分类统计");
+        final XSSFSheet sheet = wb.createSheet(sheetName);
         sheet.setColumnWidth(0,(int) (35.7 * 100));
         final Row labelRow0 = sheet.createRow(0);//第1行
         labelRow0.setHeightInPoints(30);

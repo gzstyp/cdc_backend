@@ -181,4 +181,55 @@
         <include refid="mediumHighWhere"/>
         ) lt group by name,sampling_date) lt group by sampling_date
     </select>
+
+    <!-- 区域日报 -->
+    <select id="getAreaDaily" resultType="HashMap" parameterType="HashMap">
+        select
+            nameCounty,
+            group_concat(concat(crowdName,crowdType)) as crowdName,
+            group_concat(crowdType) as crowdType,
+            group_concat(sampling) as sampling,
+            group_concat(detection) as detection,
+            group_concat(masculine) as masculine,
+            SUM(sampling) totalSampling,
+            SUM(detection) totalDetection,
+            SUM(masculine) totalMasculine
+        from (
+            select
+                bcte.name crowdType,
+                bcd.name crowdName,
+                county.name nameCounty,
+                SUM(sampling_total) sampling,
+                SUM(detection_total) detection,
+                SUM(masculine_total) masculine
+            from bs_crowd_total bct
+            left join bs_crowd bcd on bcd.kid = bct.crowd_id
+            left join bs_crowd_type bcte on bcte.kid = bct.crowd_type_id
+            left join sys_area county on county.kid = bct.county_id
+            where flag = 1
+            <trim prefix="AND" prefixOverrides="AND">
+                <if test="sampling_date != null">
+                    <![CDATA[ AND crowd_date >= #{sampling_date} ]]>
+                </if>
+                <if test="province_id != null">
+                    AND province_id = #{province_id}
+                </if>
+                <if test="city_id != null">
+                    AND city_id = #{city_id}
+                </if>
+                <if test="county_id != null">
+                    AND county_id = #{county_id}
+                </if>
+                <if test="areaProvince != null">
+                    AND province_id = #{areaProvince}
+                </if>
+                <if test="areaCity != null">
+                    AND city_id = #{areaCity}
+                </if>
+                <if test="areaCounty != null">
+                    AND county_id = #{areaCounty}
+                </if>
+            </trim>
+        group by bcte.name,bcd.name,nameCounty) sx group by nameCounty
+    </select>
 </mapper>
