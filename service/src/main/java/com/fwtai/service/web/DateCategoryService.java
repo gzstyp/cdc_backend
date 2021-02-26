@@ -86,7 +86,7 @@ public class DateCategoryService{
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区域试试");
                 ToolClient.responseJson(json,response);
             }else{
-                CategoryGeneral.exportExcel(label,list,listType,fileName,response);
+                CategoryGeneral.exportExcel((label.length() <= 0 ?"日期分类统计":label),list,listType,fileName,response);
             }
         } catch (final Exception e){
             e.printStackTrace();
