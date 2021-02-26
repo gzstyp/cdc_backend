@@ -84,6 +84,9 @@ public final class DateArea{
         for(int i = 0; i < listType.size();i++){
             if(i == 0){
                 createTabArea(sheet,rowArea,1,4,listType.get(i));//处理行的第1个
+                if(i == listType.size()-1){//处理最后的合计
+                    createTabArea(sheet,rowArea,(0 + 1 + 4),(0 + 4 + 4),"合计");//当且仅当只有一个时的处理最后一个的合计
+                }
             }else{
                 final int tab = i * 4;
                 createTabArea(sheet,rowArea,(tab + 1),(tab + 4),listType.get(i));
@@ -103,6 +106,17 @@ public final class DateArea{
             if(i == 0){//处理行的第1个
                 for(int x = 1; x < 5; x++){
                     itemArea(wb,x,rowDate.createCell(i + x));
+                }
+                if(i == listType.size()-1){//当且仅当只有一个时的处理最后一个的合计
+                    for(int x = 1; x < 5; x++){
+                        itemArea(wb,x,rowDate.createCell(0 + x + 4));
+                    }
+                    //处理最后一个单元格
+                    final Cell cell = rowDate.createCell(totalCell-1);//-1是因为第一个单元格已被创建
+                    final XSSFCellStyle styleCenter = cellStyle(wb,cell);
+                    styleCenter.setAlignment(HorizontalAlignment.LEFT);//居左
+                    cell.setCellStyle(styleCenter);
+                    cell.setCellValue("风险区域");
                 }
             }else{
                 final int tab = i * 4;
