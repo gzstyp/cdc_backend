@@ -200,7 +200,7 @@ public final class CategoryGeneral{
         }
         splitData(data,totalCell,wb,sheet);
 
-        final Row totalRow = sheet.createRow(4+data.size());//累计数
+        final Row totalRow = sheet.createRow(4+data.size());//累计数[4是0,1,2,3行已被创建]
         final Cell cellEnd = totalRow.createCell(0);
         cellStyle(wb,cellEnd);
         cellEnd.setCellValue("累计数");
@@ -238,7 +238,7 @@ public final class CategoryGeneral{
     private static int handle2DValue(final XSSFSheet sheet,final int cells,final int number,final int position){
         int result = 0;
         for(int i = 0; i < number; i++){
-            final XSSFRow xssfRow = sheet.getRow(4+i);
+            final XSSFRow xssfRow = sheet.getRow(4+i);//[4是0,1,2,3行已被创建]
             for(int x = 1; x <= cells; x++){
                 if(x == position){
                     final XSSFCell cell = xssfRow.getCell(x);
