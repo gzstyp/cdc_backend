@@ -137,7 +137,6 @@ public final class DateArea{
             row.setHeightInPoints(20);
             final HashMap<String,Object> map = list.get(i);
             final String crowd_date = String.valueOf(map.get("sampling_date"));
-            final String[] crowdNames = ((String)map.get("name")).split(",");
             final Cell cellDate = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
             cellStyle(wb,cellDate);
             cellDate.setCellValue(crowd_date);
@@ -166,18 +165,7 @@ public final class DateArea{
                         break;
                 }
             }
-            /*int masculine = 0;
-            int detection = 0;
-            int sampling = 0;
-            for(int x = 0; x < crowdNames.length; x++){
-                final String crowdName = crowdNames[x];//愿检尽检人群|应检尽检人群
-                renderTotalData(sheet,row,crowdName,cells,map,x);//每行的合计或总计
-                renderDataRow(sheet,row,cells,map,x);//每行的数据填充
-                masculine += Integer.parseInt(getIndexData(map,"totalMasculine",x));
-                detection += Integer.parseInt(getIndexData(map,"totalDetection",x));
-                sampling += Integer.parseInt(getIndexData(map,"totalSampling",x));
-            }
-            rowTotal(row,cells,sampling,detection,masculine);*/
+            renderDataRow(sheet,row,cells,map);//每行的数据填充,每行循环一次
         }
     }
     
@@ -275,34 +263,37 @@ public final class DateArea{
         cellTotal0.setCellValue(masculine);
     }
 
+    protected static String[] splitArray(final HashMap<String,Object> map,final String key){
+        return ((String) map.get(key)).split(",");
+    }
+
     /**
-     * 每行的数据填充
+     * 每行的数据填充,每行循环一次
     */
-    private static void renderDataRow(final XSSFSheet sheet,final Row row,final int cells,final HashMap<String,Object> map,final int tabIndex){
-        final String crowdType = getIndexData(map,"crowdType",tabIndex);
-        final String masculine = getIndexData(map,"masculine",tabIndex);
-        final String detection = getIndexData(map,"detection",tabIndex);
-        final String sampling = getIndexData(map,"sampling",tabIndex);
-        final String crowd_name = getIndexData(map,"crowdName",tabIndex);
-        final String[] samplings = sampling.split(",");//已采样
-        final String[] detections = detection.split(",");//已检测
-        final String[] masculines = masculine.split(",");//阳性人数
-        final String[] values = crowdType.split(",");//应检尽检发热门诊就诊患者
-        for(int x = 0; x < values.length; x++){
-            final String v = values[x];
-            final int position = dataGetPosition(sheet,cells,(crowd_name + v));
+    private static void renderDataRow(final XSSFSheet sheet,final Row row,final int cells,final HashMap<String,Object> map){
+        final String[] names = splitArray(map,"name");//云岩区,乌当区,凯里市,开阳县,修文县,花溪区
+        final String[] yinxings = splitArray(map,"yinxing");//阴性
+        final String[] yangxings = splitArray(map,"yangxing");//阳性
+        final String[] weijiances = splitArray(map,"weijiance");//待出
+        final String[] totals = splitArray(map,"total");//采样数
+        for(int x = 0; x < names.length; x++){
+            final String name = names[x];
+            final int position = dataGetPosition(sheet,cells,(name));
             if(position != -1){
-                for(int z = 0; z < 3; z++){
+                for(int z = 0; z < 4; z++){
                     final Cell rowCell = row.getCell(position + z);
                     switch (z){
                         case 0:
-                            rowCell.setCellValue(samplings[x]);
+                            rowCell.setCellValue(totals[x]);
                             break;
                         case 1:
-                            rowCell.setCellValue(detections[x]);
+                            rowCell.setCellValue(yinxings[x]);
                             break;
                         case 2:
-                            rowCell.setCellValue(masculines[x]);
+                            rowCell.setCellValue(yangxings[x]);
+                            break;
+                        case 3:
+                            rowCell.setCellValue(weijiances[x]);
                             break;
                         default:
                             break;
@@ -342,7 +333,7 @@ public final class DateArea{
     */
     private static int dataGetPosition(final XSSFSheet sheet,final int cells,final String value){
         for (int j = 1; j <= cells;j++){
-            final XSSFRow xssfRow = sheet.getRow(2);
+            final XSSFRow xssfRow = sheet.getRow(1);
             final XSSFCell cell = xssfRow.getCell(j);
             final String v = cell.getStringCellValue();
             if(value.equals(v)){
@@ -355,58 +346,5 @@ public final class DateArea{
     private static String getIndexData(final HashMap<String,Object> map,final String key,final int tabIndex){
         final String[] values = ((String)map.get(key)).split("\\|");
         return values[tabIndex];
-    }
-
-    private static void render_data_row(final XSSFSheet sheet,final Row row,final String crowd_name,final int cells,final HashMap<String,Object> map,final int tabIndex){
-        for (int j = 0; j < cells;j=j+3){
-            final int index = j + 1;
-            final XSSFRow xssfRow = sheet.getRow(2);//人群类型,应检尽检->第1遍是正确的;
-            final XSSFCell cell = xssfRow.getCell(index);
-            final String value = cell.getStringCellValue();
-            if(value.length() > 0){
-                if(!(crowd_name+"合计").equals(value)){
-                    final String crowdType = getIndexData(map,"crowdType",tabIndex);
-                    final String masculine = getIndexData(map,"masculine",tabIndex);
-                    final String detection = getIndexData(map,"detection",tabIndex);
-                    final String sampling = getIndexData(map,"sampling",tabIndex);
-
-                    final String[] samplings = sampling.split(",");//已采样
-                    final String[] detections = detection.split(",");//已检测
-                    final String[] masculines = masculine.split(",");//阳性人数
-                    final String[] values = crowdType.split(",");//应检尽检发热门诊就诊患者
-                    for(int x = 0; x < values.length; x++){
-                        final String v = values[x];
-                        final int position = dataGetPosition(sheet,cells,(crowd_name + v));
-                        if(position != -1){
-                            System.out.println(crowd_name + v+",position = " + position);
-                            System.out.println(samplings[x]+","+detections[x]+","+masculines[x]);
-                            System.out.println("----------------");
-                        }
-                        /*if((crowd_name+v).equals(value)){
-                            System.out.println("index = " + index);
-                            break;
-                            //System.out.println(j + ",value = " + value + "-->"+crowd_name+v);//为空字符串的是'核酸总计'
-                            //System.out.println(j + ",value = " + value + ",");
-                            for(int z = 0; z < 3; z++){
-                                final Cell rowCell = row.getCell(j + z + 1);
-                                switch (z){
-                                    case 0:
-                                        rowCell.setCellValue(samplings[x]);
-                                        break;
-                                    case 1:
-                                        rowCell.setCellValue(detections[x]);
-                                        break;
-                                    case 2:
-                                        rowCell.setCellValue(masculines[x]);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }*/
-                    }
-                }
-            }
-        }
     }
 }
