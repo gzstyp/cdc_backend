@@ -124,6 +124,11 @@ public final class DateArea{
         }
         //数据行
         splitData(data,totalCell,wb,sheet);
+        final Row totalRow = sheet.createRow(3+data.size());//累计数[3是0,1,2行已被创建]
+        final Cell cellEnd = totalRow.createCell(0);
+        cellStyle(wb,cellEnd);
+        cellEnd.setCellValue("合计");
+        handleTotal(sheet,totalRow,(totalCell - 2),data.size());// totalCell - 2 是因为第1个单元格是日期+是最后一个单元格是备注
         return wb;
     }
 
@@ -238,7 +243,7 @@ public final class DateArea{
     private static int handle2DValue(final XSSFSheet sheet,final int cells,final int number,final int position){
         int result = 0;
         for(int i = 0; i < number; i++){
-            final XSSFRow xssfRow = sheet.getRow(4+i);
+            final XSSFRow xssfRow = sheet.getRow(3+i);//[3是0,1,2行已被创建]
             for(int x = 1; x <= cells; x++){
                 if(x == position){
                     final XSSFCell cell = xssfRow.getCell(x);
