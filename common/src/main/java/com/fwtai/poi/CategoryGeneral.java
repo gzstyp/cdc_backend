@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 日期分类查询-导出
+ * 日期分类查询-导出(贵阳市核酸检测累计表（7.1起报送）_按日期+分类统计)
  * @作者 田应平
  * @版本 v1.0
  * @创建时间 2021/2/23 22:20
@@ -214,14 +214,14 @@ public final class CategoryGeneral{
      * 计算最后行的累计统计
      * @param row 累计数
      * @param cells 总人群类型数量
-     * @param number 数据的行数
+     * @param listSize 数据的行数
      * @作者 田应平
      * @QQ 444141300
      * @创建时间 2021/2/24 10:32
     */
-    private static void handleTotal(final XSSFSheet sheet,final Row row,final int cells,final int number){
+    private static void handleTotal(final XSSFSheet sheet,final Row row,final int cells,final int listSize){
         for(int i = 1; i <= cells; i++){
-            final int value = handle2DValue(sheet,cells,number,i);
+            final int value = handle2DValue(sheet,cells,listSize,i);
             final Cell cell = row.createCell(i);
             cellStyle(sheet.getWorkbook(),cell);
             cell.setCellValue(value);

@@ -209,7 +209,7 @@
             where flag = 1
             <trim prefix="AND" prefixOverrides="AND">
                 <if test="sampling_date != null">
-                    <![CDATA[ AND crowd_date >= #{sampling_date} ]]>
+                    <![CDATA[ AND crowd_date = #{sampling_date} ]]>
                 </if>
                 <if test="province_id != null">
                     AND province_id = #{province_id}

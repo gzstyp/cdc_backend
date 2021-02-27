@@ -19,7 +19,7 @@ public class AreaDayDao{
     }
 
     /*常规日报查询-页面显示|导出按钮*/
-    public List<HashMap<String,Object>> getCategoryGeneral(final PageFormData formData){
+    public List<HashMap<String,Object>> getAreaDaily(final PageFormData formData){
         return dao.queryForListHashMap("daily_manager.getAreaDaily",formData);
     }
 

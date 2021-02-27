@@ -24,7 +24,7 @@ public class AreaDayService{
     //常规日报-页面
     public String getView(final PageFormData formData){
         DataFilter.getAreaLevel(formData);
-        return ToolClient.queryJson(areaDayDao.getCategoryGeneral(formData));
+        return ToolClient.queryJson(areaDayDao.getAreaDaily(formData));
     }
 
     /**查询登录者所拥有的权限*/
@@ -47,7 +47,7 @@ public class AreaDayService{
         }
 
         final List<HashMap<String,Object>> listType = areaDayDao.getAllType(formData);
-        final List<HashMap<String,Object>> list = areaDayDao.getCategoryGeneral(formData);
+        final List<HashMap<String,Object>> list = areaDayDao.getAreaDaily(formData);
 
         final String province_id = formData.getString("province_id");
         final String city_id = formData.getString("city_id");
@@ -77,7 +77,7 @@ public class AreaDayService{
         }
         final String fileName = label + "区域日报"+sampling_date+".xlsx";
         label += "区域日报"+sampling_date+"(00:00-24:00)";
-        final String sheetName = (city_text != null) ? city_text : "核酸日报表";
+        final String sheetName = (city_text != null) ? city_text+"核酸日报表" : "核酸日报表";
         try {
             if(list == null || list.size() <= 0){
                 final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区域试试");
