@@ -28,8 +28,15 @@ import java.util.List;
 */
 public final class AreaDay{
 
-    public static void exportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,final String fileName,final HttpServletResponse response) throws Exception {
-        ToolExcel.downloadExcel(reportExcel(label,sheetName,data,listType),fileName,response);
+    /**
+     * 市级核酸日报表导出
+     * @param areaData 处理同一市级下的其他区或地级市,用于填充空行,若需求方不需要的话可以直接删除与之参数相关即可
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/27 14:49
+    */
+    public static void exportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,final String fileName,final List<String> areaData,final HttpServletResponse response) throws Exception {
+        ToolExcel.downloadExcel(reportExcel(label,sheetName,data,listType,areaData),fileName,response);
     }
 
     /**
@@ -47,7 +54,7 @@ public final class AreaDay{
         return styleCenter;
     }
 
-    static XSSFWorkbook reportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType){
+    static XSSFWorkbook reportExcel(final String label,final String sheetName,final List<HashMap<String,Object>> data,final List<HashMap<String,Object>> listType,List<String> areaData){
         final XSSFWorkbook wb = new XSSFWorkbook();
         final XSSFSheet sheet = wb.createSheet(sheetName);
         sheet.setColumnWidth(0,(int) (35.7 * 100));
@@ -226,8 +233,10 @@ public final class AreaDay{
             }
         }
         splitData(data,totalCell,wb,sheet);
+        //处理同一市级下的其他区或地级市为空的填充
+        splitEmptyData(data,totalCell,wb,sheet,areaData);
 
-        final Row totalRow = sheet.createRow(4+data.size());//累计数[4是0,1,2,3行已被创建]
+        final Row totalRow = sheet.createRow(4+data.size() + areaData.size());//累计数[4是0,1,2,3行已被创建]
         final Cell cellEnd = totalRow.createCell(0);
         cellStyle(wb,cellEnd);
         totalRow.setHeightInPoints(20);
@@ -347,6 +356,37 @@ public final class AreaDay{
                 }
             }
             renderDataRow(sheet,row,cells,map);//每行的数据填充,每行循环一次
+        }
+    }
+
+    /**
+     * 处理同一市级下的其他区或地级市的无数据的填充
+     * @param 
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/2/27 14:48
+    */
+    private static void splitEmptyData(final List<HashMap<String,Object>> list,final int cells,final XSSFWorkbook wb,final XSSFSheet sheet,final List<String> areaData){
+        for(int x = 0; x < list.size(); x++){
+            final String value = String.valueOf(list.get(x).get("nameCounty"));
+            for(int i = 0; i < areaData.size(); i++){
+                if(value.equals(areaData.get(i))){
+                    areaData.remove(i);
+                    break;
+                }
+            }
+        }
+        for(int i = 0; i < areaData.size(); i++){
+            final Row row = sheet.createRow(i+4+list.size());
+            final Cell arealName = row.createCell(0);//创建数据行的第N行的第1个单元格且赋值
+            cellStyle(wb,arealName);
+            arealName.setCellValue(areaData.get(i));
+            row.setHeightInPoints(20);
+            for (int j = 1; j <= cells;j++){
+                final Cell cell = row.createCell(j);
+                cellStyle(wb,cell);
+                cell.setCellValue(0);
+            }
         }
     }
 

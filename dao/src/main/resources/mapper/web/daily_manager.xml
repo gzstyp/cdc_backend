@@ -232,4 +232,10 @@
             </trim>
         group by bcte.name,bcd.name,nameCounty) sx group by nameCounty
     </select>
+
+    <!--处理同一市级下的其他区或地级市,用于填充空行,若需求方不需要的话可以直接删除与之参数相关即可-->
+    <select id="getAreaData" resultType="String" parameterType="String">
+        select name from sys_area where pid = #{cityId} and  name != '市辖区' and level = 3
+    </select>
+
 </mapper>

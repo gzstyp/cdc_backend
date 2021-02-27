@@ -46,19 +46,25 @@ public class AreaDayService{
             formData.put("sampling_date",sampling_date);
         }
 
-        final List<HashMap<String,Object>> listType = areaDayDao.getAllType(formData);
-        final List<HashMap<String,Object>> list = areaDayDao.getAreaDaily(formData);
-
         final String province_id = formData.getString("province_id");
         final String city_id = formData.getString("city_id");
         final String county_id = formData.getString("county_id");
 
         if(province_id == null){
-            formData.remove("province_text");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"请选择省级");
+            ToolClient.responseJson(json,response);
+            return;
         }
         if(city_id == null){
-            formData.remove("city_text");
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"请选择市级");
+            ToolClient.responseJson(json,response);
+            return;
         }
+
+        final List<String> areaData = areaDayDao.getAreaData(city_id);//市级下的区或地级市
+        final List<HashMap<String,Object>> listType = areaDayDao.getAllType(formData);
+        final List<HashMap<String,Object>> list = areaDayDao.getAreaDaily(formData);
+
         if(county_id == null){
             formData.remove("county_text");
         }
@@ -80,10 +86,10 @@ public class AreaDayService{
         final String sheetName = (city_text != null) ? city_text+"核酸日报表" : "核酸日报表";
         try {
             if(list == null || list.size() <= 0){
-                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"暂无数据,请换个日期或区域试试");
+                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"日期("+sampling_date+")暂无数据,请换个日期或区域试试");
                 ToolClient.responseJson(json,response);
             }else{
-                AreaDay.exportExcel(label,sheetName,list,listType,fileName,response);
+                AreaDay.exportExcel(label,sheetName,list,listType,fileName,areaData,response);
             }
         } catch (final Exception e){
             e.printStackTrace();
