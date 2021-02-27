@@ -14,8 +14,8 @@ public class AreaDayDao{
     @Resource
     private DaoHandle dao;
 
-    public List<String> getAreaData(final String cityId){
-        return dao.queryListString("daily_manager.getAreaData",cityId);
+    public List<String> getAreaData(final PageFormData formData){
+        return dao.queryListString("daily_manager.getAreaData",formData);
     }
 
     public List<HashMap<String,Object>> getAllType(final PageFormData formData){

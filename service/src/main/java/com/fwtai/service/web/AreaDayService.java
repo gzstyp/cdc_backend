@@ -1,6 +1,7 @@
 package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
+import com.fwtai.config.AreaLevel;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.poi.AreaDay;
 import com.fwtai.tool.ToolClient;
@@ -50,21 +51,32 @@ public class AreaDayService{
         final String city_id = formData.getString("city_id");
         final String county_id = formData.getString("county_id");
 
-        if(province_id == null){
-            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"请选择省级");
-            ToolClient.responseJson(json,response);
-            return;
+        final Integer areaLevel = AreaLevel.get();
+
+        if(areaLevel == 1 || areaLevel == 8){
+            if(city_id == null){
+                final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"请选择统计区域");
+                ToolClient.responseJson(json,response);
+                return;
+            }
         }
-        if(city_id == null){
-            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"请选择市级");
+
+        if(areaLevel == 3){
+            final String json = ToolClient.createJson(ConfigFile.code199,ConfigFile.title +"无权限导出");
             ToolClient.responseJson(json,response);
             return;
         }
 
-        final List<String> areaData = areaDayDao.getAreaData(city_id);//市级下的区或地级市
+        final List<String> areaData = areaDayDao.getAreaData(formData);//市级下的区或地级市
         final List<HashMap<String,Object>> listType = areaDayDao.getAllType(formData);
         final List<HashMap<String,Object>> list = areaDayDao.getAreaDaily(formData);
 
+        if(province_id == null){
+            formData.remove("province_text");
+        }
+        if(city_id == null){
+            formData.remove("city_text");
+        }
         if(county_id == null){
             formData.remove("county_text");
         }
