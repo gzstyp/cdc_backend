@@ -46,8 +46,8 @@ public class DailyDetailsController{
 
     /**按钮-导出*/
     @PreAuthorize("hasAuthority('dailyDetails_btn_export')")
-    @GetMapping("/exportExcel")
-    public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
+    @GetMapping("/queryExportWord")
+    public void queryExportWord(final HttpServletRequest request,final HttpServletResponse response){
         dailyDetailsService.queryDataExport(request,response);
     }
 

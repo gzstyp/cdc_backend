@@ -29,6 +29,6 @@ public class DailyDetailsDao{
 
     /**查询登录者所拥有的权限*/
     public List<String> queryPermissions(){
-        return dao.queryPermissions("areaDay/queryAreaSelect");
+        return dao.queryPermissions("dailyDetails/queryAreaSelect");
     }
 }
