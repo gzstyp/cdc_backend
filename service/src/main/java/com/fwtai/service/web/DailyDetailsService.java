@@ -20,17 +20,17 @@ import java.util.List;
 public class DailyDetailsService{
 
     @Resource
-    private DailyDetailsDao areaDayDao;
+    private DailyDetailsDao dailyDetailsDao;
 
     //常规日报-页面
     public String getView(final PageFormData formData){
         DataFilter.getAreaLevel(formData);
-        return ToolClient.queryJson(areaDayDao.getAreaDaily(formData));
+        return ToolClient.queryJson(dailyDetailsDao.getAreaDaily(formData));
     }
 
     /**查询登录者所拥有的权限*/
     public String queryPermissions(){
-        final List<String> permissions = areaDayDao.queryPermissions();
+        final List<String> permissions = dailyDetailsDao.queryPermissions();
         return ToolClient.queryJson(permissions);
     }
 
@@ -67,9 +67,9 @@ public class DailyDetailsService{
             return;
         }
 
-        final List<String> areaData = areaDayDao.getAreaData(formData);//市级下的区或地级市
-        final List<HashMap<String,Object>> listType = areaDayDao.getAllType(formData);
-        final List<HashMap<String,Object>> list = areaDayDao.getAreaDaily(formData);
+        final List<String> areaData = dailyDetailsDao.getAreaData(formData);//市级下的区或地级市
+        final List<HashMap<String,Object>> listType = dailyDetailsDao.getAllType(formData);
+        final List<HashMap<String,Object>> list = dailyDetailsDao.getAreaDaily(formData);
 
         if(province_id == null){
             formData.remove("province_text");

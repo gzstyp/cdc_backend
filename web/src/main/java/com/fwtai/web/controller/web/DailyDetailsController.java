@@ -29,7 +29,7 @@ public class DailyDetailsController{
     private UserService userService;
 
     @Resource
-    private DailyDetailsService areaDayService;
+    private DailyDetailsService dailyDetailsService;
 
     /**获取区域数据*/
     @PreAuthorize("hasAuthority('dailyDetails_btn_row_areaSelect')")
@@ -41,19 +41,19 @@ public class DailyDetailsController{
     @PreAuthorize("hasAuthority('dailyDetails_btn_getView')")
     @GetMapping("/getView")
     public void getView(final HttpServletRequest request,final HttpServletResponse response){
-        ToolClient.responseJson(areaDayService.getView(ToolClient.getFormData(request)),response);
+        ToolClient.responseJson(dailyDetailsService.getView(ToolClient.getFormData(request)),response);
     }
 
     /**按钮-导出*/
     @PreAuthorize("hasAuthority('dailyDetails_btn_export')")
     @GetMapping("/exportExcel")
     public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
-        areaDayService.queryDataExport(request,response);
+        dailyDetailsService.queryDataExport(request,response);
     }
 
     @PreAuthorize("hasAuthority('dailyDetails_btn_permissions')")
     @GetMapping("/queryPermissions")
     public void queryPermissions(final HttpServletResponse response){
-        ToolClient.responseJson(areaDayService.queryPermissions(),response);
+        ToolClient.responseJson(dailyDetailsService.queryPermissions(),response);
     }
 }
