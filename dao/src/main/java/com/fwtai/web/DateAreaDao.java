@@ -23,7 +23,6 @@ public class DateAreaDao{
         return dao.queryForListHashMap("daily_manager.getMediumHighEmployee",formData);
     }
 
-
     /**查询登录者所拥有的权限*/
     public List<String> queryPermissions(){
         return dao.queryPermissions("dateArea/queryAreaSelect");

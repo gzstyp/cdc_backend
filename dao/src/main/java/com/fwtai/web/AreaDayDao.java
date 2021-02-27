@@ -27,7 +27,6 @@ public class AreaDayDao{
         return dao.queryForListHashMap("daily_manager.getAreaDaily",formData);
     }
 
-
     /**查询登录者所拥有的权限*/
     public List<String> queryPermissions(){
         return dao.queryPermissions("areaDay/queryAreaSelect");
