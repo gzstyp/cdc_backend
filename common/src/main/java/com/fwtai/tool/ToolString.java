@@ -47,7 +47,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.blidian.com
 	*/
-	public final static String transCoding(final Object object){
+	public static String transCoding(final Object object){
 		if(object != null){
 			try {
 				return new String(object.toString().getBytes("ISO8859-1"),"UTF-8");
@@ -59,7 +59,7 @@ public final class ToolString implements Serializable {
 	}
 
     /**多线程下生成32位唯一的字符串*/
-    public final static String getIdsChar32(){
+    public static String getIdsChar32(){
         final ThreadLocalRandom random = ThreadLocalRandom.current();
         return new UUID(random.nextInt(),random.nextInt()).toString().replaceAll("-","");
     }
@@ -70,7 +70,7 @@ public final class ToolString implements Serializable {
 	 * @主页 www.fwtai.com
 	 * @创建日期 2016年8月18日 17:34:24
 	*/
-	public final static boolean isBlank(final Object obj){
+	public static boolean isBlank(final Object obj){
 		if(obj == null)return true;
 		final String temp = String.valueOf(obj);
 		if(temp.toLowerCase().equals("null"))return true;
@@ -112,13 +112,13 @@ public final class ToolString implements Serializable {
 	}
 	
 	/**如果为空则赋值为""*/
-	public final static String setBlank(final Object obj){
+	public static String setBlank(final Object obj){
 		if (isBlank(obj))return "";
 		return String.valueOf(obj);
 	}
 	
 	/**如果为空则赋值为defaultValue*/
-	public final static String setBlank(final Object obj,final String defaultValue){
+	public static String setBlank(final Object obj,final String defaultValue){
 		if (isBlank(obj))return defaultValue;
 		return String.valueOf(obj);
 	}
@@ -133,7 +133,7 @@ public final class ToolString implements Serializable {
 	 * @注释 \s 匹配任何空白字符，包括空格、制表符、换页符,* 匹配前面的子表达式零次或多次。
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static String wipeObject(final Object obj){
+	public static String wipeObject(final Object obj){
 		if(isBlank(obj))return null;
 		final String key = obj.toString().replaceAll("\\s*", "");
 		if(key.length() == 1 && key.equals("_"))return null;
@@ -150,7 +150,7 @@ public final class ToolString implements Serializable {
      * @注释 \s 匹配任何空白字符，包括空格、制表符、换页符,* 匹配前面的子表达式零次或多次。
      * @官网 http://www.fwtai.com
      */
-	public final static String wipeString(final String obj){
+	public static String wipeString(final String obj){
 		if(obj == null || obj.length() <= 0)return null;
 		final String key = obj.replaceAll("\\s*", "");
 		if(key.length() == 1 && key.equals("_"))return null;
@@ -167,7 +167,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean isTooLong(final String value,final int length){
+	public static boolean isTooLong(final String value,final int length){
         return value.length() > length;
     }
 	
@@ -212,7 +212,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @官网 http://www.fwtai.com
      */
-    public final static ArrayList<String> keysToList(final String ids){
+    public static ArrayList<String> keysToList(final String ids){
         return keysToList(ids,",");
     }
 
@@ -226,7 +226,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static ArrayList<String> keysToList(final String ids,String splitFlag){
+	public static ArrayList<String> keysToList(final String ids,String splitFlag){
 		if(ToolString.isBlank(ids))return null;
 		final ArrayList<String> list = new ArrayList<String>();
 		if (isBlank(splitFlag)){
@@ -250,7 +250,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static String[] keysToArarry(final String ids,String splitFlag){
+	public static String[] keysToArarry(final String ids,String splitFlag){
 		if(ToolString.isBlank(ids))return null;
 		if (isBlank(splitFlag)){
 			splitFlag = ",";
@@ -268,7 +268,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean deleFileByRealPath(final String filePath){
+	public static boolean deleFileByRealPath(final String filePath){
 		if(filePath != null && filePath.length() > 0){
 			try {
 				File f = new File(filePath);
@@ -291,7 +291,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean deleFileByWebPath(final HttpServletRequest request,final String webImageUrl){
+	public static boolean deleFileByWebPath(final HttpServletRequest request,final String webImageUrl){
 		final String sys = File.separator;
 		final String projectRealPath = request.getSession().getServletContext().getRealPath(sys);
 		final String realImagePath = projectRealPath + webImageUrl;
@@ -316,7 +316,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean deleFileByRealPath(final HttpServletRequest request,final String webImageUrl){
+	public static boolean deleFileByRealPath(final HttpServletRequest request,final String webImageUrl){
 		final String webImageResized = webImageUrl.substring(0,webImageUrl.lastIndexOf("/")+1)+"resized"+webImageUrl.substring(webImageUrl.lastIndexOf("/"),webImageUrl.length());//压缩图片路径
 		final String sys = File.separator;
 		final String projectRealPath = request.getSession().getServletContext().getRealPath(sys);//获取路径路径D:\MyTools\tomcat7065\webapps\api\,项目路径
@@ -337,7 +337,7 @@ public final class ToolString implements Serializable {
 	 * @官网 http://www.fwtai.com
 	 * @示例 html = html.replaceAll("src=\"/upimg","src=\""+url+"/upimg");
 	*/
-	public final static String htmlReplace(final String html,final String flagOld,final String flagNew){
+	public static String htmlReplace(final String html,final String flagOld,final String flagNew){
 		return html.replaceAll(flagOld,flagNew);
 	}
 	
@@ -349,7 +349,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
 	*/
-	public final static boolean isNumberStr(final String str){
+	public static boolean isNumberStr(final String str){
 		try {
 			Integer.parseInt(str);
 			return true;
@@ -359,12 +359,12 @@ public final class ToolString implements Serializable {
 	}
 	
 	/**获取文件的后缀名|扩展名*/
-	public final static String getFileExt(final String str){
+	public static String getFileExt(final String str){
 		return str.substring(str.lastIndexOf('.')+1,str.length());
 	}
 	
 	/**验证指定的key字符串是否在以逗号,隔开的字符串里,存在返回true,为false时说明不存在,用法:if(!ToolString.existKey("xls,xlsx",key)){}*/
-	public final static boolean existKey(final String keys,final String key){
+	public static boolean existKey(final String keys,final String key){
 		final String[] array = keys.split(",");
 		boolean b = false;
 		for(int i = 0; i < array.length; i++){
@@ -377,12 +377,12 @@ public final class ToolString implements Serializable {
 	}
 	
 	/**获取文件的文件名,不含扩展名后缀名*/
-	public final static String getFileName(final String str){
+	public static String getFileName(final String str){
 		return str.substring(str.lastIndexOf('/')+1,str.lastIndexOf('.'));
 	}
 	
 	/**获取文件的文件名,含扩展名后缀名*/
-	public final static String getFileNameExt(final String str){
+	public static String getFileNameExt(final String str){
 		return str.substring(str.lastIndexOf('/')+1);
 	}
 	
@@ -395,7 +395,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-    public final static int jsonType(final String json){
+    public static int jsonType(final String json){
         if(json == null || json.length() <= 0){
             return 3;
         }
@@ -422,7 +422,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @主页 http://www.fwtai.com
     */
-    public final static HashMap<String,String> parseJsonObject(final Object json){
+    public static HashMap<String,String> parseJsonObject(final Object json){
         final HashMap<String,String> jsonMap = new HashMap<String,String>();
         if(json == null || json.toString().length() <= 0) return jsonMap;
         try {
@@ -440,7 +440,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2020年5月15日 18:26:29
     */
-    public final static JSONObject parseJsonObj(final String json){
+    public static JSONObject parseJsonObj(final String json){
         final JSONObject jsonObject = new JSONObject();
         if(json == null || json.length() <= 0) return jsonObject;
         try {
@@ -458,7 +458,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @主页 http://www.fwtai.com
     */
-    public final static ArrayList<HashMap<String,String>> parseJsonArray(final Object jsonArray){
+    public static ArrayList<HashMap<String,String>> parseJsonArray(final Object jsonArray){
         final ArrayList<HashMap<String,String>> listResult = new ArrayList<HashMap<String,String>>();//初始化,以免出现空指针异常
         if(jsonArray == null || jsonArray.toString().length() <= 0) return listResult;
         try {
@@ -476,7 +476,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2018年9月29日 13:52:54
     */
-    public final static List<PageFormData> parseArrayPageFormData(final Object array){
+    public static List<PageFormData> parseArrayPageFormData(final Object array){
         final List<PageFormData> list = new ArrayList<PageFormData>();
         if(isBlank(array)){return list;}
         final JSONArray jsonArray = JSONArray.parseArray(array.toString());
@@ -498,7 +498,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2018年9月29日 13:52:54
     */
-    public final static List<Map<String,Object>> parseArrayMap(final Object array){
+    public static List<Map<String,Object>> parseArrayMap(final Object array){
         final List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         if(isBlank(array)){return list;}
         final JSONArray jsonArray = JSONArray.parseArray(array.toString());
@@ -520,7 +520,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2018年12月3日 09:19:26
     */
-    public final static List<HashMap<String,Object>> parseListHashMap(final Object array){
+    public static List<HashMap<String,Object>> parseListHashMap(final Object array){
         final List<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
         if(isBlank(array)){return list;}
         final JSONArray jsonArray = JSONArray.parseArray(array.toString());
@@ -542,7 +542,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2018年12月3日 09:21:02
     */
-    public final static ArrayList<HashMap<String,Object>> parseArrayListHashMap(final Object array){
+    public static ArrayList<HashMap<String,Object>> parseArrayListHashMap(final Object array){
         final ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
         if(isBlank(array)){return list;}
         final JSONArray jsonArray = JSONArray.parseArray(array.toString());
@@ -567,7 +567,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @官网 http://www.fwtai.com
     */
-    public final static <T> T parseJsonToBean(final String json,final Class<T> cls){
+    public static <T> T parseJsonToBean(final String json,final Class<T> cls){
 		T t = null;
 		try {
 			t = JSON.parseObject(json,cls);
@@ -587,7 +587,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @官网 http://www.fwtai.com
     */
-    public final static <T> List<T> parseJsonToListBean(final String jsonArray,final Class<T> cls){
+    public static <T> List<T> parseJsonToListBean(final String jsonArray,final Class<T> cls){
 		List<T> list = new ArrayList<T>();//初始化,以免出现空指针异常
 		try {
 			list = JSON.parseArray(jsonArray,cls);
@@ -601,13 +601,13 @@ public final class ToolString implements Serializable {
      * @param chinese 中文字符
      * @return 验证成功返回true，验证失败返回false
     */ 
-    public final static boolean checkChinese(String chinese) { 
+    public static boolean checkChinese(String chinese) { 
         String regex = "^[\u4E00-\u9FA5]+$"; 
         return Pattern.matches(regex,chinese); 
     }
     
     /**判断是否还有中文或英文字符串*/
-    public final static int checkString(final String str){
+    public static int checkString(final String str){
 		int res = -1;
 		if(str != null){
 			for (int i = 0; i < str.length(); i++){
@@ -624,19 +624,19 @@ public final class ToolString implements Serializable {
 	}
 
     /**判断是否还有中文或英文字符串*/
-	public final static boolean checkChar(final char ch){
+	public static boolean checkChar(final char ch){
         // 英文
         // 中文
         return (ch + "").getBytes().length == 1;
 	}
 	
 	/**编辑时判断数据库是否已经存在,queryResultKey是根据要编辑的数据去查询数据库查询出来的主键数值,一般指的是主键;keyEdit是要做对比的对象,一般的是主键,即是根据该keyEdit主键去编辑的数据行*/
-	public final static boolean editExistKey(final String queryResultKey,final String keyEdit){
+	public static boolean editExistKey(final String queryResultKey,final String keyEdit){
 		return !isBlank(queryResultKey) && queryResultKey.equals(keyEdit);
 	}
 
     /**判断是否是合格的yyyy-MM-dd|yyyyMMdd|yyyy.MM.dd时间格式*/
-	public final static boolean checkDate(final String date){
+	public static boolean checkDate(final String date){
 		if(isBlank(date))return false;
         final String pattern = "\\d{4}(\\-|\\/|.)\\d{1,2}\\1\\d{1,2}";
         return Pattern.matches(pattern,date);
@@ -652,7 +652,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean checkDate(final String date,final String expression){
+	public static boolean checkDate(final String date,final String expression){
 		if (isBlank(date) || isBlank(expression))return false;
 		try {
 			new SimpleDateFormat(expression).parse(date);
@@ -669,7 +669,7 @@ public final class ToolString implements Serializable {
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public final static boolean writeFile(final String content,final String filePath){
+	public static boolean writeFile(final String content,final String filePath){
 		final File file = new File(filePath);
 		try {
 			final FileWriter fw = new FileWriter(file);
@@ -700,7 +700,7 @@ public final class ToolString implements Serializable {
 	 * @QQ 444141300
 	 * @创建时间 2018年1月1日 14:24:50
 	*/
-    public final static String sqlInject(String sqlKey){
+    public static String sqlInject(String sqlKey){
         if(sqlKey == null || sqlKey.length() <= 0)return null;
         //去掉'|"|;|\字符
         sqlKey = sqlKey.replaceAll("'","").replaceAll("\"","").replaceAll(";", "").replaceAll("--", "").replace( "\\", "");
@@ -734,7 +734,7 @@ public final class ToolString implements Serializable {
      * @param json 字符串
      * @return
     */
-    public final static HashMap<String,String> jsonConvertHashMap(final String json){
+    public static HashMap<String,String> jsonConvertHashMap(final String json){
         return JSON.parseObject(json,HashMap.class);
     }
 
@@ -745,7 +745,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2019/8/14 20:57
     */
-    public final static int count(final String text,final String sub){
+    public static int count(final String text,final String sub){
         int count = 0, start = 0;
         while((start=text.indexOf(sub,start))>=0){
             start += sub.length();
@@ -779,7 +779,7 @@ public final class ToolString implements Serializable {
     }
 
     /**检测传入的参数是否排序关键字,true说明是排序关键字*/
-    public final static boolean checkInjectKey(final String key){
+    public static boolean checkInjectKey(final String key){
         final String[] arr = {"ASC","DESC"};
         for(int i = 0; i < arr.length; i++){
             if(key.equalsIgnoreCase(arr[i])){
@@ -790,7 +790,7 @@ public final class ToolString implements Serializable {
     }
 
     /**检测传入的参数是否带sql的注释符号*/
-    public final static boolean checkInject(final String key){
+    public static boolean checkInject(final String key){
         return key.contains("--");
     }
 
@@ -801,7 +801,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2019/11/30 12:41
     */
-    public final static boolean checkAdvancedFiltrate(final String column){
+    public static boolean checkAdvancedFiltrate(final String column){
         if(column != null && column.length() > 0){
             return checkExistColumn(column,new String[]{"eval_level","money"});
         }
@@ -816,7 +816,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2019/11/30 12:40
     */
-    public final static boolean checkExistColumn(final String column,final String... columns){
+    public static boolean checkExistColumn(final String column,final String... columns){
         if(column == null )return false;
         for(int x = 0; x < columns.length; x++){
             if(column.equals(columns[x])){
@@ -832,12 +832,12 @@ public final class ToolString implements Serializable {
     }
 
     /** Blob转为String类型 */
-    public final static String blobConvertStr(final byte[] bytes){
+    public static String blobConvertStr(final byte[] bytes){
         return new String(bytes);
     }
 
     /** Blob转为String类型 */
-    public final static String blobConvertStr(final byte[] bytes,final String charset){
+    public static String blobConvertStr(final byte[] bytes,final String charset){
         return new String(bytes,Charset.forName(charset));
     }
 
@@ -849,7 +849,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @主页 http://www.yinlz.com
     */
-    public final static HashMap<String,String> parseJsonObjectOriginal(final Object json){
+    public static HashMap<String,String> parseJsonObjectOriginal(final Object json){
         final HashMap<String, String> jsonMap = new HashMap<String, String>();
         if(isBlank(json)) return jsonMap;
         try {
@@ -879,7 +879,7 @@ public final class ToolString implements Serializable {
      * @QQ号码 444141300
      * @主页 http://www.yinlz.com
     */
-    public final static ArrayList<HashMap<String,String>> parseJsonArrayOriginal(final Object jsonArray){
+    public static ArrayList<HashMap<String,String>> parseJsonArrayOriginal(final Object jsonArray){
         final ArrayList<HashMap<String, String>> listResult = new ArrayList<HashMap<String, String>>();
         if(isBlank(jsonArray)) return listResult;
         try {
@@ -912,7 +912,7 @@ public final class ToolString implements Serializable {
     }
 
     /**Unicode转中文汉字*/
-    public final static String unicodeDecode(String string) {
+    public static String unicodeDecode(String string) {
         Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
         Matcher matcher = pattern.matcher(string);
         char ch;
@@ -930,7 +930,7 @@ public final class ToolString implements Serializable {
      * @QQ 444141300
      * @创建时间 2020年5月28日 21:04:08
     */
-    public final static ArrayList<Object> jsonArrayToList(final Object jsonArray){
+    public static ArrayList<Object> jsonArrayToList(final Object jsonArray){
         final ArrayList<Object> lists = new ArrayList<>();
         final JSONArray arrays = parseJSONArray(String.valueOf(jsonArray));
         for(int x = 0; x < arrays.size(); x++){
@@ -942,7 +942,7 @@ public final class ToolString implements Serializable {
     /**
      * 解析json对象字符串
     */
-    public final static JSONArray parseJSONArray(final String json){
+    public static JSONArray parseJSONArray(final String json){
         final JSONArray array = new JSONArray();
         if(json == null || json.length() <= 0) return array;
         try {

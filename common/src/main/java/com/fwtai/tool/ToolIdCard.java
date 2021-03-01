@@ -29,51 +29,55 @@ public final class ToolIdCard{
         if (!matcher.matches()) {
             throw new IdCardException("身份证号码不合法");
         }
-        String dateOfBirth = null;
-        String gender = null;
-        int sex = 3;
-        final int length = idcard.length();
-        switch (length){
-            case 15:
-                dateOfBirth  = "19"+idcard.substring(6,8)+idcard.substring(8,10)+idcard.substring(10,12);
-                gender = idcard.substring(14,15);
-                /*基数为男 偶数为女*/
-                if(Integer.parseInt(gender)%2 == 0){
-                    sex = 2;
-                }else{
-                    sex = 1;
-                }
-                break;
-            case 18:
-                dateOfBirth = idcard.substring(6,10)+idcard.substring(10,12)+idcard.substring(12,14);
-                gender = idcard.substring(16,17);
-                /*基数为男 偶数为女*/
-                if(Integer.parseInt(gender)%2 == 0){
-                    sex = 2;
-                }else{
-                    sex = 1;
-                }
-                break;
-            default:
-                throw new IdCardException("身份证号码不合法");
+        try {
+            String dateOfBirth = null;
+            String gender = null;
+            int sex = 3;
+            final int length = idcard.length();
+            switch (length){
+                case 15:
+                    dateOfBirth  = "19"+idcard.substring(6,8)+idcard.substring(8,10)+idcard.substring(10,12);
+                    gender = idcard.substring(14,15);
+                    /*基数为男 偶数为女*/
+                    if(Integer.parseInt(gender)%2 == 0){
+                        sex = 2;
+                    }else{
+                        sex = 1;
+                    }
+                    break;
+                case 18:
+                    dateOfBirth = idcard.substring(6,10)+idcard.substring(10,12)+idcard.substring(12,14);
+                    gender = idcard.substring(16,17);
+                    /*基数为男 偶数为女*/
+                    if(Integer.parseInt(gender)%2 == 0){
+                        sex = 2;
+                    }else{
+                        sex = 1;
+                    }
+                    break;
+                default:
+                    throw new IdCardException("身份证号码不合法");
+            }
+            final LocalDate birthday = LocalDate.from(DateTimeFormatter.ofPattern("yyyyMMdd").parse(dateOfBirth));
+            //获取年龄
+            final long age = ChronoUnit.YEARS.between(birthday,LocalDate.now());
+            final IdentityCard identityCard = new IdentityCard();
+            identityCard.setBirthday(birthday);
+            identityCard.setAge(age);
+            //获取性别
+            switch (sex){
+                case 1:
+                    identityCard.setSex(IdentityCard.Sex.MALE);
+                    break;
+                case 2:
+                    identityCard.setSex(IdentityCard.Sex.FEMALE);
+                    break;
+                default:
+                    break;
+            }
+            return identityCard;
+        } catch (final Exception e) {
+            throw new IdCardException("身份证号码不合法");
         }
-        final LocalDate birthday = LocalDate.from(DateTimeFormatter.ofPattern("yyyyMMdd").parse(dateOfBirth));
-        //获取年龄
-        final long age = ChronoUnit.YEARS.between(birthday,LocalDate.now());
-        final IdentityCard identityCard = new IdentityCard();
-        identityCard.setBirthday(birthday);
-        identityCard.setAge(age);
-        //获取性别
-        switch (sex){
-            case 1:
-                identityCard.setSex(IdentityCard.Sex.MALE);
-                break;
-            case 2:
-                identityCard.setSex(IdentityCard.Sex.FEMALE);
-                break;
-            default:
-                break;
-        }
-        return identityCard;
     }
 }
