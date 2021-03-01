@@ -12,6 +12,8 @@ import com.fwtai.config.LocalUrl;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.config.Permissions;
 import com.fwtai.config.RenewalToken;
+import com.fwtai.exception.HandleException;
+import com.fwtai.exception.InvalidParams;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
@@ -394,6 +396,55 @@ public final class ToolClient implements Serializable{
             }
         }
         if(flag)return jsonValidateField();
+        return null;
+    }
+
+    /**
+     * 验证必要的字段是否为空,推荐,service层或controller层都适用,若有误直接抛出异常
+     * @param
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/3/1 15:13
+    */
+    public static String validateParam(final Map<String,?> params,final String... fields){
+        if(params == null || params.size() <= 0) throw new InvalidParams("请求参数有误");
+        for (final String value : fields){
+            final Object object = params.get(value);
+            if(object == null){
+                throw new InvalidParams("请求参数有误");
+            }else{
+                final boolean bl = checkNull(String.valueOf(object));
+                if(bl){
+                    throw new InvalidParams("请求参数有误");
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 验证指定字段必须为数字类型,推荐,service层或controller层都适用,若有误直接抛出异常
+     * @param params
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2021/3/1 15:26
+    */
+    public static String validateIntege(final Map<String,?> params,final String... fields){
+        if(params == null || params.size() <= 0) throw new HandleException("参数不是有效的数字");
+        for(int i = 0; i < fields.length;i++){
+            try {
+                final Object o = params.get(fields[i]);
+                if(o != null){
+                    final String value = String.valueOf(String.valueOf(o));
+                    if(value.equalsIgnoreCase("null") || value.equalsIgnoreCase("undefined") || value.equals("_") || value.length() <= 0)return jsonValidateInteger();
+                    Integer.parseInt(value);
+                }else{
+                    throw new HandleException("参数不是有效的数字");
+                }
+            } catch (final Exception e) {
+                throw new HandleException("参数不是有效的数字");
+            }
+        }
         return null;
     }
 

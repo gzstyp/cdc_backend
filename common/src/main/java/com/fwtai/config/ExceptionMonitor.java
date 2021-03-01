@@ -1,6 +1,8 @@
 package com.fwtai.config;
 
 import com.fwtai.bean.IdCardException;
+import com.fwtai.exception.HandleException;
+import com.fwtai.exception.InvalidParams;
 import com.fwtai.tool.ToolClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -103,8 +105,19 @@ public class ExceptionMonitor{
 
     @ExceptionHandler(IdCardException.class)
     public void idCardException(final Exception exception,final HttpServletResponse response){
-        final String message = exception.getMessage();
-        ToolClient.responseJson(ToolClient.exceptionJson(message),response);
+        ToolClient.responseJson(ToolClient.exceptionJson(exception.getMessage()),response);
+    }
+
+    //自定义异常信息,用法:throw new HandleException("身份证号有误");
+    @ExceptionHandler(HandleException.class)
+    public void handleException(final Exception exception,final HttpServletResponse response){
+        ToolClient.responseJson(exception.getMessage(),response);
+    }
+
+    //自定义异常信息,用法:throw new InvalidParams("请求参数有误");
+    @ExceptionHandler(InvalidParams.class)
+    public void invalidParams(final Exception exception,final HttpServletResponse response){
+        ToolClient.responseJson(exception.getMessage(),response);
     }
 
     @ExceptionHandler(DateTimeParseException.class)
