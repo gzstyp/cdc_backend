@@ -23,6 +23,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.SocketTimeoutException;
+import java.time.format.DateTimeParseException;
 
 /**
  * 拦截异常并统一处理
@@ -104,6 +105,12 @@ public class ExceptionMonitor{
     public void idCardException(final Exception exception,final HttpServletResponse response){
         final String message = exception.getMessage();
         ToolClient.responseJson(ToolClient.exceptionJson(message),response);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public void dateTimeParseException(final HttpServletResponse response){
+        final String json = ToolClient.createJsonFail("无效的年月");
+        ToolClient.responseJson(json,response);
     }
 
     @ExceptionHandler(PersistenceException.class)
