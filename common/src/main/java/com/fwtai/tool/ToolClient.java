@@ -364,7 +364,7 @@ public final class ToolClient implements Serializable{
     }
 
     /**
-     * 验证必要的字段是否为空,一般在service层调用,如果返回为 null 则验证成功,否则失败;适用于增、删、改、查操作!
+     * 验证必要的字段是否为空,service层或controller层都适用,如果返回为 null 则验证成功,否则失败;适用于增、删、改、查操作!
      * @fields 需要验证的form字段
      * @用法1 final String validate = ToolClient.validateField(params,"kid");if(validate != null)return validate;
      * @用法2 final String validate = ToolClient.validateField(params,new String[]{"id"});if(validate != null)return validate;
@@ -375,38 +375,6 @@ public final class ToolClient implements Serializable{
      * @主页 http://www.fwtai.com
     */
     public static String validateField(final Map<String,?> params,final String... fields){
-        if(params == null || params.size() <= 0)return jsonValidateField();
-        boolean flag = false;
-        for (final String value : fields){
-            final boolean bl = checkNull(value);
-            if(bl){
-                flag = true;
-                break;
-            }
-            final Object object = params.get(value);
-            if(object != null){
-                final boolean _bl = checkNull(String.valueOf(object));
-                if(_bl){
-                    flag = true;
-                    break;
-                }
-            }else{
-                flag = true;
-                break;
-            }
-        }
-        if(flag)return jsonValidateField();
-        return null;
-    }
-
-    /**
-     * 验证必要的字段是否为空,推荐,service层或controller层都适用,若有误直接抛出异常
-     * @param
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/3/1 15:13
-    */
-    public static String validateParam(final Map<String,?> params,final String... fields){
         if(params == null || params.size() <= 0) throw new InvalidParams("请求参数有误");
         for (final String value : fields){
             final Object object = params.get(value);
@@ -417,32 +385,6 @@ public final class ToolClient implements Serializable{
                 if(bl){
                     throw new InvalidParams("请求参数有误");
                 }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 验证指定字段必须为数字类型,推荐,service层或controller层都适用,若有误直接抛出异常
-     * @param params
-     * @作者 田应平
-     * @QQ 444141300
-     * @创建时间 2021/3/1 15:26
-    */
-    public static String validateIntege(final Map<String,?> params,final String... fields){
-        if(params == null || params.size() <= 0) throw new HandleException("参数不是有效的数字");
-        for(int i = 0; i < fields.length;i++){
-            try {
-                final Object o = params.get(fields[i]);
-                if(o != null){
-                    final String value = String.valueOf(String.valueOf(o));
-                    if(value.equalsIgnoreCase("null") || value.equalsIgnoreCase("undefined") || value.equals("_") || value.length() <= 0)return jsonValidateInteger();
-                    Integer.parseInt(value);
-                }else{
-                    throw new HandleException("参数不是有效的数字");
-                }
-            } catch (final Exception e) {
-                throw new HandleException("参数不是有效的数字");
             }
         }
         return null;
@@ -480,7 +422,7 @@ public final class ToolClient implements Serializable{
     }
 
     /**
-     * 验证所输入的数据是否是Integer类型,先验证是否必填后才调用本方法,一般在service调用
+     * 验证所输入的数据是否是Integer类型,先验证是否必填后才调用本方法,service层或controller层都适用
      * @用法1 final String fieldInteger = ToolClient.validateInteger(pageFormData,"type");if(fieldInteger != null)return fieldInteger;
      * @用法2 final String fieldInteger = ToolClient.validateInteger(pageFormData,new String[]{"category","subset","type"});if(fieldInteger != null)return fieldInteger;
      * @param
@@ -489,22 +431,19 @@ public final class ToolClient implements Serializable{
      * @创建时间 2020/4/2 13:04
     */
     public static String validateInteger(final Map<String,?> params,final String... fields){
-        if(params == null || params.size() <= 0) return jsonValidateField();
+        if(params == null || params.size() <= 0) throw new HandleException("参数不是有效的数字");
         for(int i = 0; i < fields.length;i++){
             try {
                 final Object o = params.get(fields[i]);
                 if(o != null){
                     final String value = String.valueOf(String.valueOf(o));
                     if(value.equalsIgnoreCase("null") || value.equalsIgnoreCase("undefined") || value.equals("_") || value.length() <= 0)return jsonValidateInteger();
-                    if(value == null){
-                        return jsonValidateInteger();
-                    }
                     Integer.parseInt(value);
                 }else{
-                    return jsonValidateInteger();
+                    throw new HandleException("参数不是有效的数字");
                 }
             } catch (final Exception e) {
-                return jsonValidateInteger();
+                throw new HandleException("参数不是有效的数字");
             }
         }
         return null;
