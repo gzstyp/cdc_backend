@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * 小程序|移动端登录,这个仅能包含一个登录方法
  * @作者 田应平
  * @版本 v1.0
- * @创建时间 2020-07-17 15:08
+ * @创建时间 2021年3月6日 13:57:04
  * @QQ号码 444141300
  * @Email service@yinlz.com
  * @官网 <url>http://www.yinlz.com</url>
