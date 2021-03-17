@@ -376,18 +376,18 @@ public final class ToolClient implements Serializable{
     */
     public static String validateField(final Map<String,?> params,final String... fields){
         if(params == null || params.size() <= 0){
-            logger.warn("请求参数有误-->"+params);
+            logger.warn("请求参数有误1-->"+params);
             throw new InvalidParams("请求参数有误");
         }
         for (final String value : fields){
             final Object object = params.get(value);
             if(object == null){
-                logger.warn("请求参数有误-->"+object);
+                logger.warn("请求参数有误2-->"+object);
                 throw new InvalidParams("请求参数有误");
             }else{
                 final boolean bl = checkNull(String.valueOf(object));
                 if(bl){
-                    logger.warn("请求参数有误-->"+object);
+                    logger.warn("请求参数有误3-->"+object);
                     throw new InvalidParams("请求参数有误");
                 }
             }

@@ -89,14 +89,13 @@ public class ApiEnvironmentService{
         final String p_site_type = "site_type";
         final String p_market_name = "market_name";
         final String p_vendor_name = "vendor_name";
-        final String p_phone = "phone";
         final String p_entrance = "entrance";
         final String p_sample_name = "sample_name";
         final String p_freeze_related = "freeze_related";
         final String p_sample_type = "sample_type";
         final String p_detection_date = "detection_date";
         final String p_result = "result";
-        final String validate = ToolClient.validateField(formData,p_sample_code,p_site_type,p_market_name,p_vendor_name,p_phone,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_result,p_kid);
+        final String validate = ToolClient.validateField(formData,p_sample_code,p_site_type,p_market_name,p_vendor_name,p_entrance,p_sample_name,p_freeze_related,p_sample_type,p_result,p_kid);
         if(validate != null)return validate;
         final String validateInteger = ToolClient.validateInteger(formData,p_entrance,p_freeze_related,p_result);
         if(validateInteger != null)return validateInteger;
@@ -120,7 +119,7 @@ public class ApiEnvironmentService{
         }
         final String userId = LocalUserId.get();
         formData.put("audit_user",userId);
-        return ToolClient.executeRows(apiEnvironmentDao.edit(formData));
+        return ToolClient.executeRows(apiEnvironmentDao.edit(formData),"操作成功","数据已审核不能编辑");
     }
 
     public String queryById(final PageFormData pageFormData){
