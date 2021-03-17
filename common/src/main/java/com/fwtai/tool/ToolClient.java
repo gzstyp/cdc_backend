@@ -13,7 +13,6 @@ import com.fwtai.config.LocalUserId;
 import com.fwtai.config.Permissions;
 import com.fwtai.config.RenewalToken;
 import com.fwtai.exception.HandleException;
-import com.fwtai.exception.InvalidParams;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
@@ -375,20 +374,16 @@ public final class ToolClient implements Serializable{
      * @主页 http://www.fwtai.com
     */
     public static String validateField(final Map<String,?> params,final String... fields){
-        if(params == null || params.size() <= 0){
-            logger.warn("请求参数有误1-->"+params);
-            throw new InvalidParams("请求参数有误");
-        }
+        if(params == null || params.size() <= 0) return jsonValidateField();
         for (final String value : fields){
             final Object object = params.get(value);
             if(object == null){
-                logger.warn(value+"参数的未传值");
-                throw new InvalidParams("请求参数有误");
+                logger.warn(value+"参数的值为空");
+                return jsonValidateField();
             }else{
                 final boolean bl = checkNull(String.valueOf(object));
                 if(bl){
-                    logger.warn("参数"+value+"未传值");
-                    throw new InvalidParams("请求参数有误");
+                    return jsonValidateField();
                 }
             }
         }
