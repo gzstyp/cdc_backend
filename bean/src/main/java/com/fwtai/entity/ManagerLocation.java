@@ -25,7 +25,7 @@ public class ManagerLocation implements Serializable{
     private Long city_id;
     @ApiModelProperty(notes = "县（区）[sys_area的kid]",required = true,value = "当前登录用户绑定的县（区）id值")
     private Long county_id;
-    @ApiModelProperty(notes = "级别1-5,省市县镇村",required = false,value = "级别1-5,分别对应的省市县镇村")
+    @ApiModelProperty(notes = "级别1-5,省市县镇村",required = true,value = "级别1-5,分别对应的省市县镇村")
     private Integer area_level;
     @ApiModelProperty(notes = "区域的id",required = true,value = "所选的区域id")
     private Long area_id;
