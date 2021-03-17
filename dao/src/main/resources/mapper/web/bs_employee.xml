@@ -469,15 +469,15 @@
 	<delete id="delById" parameterType="String">
 		DELETE FROM BS_EMPLOYEE WHERE kid = #{kid} LIMIT 1
 	</delete>
-	
-	<!-- 删除|批量删除-->
-	<delete id="delByKeys" parameterType="ArrayList">
-        UPDATE IGNORE BS_EMPLOYEE WHERE
-			kid IN
-		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+
+    <!-- 删除|批量删除,物理删除-->
+    <delete id="delByKeys" parameterType="ArrayList">
+        DELETE FROM BS_EMPLOYEE WHERE
+        kid IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
-		</foreach>
-	</delete>
+        </foreach>
+    </delete>
 
     <!--阳性发布-->
     <delete id="editPositive" parameterType="ArrayList">

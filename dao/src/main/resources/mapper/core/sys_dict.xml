@@ -98,7 +98,7 @@
 		UPDATE SYS_DICT SET DELETED = 1 WHERE KID = #{KID} LIMIT 1
 	</delete>
 	
-	<!-- 删除|批量删除-->
+	<!-- 删除|批量删除,逻辑删除-->
 	<delete id="delByKeys" parameterType="ArrayList">
         UPDATE SYS_DICT SET DELETED = 1 WHERE
 			KID IN
@@ -106,7 +106,7 @@
             #{item}
 		</foreach>
 	</delete>
-	
+
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
 		<trim prefix="AND" prefixOverrides="AND">
