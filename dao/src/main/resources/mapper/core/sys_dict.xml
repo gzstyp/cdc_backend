@@ -99,13 +99,13 @@
 	</delete>
 	
 	<!-- 删除|批量删除,逻辑删除-->
-	<delete id="delByKeys" parameterType="ArrayList">
+	<update id="delByKeys" parameterType="ArrayList">
         UPDATE SYS_DICT SET DELETED = 1 WHERE
 			KID IN
 		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
 		</foreach>
-	</delete>
+	</update>
 
 	<!-- listData条件查询 -->
 	<sql id="sql_where_listData">
