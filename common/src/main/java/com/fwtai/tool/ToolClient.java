@@ -382,12 +382,12 @@ public final class ToolClient implements Serializable{
         for (final String value : fields){
             final Object object = params.get(value);
             if(object == null){
-                logger.warn("请求参数有误2-->"+object);
+                logger.warn(value+"参数的未传值");
                 throw new InvalidParams("请求参数有误");
             }else{
                 final boolean bl = checkNull(String.valueOf(object));
                 if(bl){
-                    logger.warn("请求参数有误3-->"+object);
+                    logger.warn("参数"+value+"未传值");
                     throw new InvalidParams("请求参数有误");
                 }
             }
