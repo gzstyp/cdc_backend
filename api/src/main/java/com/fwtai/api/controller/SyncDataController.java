@@ -34,21 +34,21 @@ public class SyncDataController{
     private ApiSyncDataService apiSyncDataService;
 
     @ApiOperation(value = "获取人群分类基础数据", notes = "不需携带区域信息数据")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getCrowdCategory")
     public void getCrowdCategory(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getCrowdCategory(ToolClient.getFormData(request)),response);
     }
 
     @ApiOperation(value = "获取人群类型", notes = "不需携带区域信息数据")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getCrowdType")
     public void getCrowdType(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getCrowdType(ToolClient.getFormData(request)),response);
     }
 
     @ApiOperation(value = "获取经营场所名称数据", notes = "获取经营场所名称数据,根据当前登录人的areaData的区域主键area_id所绑定区域来同步基础数据,环境检测是叫市场名称;从业人员检测是的叫从业场所名称")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getManagerArea")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "areaId", value = "当前登录人的区域字段area_id的值获取,即登录成功后返回的areaData里的kid主键值", dataType = "String", paramType = "query", required = true),
@@ -59,42 +59,42 @@ public class SyncDataController{
     }
 
     @ApiOperation(value = "获取经营场所类型|从业场所类型|监测场所类型数据", notes = "经营场所类型|从业场所类型|监测场所类型数据,供下拉列表选择")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getManagerLocation")
     public void getManagerLocation(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getManagerLocation(),response);
     }
 
     @ApiOperation(value = "获取冷库类型数据", notes = "冷库类型,用于环境监测或从业人员监测")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getFreezeType")
     public void getFreezeType(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getFreezeType(),response);
     }
 
     @ApiOperation(value = "标本类型(用于环境监测)", notes = "标本类型(用于环境监测)")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getSpecimenType")
     public void getSpecimenType(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getSpecimenType(),response);
     }
 
     @ApiOperation(value = "样本类型(用于从业人员)", notes = "样本类型(用于从业人员)")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getSampleType")
     public void getSampleType(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getSampleType(),response);
     }
 
     @ApiOperation(value = "工种", notes = "工种(用于从业人员)")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getProfession")
     public void getProfession(final HttpServletResponse response){
         ToolClient.responseJson(apiSyncDataService.getProfession(),response);
     }
 
     @ApiOperation(value = "根据父级id获取字典数据(基础数据)", notes = "根据父级id获取字典数据(基础数据)")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getDictByPid")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "pid", value = "父级字典id", dataType = "String", paramType = "query", required = true)

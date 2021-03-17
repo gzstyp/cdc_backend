@@ -33,7 +33,7 @@ public class CrowdCategoryController{
 	private ApiCrowdCategoryService apiCrowdCategoryService;
 
     /**获取分页数据*/
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "current", value = "表示当前页", dataType = "int", paramType = "query", required = true),
         @ApiImplicitParam(name = "pageSize", value = "表示每页大小", dataType = "int", paramType = "query", required = true)
@@ -44,7 +44,7 @@ public class CrowdCategoryController{
     }
 
     @ApiOperation(value = "获取人群分类", notes = "返回值kid表示主键,name是人群分类名称,对应的表 bs_crowd")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @GetMapping("/getList")
     public void getList(final HttpServletResponse response){
         ToolClient.responseJson(apiCrowdCategoryService.getList(),response);

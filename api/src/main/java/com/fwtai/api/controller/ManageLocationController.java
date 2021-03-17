@@ -37,7 +37,7 @@ public class ManageLocationController{
 
     /**添加*/
     @ApiOperation(value = "post请求,添加操作", notes = "添加操作")
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/add")
     public void add(final ManagerLocation manager,final HttpServletResponse response){
         ToolClient.responseJson(apiManageLocationService.add(manager),response);
@@ -48,7 +48,7 @@ public class ManageLocationController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/edit")
     public void edit(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiManageLocationService.edit(request),response);
@@ -69,7 +69,7 @@ public class ManageLocationController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "删除数据的id", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/delById")
     public void delById(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiManageLocationService.delById(ToolClient.getFormData(request)),response);
@@ -80,7 +80,7 @@ public class ManageLocationController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/delByKeys")
     public void delByKeys(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiManageLocationService.delByKeys(ToolClient.getFormData(request)),response);

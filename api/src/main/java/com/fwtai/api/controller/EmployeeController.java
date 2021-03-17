@@ -51,7 +51,7 @@ public class EmployeeController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/edit")
     public void edit(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.edit(request),response);
@@ -72,7 +72,7 @@ public class EmployeeController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "删除数据的id", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/delById")
     public void delById(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.delById(ToolClient.getFormData(request)),response);
@@ -83,7 +83,7 @@ public class EmployeeController{
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/delByKeys")
     public void delByKeys(final HttpServletRequest request,final HttpServletResponse response){
         ToolClient.responseJson(apiEmployeeService.delByKeys(ToolClient.getFormData(request)),response);

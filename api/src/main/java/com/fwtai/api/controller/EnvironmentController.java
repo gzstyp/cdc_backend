@@ -52,7 +52,7 @@ public class EnvironmentController{
         @ApiImplicitParam(name = "kid", value = "被修改的主键值,其余的参照表结构", dataType = "String", paramType = "query", required = true),
         @ApiImplicitParam(name = "flag", value = "是否已审核(0未审核;1已审核)", dataType = "int", paramType = "query", required = true)
     })
-    @PreAuthorize("hasRole('ROLE_APP')")
+    @PreAuthorize("hasRole('ROLE_APP') or hasAnyRole('ROLE_APP_SUPER')")
     @PostMapping("/edit")
     public void edit(final EnvironmentBean environmentBean,final HttpServletResponse response){
         ToolClient.responseJson(apiEnvironmentService.edit(environmentBean),response);
