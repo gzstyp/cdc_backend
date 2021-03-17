@@ -188,7 +188,7 @@ public class ApiEnvironmentService{
         map.put("audit_user",userId);
         map.put("listIds",lists);
         final int rows = apiEnvironmentDao.updateBatchAudit(map);
-        final String msg = (rows == lists.size()) ? "操作成功" : "操作成功"+rows+"条数,重复"+(lists.size()-rows)+"条数";
+        final String msg = (rows == lists.size()) ? "操作成功" : "成功"+rows+"条数,重复"+(lists.size()-rows)+"条数";
         return ToolClient.executeRows(rows,msg,"操作失败,已重复上报");
     }
 }
