@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Email service@yinlz.com
  * @官网 <url>http://www.yinlz.com</url>
 */
-@Api(tags = "小程序|移动端登录认证")
+@Api(tags = "移动端登录认证")
 @RestController
 public class UserAuthController{
 
