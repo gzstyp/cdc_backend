@@ -390,7 +390,7 @@
             <if test="modify_userid != null">modify_userid = #{modify_userid},</if>
             modify_date = now()
 		</trim>
-		WHERE kid = #{kid} and flag = 0 LIMIT 1
+		WHERE kid = #{kid} LIMIT 1
 	</update>
 
     <!-- 根据id查询对应的数据 -->

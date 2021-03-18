@@ -119,7 +119,7 @@ public class ApiEnvironmentService{
         }
         final String userId = LocalUserId.get();
         formData.put("audit_user",userId);
-        return ToolClient.executeRows(apiEnvironmentDao.edit(formData),"操作成功","数据已审核不能编辑");
+        return ToolClient.executeRows(apiEnvironmentDao.edit(formData));
     }
 
     public String queryById(final PageFormData pageFormData){

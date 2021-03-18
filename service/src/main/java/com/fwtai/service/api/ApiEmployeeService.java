@@ -128,7 +128,7 @@ public class ApiEmployeeService{
         }
         final String userId = LocalUserId.get();
         formData.put("modify_userid",userId);
-        return ToolClient.executeRows(apiEmployeeDao.edit(formData),"操作成功","数据已审核不能编辑");
+        return ToolClient.executeRows(apiEmployeeDao.edit(formData));
     }
 
     public String queryById(final PageFormData pageFormData){
