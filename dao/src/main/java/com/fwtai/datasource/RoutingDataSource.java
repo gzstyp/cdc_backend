@@ -20,12 +20,11 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
         if (typeKey == null) {
             logger.error("无法确定数据源");
         }
-        if (typeKey.equals(DataSourceType.WRITE.getType())) {
+        if (DataSourceType.WRITE.getType().equals(typeKey)) {
             return DataSourceType.WRITE.getType();
         }
         //读库进行负载均衡
         final int a = count.getAndAdd(1);
-        int lookupkey = a % readsize;
-        return lookupkey;
+        return a % readsize;
     }
 }
