@@ -2,12 +2,12 @@ package com.fwtai.datasource;
 
 public enum DataSourceType {
 
-    READ("read", "读库"), WRITE("write", "写库");
+    READ("read", "读库"),WRITE("write", "写库");
 
     private String type;
     private String name;
 
-    DataSourceType(String type, String name) {
+    DataSourceType(final String type,final String name){
         this.type = type;
         this.name = name;
     }
