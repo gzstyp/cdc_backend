@@ -145,6 +145,7 @@ public class EnvironmentService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
+        DataFilter.getAreaLevel(formData);
         final String fileName = new ToolString().getDate()+"_外环境监测.xlsx";
         final List<Map<String,Object>> list = environmentDao.queryDataExport(formData);
         final ArrayList<String> fields = new ArrayList<>();

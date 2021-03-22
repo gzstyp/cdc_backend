@@ -159,6 +159,7 @@ public class EmployeeService{
         final PageFormData formData = ToolClient.getFormData(request);
         formData.remove("accessToken");
         formData.remove("refreshToken");
+        DataFilter.getAreaLevel(formData);
         final String fileName = new ToolString().getDate()+"_从业人员监测.xlsx";
         final List<Map<String,Object>> list = employeeDao.queryDataExport(formData);
         final ArrayList<String> fields = new ArrayList<>();
