@@ -397,10 +397,10 @@
 	</delete>
 	
 	<!-- 删除|批量删除-->
-	<delete id="delByKeys" parameterType="ArrayList">
-		DELETE FROM BS_EMPLOYEE WHERE 
+	<delete id="delByKeys" parameterType="HashMap">
+		DELETE FROM BS_EMPLOYEE WHERE craete_userid = #{userId} AND
 			kid IN
-		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+		<foreach item="item" index="index" collection="lists" open="(" separator="," close=")">
             #{item}
 		</foreach>
 	</delete>

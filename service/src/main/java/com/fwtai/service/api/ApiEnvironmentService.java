@@ -149,7 +149,12 @@ public class ApiEnvironmentService{
         if(validate != null)return validate;
         final String ids = formData.getString(p_ids);
         final ArrayList<String> lists = ToolString.keysToList(ids);
-        return ToolClient.executeRows(apiEnvironmentDao.delByKeys(lists),"操作成功","数据已不存在,刷新重试");
+        final HashMap<String,Object> map = new HashMap<>(2);
+        map.put("lists",lists);
+        map.put("userId",formData.get(p_userId));
+        final int rows = apiEnvironmentDao.delByKeys(map);
+        final String msg = (rows == lists.size()) ? "操作成功" : "成功"+rows+"条数,失败"+(lists.size()-rows)+"条数";
+        return ToolClient.executeRows(rows,msg,"操作失败,刷新重试");
     }
 
     public String editPublish(final ArrayList<PublishBean> lists){

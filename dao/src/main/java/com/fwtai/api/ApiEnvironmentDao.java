@@ -45,8 +45,8 @@ public class ApiEnvironmentDao{
         return dao.execute("api_bs_environment.delById",formData);
     }
 
-    public int delByKeys(final ArrayList<String> list){
-        return dao.execute("api_bs_environment.delByKeys",list);
+    public int delByKeys(final HashMap<String,Object> map){
+        return dao.execute("api_bs_environment.delByKeys",map);
     }
 
     public HashMap<String,Object> listData(final PageFormData pageFormData){

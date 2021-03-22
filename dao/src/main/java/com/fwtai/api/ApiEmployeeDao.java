@@ -45,8 +45,8 @@ public class ApiEmployeeDao{
         return dao.execute("api_bs_employee.delById",formData);
     }
 
-    public int delByKeys(final ArrayList<String> list){
-        return dao.execute("api_bs_employee.delByKeys",list);
+    public int delByKeys(final HashMap<String,Object> map){
+        return dao.execute("api_bs_employee.delByKeys",map);
     }
 
     public int editPublish(final ArrayList<PublishBean> lists){
