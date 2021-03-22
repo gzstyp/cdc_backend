@@ -71,7 +71,8 @@ public class EnvironmentController{
     /**删除-单行*/
     @ApiOperation(value = "删除数据", notes = "通过id删除对应数据")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "删除数据的id", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "id", value = "删除数据的id", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "userId", value = "当前登录账号的id", dataType = "String", paramType = "query", required = true)
     })
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/delById")
@@ -82,7 +83,8 @@ public class EnvironmentController{
     /**批量删除*/
     @ApiOperation(value = "批量删除", notes = "通过ids删除对应数据,ids是字符串,每个值主键id以英文逗号,隔开;如10001,10002,10003")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true)
+        @ApiImplicitParam(name = "ids", value = "主键的集合以英文逗号,隔开。如10001,10002,10003", dataType = "String", paramType = "query", required = true),
+        @ApiImplicitParam(name = "userId", value = "当前登录账号的id", dataType = "String", paramType = "query", required = true)
     })
     @PreAuthorize("hasRole('ROLE_APP')")
     @PostMapping("/delByKeys")

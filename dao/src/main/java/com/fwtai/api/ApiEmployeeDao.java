@@ -41,8 +41,8 @@ public class ApiEmployeeDao{
         return dao.queryForHashMap("api_bs_employee.queryById",kid);
     }
 
-    public int delById(final String kid){
-        return dao.execute("api_bs_employee.delById",kid);
+    public int delById(final PageFormData formData){
+        return dao.execute("api_bs_employee.delById",formData);
     }
 
     public int delByKeys(final ArrayList<String> list){

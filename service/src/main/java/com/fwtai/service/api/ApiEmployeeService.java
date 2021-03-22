@@ -140,19 +140,21 @@ public class ApiEmployeeService{
 
     public String delById(final PageFormData formData){
         final String p_kid = "id";
-        final String validate = ToolClient.validateField(formData,p_kid);
+        final String p_userId = "userId";
+        final String validate = ToolClient.validateField(formData,p_kid,p_userId);
         if(validate != null)return validate;
         final String kid = formData.getString(p_kid);
         final String exist_key = apiEmployeeDao.queryExistById(kid);
         if(exist_key == null){
             return ToolClient.createJson(ConfigFile.code199,"删除失败,数据已不存在");
         }
-        return ToolClient.executeRows(apiEmployeeDao.delById(kid));
+        return ToolClient.executeRows(apiEmployeeDao.delById(formData));
     }
 
     public String delByKeys(final PageFormData formData){
         final String p_ids = "ids";
-        final String validate = ToolClient.validateField(formData,p_ids);
+        final String p_userId = "userId";
+        final String validate = ToolClient.validateField(formData,p_ids,p_userId);
         if(validate != null)return validate;
         final String ids = formData.getString(p_ids);
         final ArrayList<String> lists = ToolString.keysToList(ids);

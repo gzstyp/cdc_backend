@@ -428,8 +428,8 @@
     </select>
 	
 	<!-- 行删除 -->
-	<delete id="delById" parameterType="String">
-		DELETE FROM BS_ENVIRONMENT WHERE kid = #{kid} LIMIT 1
+	<delete id="delById" parameterType="HashMap">
+		DELETE FROM BS_ENVIRONMENT WHERE kid = #{id} AND craete_userid = #{userId} LIMIT 1
 	</delete>
 	
 	<!-- 删除|批量删除-->
