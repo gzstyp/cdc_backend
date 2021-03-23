@@ -142,7 +142,7 @@ public final class ToolString implements Serializable {
 
     /**
      * 去除空格,如果为空则返回null,若有且只有_也只返回null否则去除前后空格后返回
-     * @param obj
+     * @param value
      * @作者 田应平
      * @返回值类型 String
      * @创建时间 2015-8-18 下午2:03:25
@@ -150,13 +150,18 @@ public final class ToolString implements Serializable {
      * @注释 \s 匹配任何空白字符，包括空格、制表符、换页符,* 匹配前面的子表达式零次或多次。
      * @官网 http://www.fwtai.com
      */
-	public static String wipeString(final String obj){
-		if(obj == null || obj.length() <= 0)return null;
-		final String key = obj.replaceAll("\\s*", "");
+	public static String wipeString(final String value){
+		if(value == null || value.length() <= 0)return null;
+		final String key = value.replaceAll("\\s*", "");
 		if(key.length() == 1 && key.equals("_"))return null;
 		return key;
 	}
-	
+
+	public static String wipeStrBlank(final String value){
+        if(value == null || value.length() <= 0)return null;
+        return Pattern.compile("\\s*|\t|\r|\n").matcher(value).replaceAll("");
+    }
+
 	/**
 	 * 是否大于指定长度,若大于返回true否则返回false
 	 * @param value

@@ -2,6 +2,7 @@ package com.fwtai.poi;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.tool.ToolString;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -34,7 +35,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,18 +137,17 @@ public final class ToolExcel{
 									if(ToolString.isBlank(cell)){
 										continue;//读取为空时处理
 									}
-									switch (cell.getCellType()){
-									default:
-										final String temp = cell.getStringCellValue();
-										for (String key : mapper.keySet()){
-											if (key.equalsIgnoreCase(temp)) {
-												fields.add(mapper.get(key));
-												break;
-											}
-										}
-										break;
-									}
-								}
+                                    String value = cell.getStringCellValue();
+                                    if(value != null && value.length() > 0){
+                                        value = ToolString.wipeStrBlank(value);
+                                    }
+                                    for(String key : mapper.keySet()){
+                                        if(key.equalsIgnoreCase(value)){
+                                            fields.add(mapper.get(key));
+                                            break;
+                                        }
+                                    }
+                                }
 							}
 							final Row row = sheet.getRow(i);//获取第i行
 							final HashMap<String, Object> map = readExcelRow(row,fields);
@@ -176,28 +178,35 @@ public final class ToolExcel{
 			if(ToolString.isBlank(cell)){
 				continue;//读取为空时处理
 			}
-			switch (cell.getCellType()){
-			case Cell.CELL_TYPE_NUMERIC:
-				final DecimalFormat df = new DecimalFormat("0");  
-				final String value = df.format(cell.getNumericCellValue());
-				map.put(fields.get(j),value);
-				break;
-			case Cell.CELL_TYPE_STRING:
-				map.put(fields.get(j),cell.getStringCellValue());
-				break;
-			case Cell.CELL_TYPE_BOOLEAN:
-				map.put(fields.get(j),cell.getBooleanCellValue());
-				break;
-			case Cell.CELL_TYPE_FORMULA:
-				map.put(fields.get(j),cell.getCellFormula());
-				break;
-			case Cell.CELL_TYPE_BLANK:
-				map.put(fields.get(j),"");
-				break;
-			default:
-				map.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
-				break;
-			}
+            switch (cell.getCellTypeEnum()){
+                case STRING:
+                    map.put(fields.get(j),cell.getStringCellValue());
+                    break;
+                case NUMERIC:
+                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                        final Date date = cell.getDateCellValue();
+                        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        final String value = formatter.format(date);
+                        map.put(fields.get(j),value);
+                    } else {
+                        final DecimalFormat df = new DecimalFormat("0.00");
+                        final String value = df.format(cell.getNumericCellValue());
+                        map.put(fields.get(j),value);
+                    }
+                    break;
+                case BOOLEAN:
+                    map.put(fields.get(j),cell.getBooleanCellValue());
+                    break;
+                case FORMULA:
+                    map.put(fields.get(j),cell.getCellFormula());
+                    break;
+                case BLANK:
+                    map.put(fields.get(j),"");
+                    break;
+                default:
+                    map.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
+                    break;
+            }
 		}
 		return map;
 	}
@@ -285,18 +294,17 @@ public final class ToolExcel{
 									if(ToolString.isBlank(cell)){
 										continue;//读取为空时处理
 									}
-									switch (cell.getCellType()){
-									default:
-										final String temp = cell.getStringCellValue();
-										for (String key : mapper.keySet()){
-											if (key.equalsIgnoreCase(temp)) {
-												fields.add(mapper.get(key));
-												break;
-											}
-										}
-										break;
-									}
-								}
+                                    String value = cell.getStringCellValue();
+                                    if(value != null && value.length() > 0){
+                                        value = ToolString.wipeStrBlank(value);
+                                    }
+                                    for(String key : mapper.keySet()){
+                                        if(key.equalsIgnoreCase(value)){
+                                            fields.add(mapper.get(key));
+                                            break;
+                                        }
+                                    }
+                                }
 							}
 							list.add(readRowPageFormData(fields,sheet.getRow(i)));//获取并解析第i行
 						}
@@ -325,133 +333,147 @@ public final class ToolExcel{
 			if (ToolString.isBlank(cell)){
 				continue;
 			}
-			switch (cell.getCellType()){
-			case Cell.CELL_TYPE_NUMERIC:
-				final DecimalFormat df = new DecimalFormat("0");  
-				final String value = df.format(cell.getNumericCellValue());
-				pageData.put(fields.get(j),value);
-				break;
-			case Cell.CELL_TYPE_STRING:
-				pageData.put(fields.get(j),cell.getStringCellValue());
-				break;
-			case Cell.CELL_TYPE_BOOLEAN:
-				pageData.put(fields.get(j),cell.getBooleanCellValue());
-				break;
-			case Cell.CELL_TYPE_FORMULA:
-				pageData.put(fields.get(j),cell.getCellFormula());
-				break;
-			case Cell.CELL_TYPE_BLANK:
-				pageData.put(fields.get(j),"");
-				break;
-			default:
-				pageData.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
-				break;
-			}
+            switch (cell.getCellTypeEnum()){
+                case STRING:
+                    pageData.put(fields.get(j),cell.getStringCellValue());
+                    break;
+                case NUMERIC:
+                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                        final Date date = cell.getDateCellValue();
+                        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        final String value = formatter.format(date);
+                        pageData.put(fields.get(j),value);
+                    } else {
+                        final DecimalFormat df = new DecimalFormat("0.00");
+                        final String value = df.format(cell.getNumericCellValue());
+                        pageData.put(fields.get(j),value);
+                    }
+                    break;
+                case BOOLEAN:
+                    pageData.put(fields.get(j),cell.getBooleanCellValue());
+                    break;
+                case FORMULA:
+                    pageData.put(fields.get(j),cell.getCellFormula());
+                    break;
+                case BLANK:
+                    pageData.put(fields.get(j),"");
+                    break;
+                default:
+                    pageData.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
+                    break;
+            }
 		}
 		return pageData;
 	}
-	
-	/**
-	 * 动态导入解析Excel数据表格的表头,含xls或xlsx文件解析,只要求表头列的map的key和字段对应即可,不要求顺序一一对应,如果某行的第1列为空则不读取后面的数据,即跳出循环!推荐使用,表头必须在第1列
-	 * @param mapper map类型的和列的头部,有多少列就有多少个map,如：mapper.put("姓名","NAME");如：mapper.put("性别","SEX");key为对应的表头列,value是字段
-	 * @param excelPath Excel文件路径，绝对物理全路径
-	 * @param index 从Excel文件的第几行开始解析,0就是从第1行开始读取,1就是从第2行开始读取
-	 * @作者 田应平
-	 * @返回值类型 ArrayList< HashMap< String,Object>>
-	 * @创建时间 2017年9月15日 09:16:54
-	 * @QQ号码 444141300
-	 * @主页 http://www.fwtai.com
-	*/
-	public static ArrayList<HashMap<String,Object>> parseExcel(final HashMap<String,String> mapper,final String excelPath, int index) throws Exception{
-		final ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>(0);
-		final File excelFile = new File(excelPath); //创建文件对象
-		final FileInputStream is = new FileInputStream(excelFile); // 文件流
-		final Workbook workbook = WorkbookFactory.create(is);//关键
-		final int sheetCount = workbook.getNumberOfSheets(); //Sheet的数量
-		final ArrayList<String> fields = new ArrayList<String>(0);
-		//遍历每个Sheet
-		for(int s = 0;s< sheetCount; s++){
-			final Sheet sheet = workbook.getSheetAt(s);//获取第s个Sheet页
-			if(sheet.getRow(s) != null){
-				final int rowCount = sheet.getLastRowNum();//getLastRowNum()是获取最后一行的编号
-				final Row header = sheet.getRow(0);//表头必须在第1列
-				if(header != null){
-					final int rowCellCount = header.getLastCellNum();
-					index = index < 0 ? 0 :index ;
-					index = index >= rowCount ? rowCount : index;
-					final int head = index <= 0 ? 0 :index - 1;//判断是否有标题行
-					boolean b = true;
-					boolean isBreak = false;
-					if(rowCount > 0 && rowCellCount > 0){
-						for(int i = index; i <= rowCount; i++){//index=0就是从第1行开始读取，index=1就是从第2行开始读取
-							if(head >= 0 && b){
-								fields.clear();
-								b = false;
-								final Row row = sheet.getRow(head< 0 ? 0 : head);//获取第i-1行,即表头行
-								for (int j = 0; j < rowCellCount; j++){
-									final Cell cell = row.getCell(j);//获取第head行的第j个单元格
-									if(ToolString.isBlank(cell)){
-										continue;//读取为空时处理
-									}
-									switch (cell.getCellType()){
-									default:
-										final String value = cell.getStringCellValue();
-										for (String key : mapper.keySet()){
-											if (key.equalsIgnoreCase(value)){
-												fields.add(mapper.get(key));
-												break;
-											}
-										}
-										break;
-									}
-								}
-							}
-							if (isBreak){
-								break;
-							}
-							final Row row = sheet.getRow(i);//获取第i行
-							final HashMap<String,Object> map = new HashMap<String,Object>(0);
-							for(int j = 0; j < row.getLastCellNum(); j++){
-								final Cell cell = row.getCell(j);//第j个单元格
-								if(ToolString.isBlank(cell) && j == 0){
-									isBreak = true;
-									break;
-								}
-								if(ToolString.isBlank(cell)){
-									continue;//读取为空时处理
-								}
-								switch (cell.getCellType()){
-								case Cell.CELL_TYPE_NUMERIC:
-									final DecimalFormat df = new DecimalFormat("0");  
-									final String value = df.format(cell.getNumericCellValue());
-									map.put(fields.get(j),value);
-									break;
-								case Cell.CELL_TYPE_STRING:
-									map.put(fields.get(j),cell.getStringCellValue());
-									break;
-								case Cell.CELL_TYPE_BOOLEAN:
-									map.put(fields.get(j),cell.getBooleanCellValue());
-									break;
-								case Cell.CELL_TYPE_FORMULA:
-									map.put(fields.get(j),cell.getCellFormula());
-									break;
-								case Cell.CELL_TYPE_BLANK:
-									map.put(fields.get(j),"");
-									break;
-								default:
-									map.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
-									break;
-								}
-							}
-							if(!isBreak)list.add(map);
-						}
-					}
-				}
-			}
-		}
-		is.close();
-		return list;
-	}
+
+    /**
+     * 动态导入解析Excel数据表格的表头,含xls或xlsx文件解析,只要求表头列的map的key和字段对应即可,不要求顺序一一对应,如果某行的第1列为空则不读取后面的数据,即跳出循环!推荐使用,表头必须在第1列
+     * @param mapper map类型的和列的头部,有多少列就有多少个map,如：mapper.put("姓名","NAME");如：mapper.put("性别","SEX");key为对应的表头列,value是字段
+     * @param excelPath Excel文件路径，绝对物理全路径
+     * @param titleRowIndex 表头行所在的索引位置,0就是从第1行开始读取,1就是从第2行开始读取
+     * @param dataRowIndex 从Excel文件的第几行开始解析,0就是从第1行开始读取,1就是从第2行开始读取
+     * @作者 田应平
+     * @返回值类型 ArrayList< HashMap< String,Object>>
+     * @创建时间 2017年9月15日 09:16:54
+     * @QQ号码 444141300
+     * @主页 http://www.fwtai.com
+    */
+    public static ArrayList<HashMap<String,Object>> parseExcel(final HashMap<String,String> mapper,final String excelPath,final int titleRowIndex,int dataRowIndex) throws Exception{
+        final ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>(0);
+        final File excelFile = new File(excelPath); //创建文件对象
+        final FileInputStream is = new FileInputStream(excelFile); // 文件流
+        final Workbook workbook = WorkbookFactory.create(is);//关键
+        final int sheetCount = workbook.getNumberOfSheets(); //Sheet的数量
+        final ArrayList<String> fields = new ArrayList<String>(0);
+        //遍历每个Sheet
+        for(int s = 0;s< sheetCount; s++){
+            final Sheet sheet = workbook.getSheetAt(s);//获取第s个Sheet页
+            if(sheet.getRow(s) != null){
+                final int rowCount = sheet.getLastRowNum();//getLastRowNum()是获取最后一行的编号
+                final Row header = sheet.getRow(titleRowIndex);//指定表头行
+                if(header != null){
+                    final int rowCellCount = header.getLastCellNum();
+                    dataRowIndex = dataRowIndex < 0 ? 0 :dataRowIndex ;
+                    dataRowIndex = dataRowIndex >= rowCount ? rowCount : dataRowIndex;
+                    final int head = dataRowIndex <= 0 ? 0 :dataRowIndex - 1;//判断是否有标题行
+                    boolean b = true;
+                    boolean isBreak = false;
+                    if(rowCount > 0 && rowCellCount > 0){
+                        for(int i = dataRowIndex; i <= rowCount; i++){//index=0就是从第1行开始读取，index=1就是从第2行开始读取
+                            if(head >= 0 && b){
+                                fields.clear();
+                                b = false;
+                                final Row row = sheet.getRow(head< 0 ? 0 : head);//获取第i-1行,即表头行
+                                for (int j = 0; j < rowCellCount; j++){
+                                    final Cell cell = row.getCell(j);//获取第head行的第j个单元格
+                                    if(ToolString.isBlank(cell)){
+                                        continue;//读取为空时处理
+                                    }
+                                    String value = cell.getStringCellValue();
+                                    if(value != null && value.length() > 0){
+                                        value = ToolString.wipeStrBlank(value);
+                                    }
+                                    for(final String key : mapper.keySet()){
+                                        if(key.equalsIgnoreCase(value)){
+                                            fields.add(mapper.get(key));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (isBreak){
+                                break;
+                            }
+                            final Row row = sheet.getRow(i);//获取第i行
+                            final HashMap<String,Object> map = new HashMap<String,Object>();
+                            for(int j = 0; j < row.getLastCellNum(); j++){
+                                final Cell cell = row.getCell(j);//第j个单元格
+                                if(ToolString.isBlank(cell) && j == 0){
+                                    isBreak = true;
+                                    break;
+                                }
+                                if(ToolString.isBlank(cell)){
+                                    continue;//读取为空时处理
+                                }
+                                switch (cell.getCellTypeEnum()){
+                                    case STRING:
+                                        map.put(fields.get(j),cell.getStringCellValue());
+                                        break;
+                                    case NUMERIC:
+                                        if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                                            final Date date = cell.getDateCellValue();
+                                            final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                                            final String value = formatter.format(date);
+                                            map.put(fields.get(j),value);
+                                        } else {
+                                            final DecimalFormat df = new DecimalFormat("0.00");
+                                            final String value = df.format(cell.getNumericCellValue());
+                                            map.put(fields.get(j),value);
+                                        }
+                                        break;
+                                    case BOOLEAN:
+                                        map.put(fields.get(j),cell.getBooleanCellValue());
+                                        break;
+                                    case FORMULA:
+                                        map.put(fields.get(j),cell.getCellFormula());
+                                        break;
+                                    case BLANK:
+                                        map.put(fields.get(j),"");
+                                        break;
+                                    default:
+                                        map.put(fields.get(j),String.valueOf(cell.getStringCellValue()));
+                                        break;
+                                }
+                            }
+                            if(!isBreak)list.add(map);
+                        }
+                    }
+                }
+            }
+        }
+        is.close();
+        return list;
+    }
 	
 	/**
 	 * 生成创建2007或2010版本的Excel表格文件,会按着表头标题栏的下一行写入数据,即从第2行开始写入数据
