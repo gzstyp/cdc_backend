@@ -1157,8 +1157,10 @@ public final class ToolClient implements Serializable{
     }
 
     /**
-     * 封装文件上传,指定上传的目录,返回值HashMap_String,Object>,files,params,error
+     * 封装文件上传,返回值实体 UploadObject,仅需判断 uploadObject.getErrorMsg();是否为空再处理业务
      * @param baseDir 该值的结尾必须要带 /
+     * @param prefixType 前缀分类,如图片 /images; 或 /excel/import
+     * @param temporary 文件是否是临时文件,如导入的文件算是临时的文件,是临时则不创建以日期的生成的目录
      * @param limit 如果该值为null或为负数时则不限制文件数
      * @param verify 文件是否是必填项
      * @return HashMap_key,Object>,其中key可能为error,files,params，要做error判断再做页面处理,若 key 不为空时,那files则是　ArrayList_HashMap_String,String;params是PageFormData
@@ -1166,7 +1168,7 @@ public final class ToolClient implements Serializable{
      * @QQ 444141300
      * @创建时间 2020年6月1日 21:04:37
     */
-    public static UploadObject uploadImage(final HttpServletRequest request,final String baseDir,final Integer limit,final boolean verify){
+    public static UploadObject uploadImage(final HttpServletRequest request,final String baseDir,final String prefixType,final boolean temporary,final Integer limit,final boolean verify){
         final UploadObject uploadObject = new UploadObject();
         final PageFormData formData = new PageFormData(request);
         MultipartHttpServletRequest mhsr = null;
@@ -1213,7 +1215,7 @@ public final class ToolClient implements Serializable{
                 final String originalName = mf.getOriginalFilename();
                 final String extName = originalName.substring(originalName.lastIndexOf("."));
                 final String fileName = ToolString.getIdsChar32() + extName;
-                final String dayDir = "/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/";
+                final String dayDir = temporary ? (prefixType + "/") : (prefixType + "/" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "/");
                 final File fileDir = new File(baseDir + dayDir);
                 if(!fileDir.exists()){
                     fileDir.mkdirs();
@@ -1221,7 +1223,7 @@ public final class ToolClient implements Serializable{
                 final String fullPath = (baseDir + dayDir + fileName).replaceAll("//","/");
                 mf.transferTo(new File(fullPath));
                 final UploadFile uploadFile = new UploadFile();
-                uploadFile.setUrlFile("/images"+dayDir + fileName);// Nginx的配置windows环境的路径 root C:\\;上传的跟目录是 C:\images; Nginx的配置linux的环境路径 root /home/data/;上传的跟目录是 /home/data/images/
+                uploadFile.setUrlFile(dayDir + fileName);// Nginx的配置windows环境的路径 root C:\\;上传的跟目录是 C:\images; Nginx的配置linux的环境路径 root /home/data/;上传的跟目录是 /home/data/images/
                 uploadFile.setOriginalName(originalName);
                 uploadFile.setFullPath(fullPath);
                 uploadFile.setFileName(fileName);
