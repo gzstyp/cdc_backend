@@ -1,11 +1,14 @@
 package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
+import com.fwtai.bean.UploadFile;
+import com.fwtai.bean.UploadObject;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.poi.ToolExcel;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.EnvironmentDao;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +29,12 @@ import java.util.Map;
 */
 @Service
 public class EnvironmentService{
+
+    @Value("${upload_dir_window}")
+    private String dir_window;
+
+    @Value("${upload_dir_linux}")
+    private String dir_linux;
 
     @Resource
     private EnvironmentDao environmentDao;
@@ -138,6 +147,55 @@ public class EnvironmentService{
             return ToolClient.dataTableOK((List<Object>)map.get(ConfigFile.rows),map.get(ConfigFile.total),formData.get("sEcho"));
         } catch (Exception e){
             return ToolClient.dataTableException(formData.get("sEcho"));
+        }
+    }
+
+    public String addImportExcel(final HttpServletRequest request){
+        final PageFormData formData = new PageFormData(request);
+        final String p_excel = "excel";
+        final String p_province_id = "province_id";
+        final String p_city_id = "city_id";
+        final String p_county_id = "county_id";
+        final String p_area_level = "area_level";
+        final String validate = ToolClient.validateField(formData,p_excel,p_province_id,p_city_id,p_county_id,p_area_level);
+        if(validate != null)return validate;
+        final String baseDir = ToolString.isLinuxOS() ? dir_linux : dir_window;
+        final UploadObject uploadObject = ToolClient.uploadImage(request,baseDir,"/excel/import",true,1,true);
+        final String errorMsg = uploadObject.getErrorMsg();
+        if(errorMsg != null) return ToolClient.createJsonFail(errorMsg);
+        final ArrayList<UploadFile> listFiles = uploadObject.getListFiles();
+        if(listFiles == null || listFiles.size() <= 0) return ToolClient.createJsonFail("请选择Excel文件");
+        final String fullPath = listFiles.get(0).getFullPath();
+        final HashMap<String,String> mapper = new HashMap<>();
+
+        /* 序号	标本实验编号*/
+
+        mapper.put("标本实验编号","sample_code");
+        //mapper.put("市（州）","site_type");
+        //mapper.put("县（区）","freeze_type");
+        mapper.put("监测场所类型（从下拉列表选择）","site_type");
+        mapper.put("若为冷库请选择类型","freeze_type");
+        mapper.put("市场名称","market_name");
+        mapper.put("摊主姓名","vendor_name");
+        mapper.put("摊位编号","vendor_code");
+        mapper.put("产品来源地（填写至国家、省、市）","source");
+        mapper.put("是否为进口产品","entrance");
+        mapper.put("若为进口产品请填写批号","entrance_serial");
+        mapper.put("标本名称（写明具体标本名称，如三文鱼涂抹物）","sample_name");
+        mapper.put("是否冷链相关","freeze_related");
+        mapper.put("标本类型（从下拉列表选择）","sample_type");
+        mapper.put("采样日期","sampling_date");
+        mapper.put("检测日期","detection_date");
+        mapper.put("新冠核酸检测结果","result");
+        mapper.put("备注","remark");
+        try {
+            final ArrayList<HashMap<String,Object>> list = ToolExcel.parseExcel(mapper,fullPath,1,2);
+            ToolClient.delFileByThread(fullPath);
+            return ToolClient.queryJson(listFiles.get(0));
+        } catch (final Exception e) {
+            e.printStackTrace();
+            ToolClient.delFileByThread(fullPath);
+            return ToolClient.createJsonFail("导入失败,稍候重试");
         }
     }
 

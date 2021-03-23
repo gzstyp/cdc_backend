@@ -89,6 +89,13 @@ public class EnvironmentController{
         ToolClient.responseJson(dictionaryService.queryDictData(pid),response);
     }
 
+    //导入
+    @PreAuthorize("hasAuthority('environment_btn_import')")
+    @PostMapping("/importExcel")
+    public void importExcel(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(environmentService.addImportExcel(request),response);
+    }
+
     @PreAuthorize("hasAuthority('environment_btn_export')")
     @GetMapping("/exportExcel")
     public void exportExcel(final HttpServletRequest request,final HttpServletResponse response){
