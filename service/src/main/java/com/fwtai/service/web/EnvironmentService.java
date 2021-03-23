@@ -150,6 +150,7 @@ public class EnvironmentService{
         }
     }
 
+    //需要手动删除序号、市（州）、县（区）的列、把所有的单元格‘设置单元格格式->文本’,需要把下拉的文字和PC后端的文字要一致,否则导入进去对不上!!!
     public String addImportExcel(final HttpServletRequest request){
         final PageFormData formData = new PageFormData(request);
         final String p_excel = "excel";
@@ -167,9 +168,7 @@ public class EnvironmentService{
         if(listFiles == null || listFiles.size() <= 0) return ToolClient.createJsonFail("请选择Excel文件");
         final String fullPath = listFiles.get(0).getFullPath();
         final HashMap<String,String> mapper = new HashMap<>();
-
         /* 序号	标本实验编号*/
-
         mapper.put("标本实验编号","sample_code");
         //mapper.put("市（州）","site_type");
         //mapper.put("县（区）","freeze_type");
