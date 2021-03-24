@@ -1,13 +1,17 @@
 package com.fwtai.service.web;
 
 import com.fwtai.bean.PageFormData;
+import com.fwtai.bean.UploadFile;
+import com.fwtai.bean.UploadObject;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.LocalUserId;
 import com.fwtai.core.UserDao;
+import com.fwtai.poi.ToolExcel;
 import com.fwtai.tool.ToolChinese;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import com.fwtai.web.ManageLocationDao;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +30,12 @@ import java.util.List;
 */
 @Service
 public class ManageLocationService{
+
+    @Value("${upload_dir_window}")
+    private String dir_window;
+
+    @Value("${upload_dir_linux}")
+    private String dir_linux;
 
     @Resource
     private ManageLocationDao managelocationDao;
@@ -179,6 +189,42 @@ public class ManageLocationService{
             return ToolClient.dataTableOK((List<Object>)map.get(ConfigFile.rows),map.get(ConfigFile.total),formData.get("sEcho"));
         } catch (Exception e){
             return ToolClient.dataTableException(formData.get("sEcho"));
+        }
+    }
+
+    //需要手动删除序号、市（州）、县（区）的列、把所有的单元格‘设置单元格格式->文本’,需要把下拉的文字和PC后端的文字要一致,否则导入进去对不上!!!
+    public String addImportExcel(final HttpServletRequest request){
+        final PageFormData formData = new PageFormData(request);
+        final String p_excel = "excel";
+        final String p_province_id = "province_id";
+        final String p_city_id = "city_id";
+        final String p_county_id = "county_id";
+        final String validate = ToolClient.validateField(formData,p_excel,p_province_id,p_city_id,p_county_id);
+        if(validate != null)return validate;
+        final String baseDir = ToolString.isLinuxOS() ? dir_linux : dir_window;
+        final UploadObject uploadObject = ToolClient.uploadImage(request,baseDir,"/excel/import",true,1,true);
+        final String errorMsg = uploadObject.getErrorMsg();
+        if(errorMsg != null) return ToolClient.createJsonFail(errorMsg);
+        final ArrayList<UploadFile> listFiles = uploadObject.getListFiles();
+        if(listFiles == null || listFiles.size() <= 0) return ToolClient.createJsonFail("请选择Excel文件");
+        final String fullPath = listFiles.get(0).getFullPath();
+        final HashMap<String,String> mapper = new HashMap<>();
+        mapper.put("场所类型（从下拉列表选择）","site_type");
+        mapper.put("名称","site_name");
+        mapper.put("联系人","linkman");
+        mapper.put("联系人手机号","mobile");
+        mapper.put("地址","address");
+        mapper.put("是否有冷冻冷藏产品","freeze");
+        mapper.put("是否含有冷冻进口产品","entrance");
+        mapper.put("是否含有高中风险地区产品","risk");
+        try {
+            final ArrayList<HashMap<String,Object>> list = ToolExcel.parseExcel(mapper,fullPath,1,2);
+            ToolClient.delFileByThread(fullPath);
+            return ToolClient.queryJson(listFiles.get(0));
+        } catch (final Exception e) {
+            e.printStackTrace();
+            ToolClient.delFileByThread(fullPath);
+            return ToolClient.createJsonFail("导入失败,请检查文件表头是否有误");
         }
     }
 

@@ -194,7 +194,7 @@ public class EnvironmentService{
         } catch (final Exception e) {
             e.printStackTrace();
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.createJsonFail("导入失败,稍候重试");
+            return ToolClient.createJsonFail("导入失败,请检查文件表头是否有误");
         }
     }
 

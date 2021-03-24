@@ -66,6 +66,13 @@ public class ManageLocationController{
         ToolClient.responseJson(managelocationService.delByKeys(ToolClient.getFormData(request)),response);
     }
 
+    //导入
+    @PreAuthorize("hasAuthority('manageLocation_btn_import')")
+    @PostMapping("/importExcel")
+    public void importExcel(final HttpServletRequest request,final HttpServletResponse response){
+        ToolClient.responseJson(managelocationService.addImportExcel(request),response);
+    }
+
     /**获取数据*/
     @PreAuthorize("hasAuthority('manageLocation_btn_listData')")
     @GetMapping("/listData")
