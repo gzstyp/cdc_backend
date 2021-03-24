@@ -257,8 +257,8 @@
     </update>
 
     <!-- 批量添加|插入-->
-    <update id="batchAdd" parameterType="ArrayList">
-        INSERT IGNORE INTO BS_MANAGE (
+    <update id="addExcel" parameterType="ArrayList">
+        INSERT INTO BS_MANAGE (
             <foreach collection="list" item="item" index="index">
                 <trim suffixOverrides=",">
                     <if test="index==0">
@@ -320,7 +320,7 @@
 
 	<!-- 编辑数据 -->
 	<update id="edit" parameterType="HashMap">
-		UPDATE IGNORE BS_MANAGE
+		UPDATE BS_MANAGE
 		<trim prefix="SET" suffixOverrides=",">
             <if test="address != null">address = #{address},</if>
             <if test="area_id != null">area_id = #{area_id},</if>

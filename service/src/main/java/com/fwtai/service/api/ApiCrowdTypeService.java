@@ -5,8 +5,6 @@ import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

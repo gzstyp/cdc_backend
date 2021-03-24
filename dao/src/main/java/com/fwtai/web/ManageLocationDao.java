@@ -60,4 +60,8 @@ public class ManageLocationDao{
     public List<HashMap<String,String>> queryIdsByName(final ArrayList<String> names){
         return dao.queryForListString("sys_dict.queryIdsByName",names);
     }
+
+    public int addExcel(final ArrayList<HashMap<String,Object>> list){
+        return dao.execute("bs_manage.addExcel",list);
+    }
 }

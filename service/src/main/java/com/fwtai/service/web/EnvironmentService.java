@@ -194,7 +194,7 @@ public class EnvironmentService{
         } catch (final Exception e) {
             e.printStackTrace();
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.createJsonFail("导入失败<br/>1.请检查表头是否有误<br/>2.是否已设置单元格格式为‘文本’?");
+            return ToolClient.createJsonFail("导入数据失败<br/>1.请检查表头数据是否有误<br/>2.全部单元格格式均已设置为‘文本’<br/>3.检查表头'名称'列数据是否有空<br/>4.单次导入数据量不要超过10000条");
         }
     }
 

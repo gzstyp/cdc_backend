@@ -232,13 +232,59 @@ public class ManageLocationService{
             final Map<String,List<Map<String, Object>>> group = list.stream().collect(groupingBy(map -> map.get("site_type").toString()));
             final ArrayList<String> names = new ArrayList<>(group.keySet());
             final List<HashMap<String,String>> ids = managelocationDao.queryIdsByName(names);
+
+            final ArrayList<HashMap<String,String>> duplicates = new ArrayList<>();
+
+            for(int i = 0; i < list.size(); i++){
+                final HashMap<String,Object> map = list.get(i);
+                String site_name = (String)map.get("site_name");
+                if(site_name == null || site_name.length() <=0){
+                    return ToolClient.createJsonFail("导入失败,其中‘名称’列的行没有数据,将其删除再导入!");
+                }
+                site_name = ToolString.wipeStrBlank(site_name);
+                map.put("site_name",site_name);
+
+                String address = (String)map.get("address");
+                if(address != null && address.length()>0){
+                    address = ToolString.wipeStrBlank(address);
+                    map.put("address",address);
+                }else{
+                    map.put("address","");
+                }
+                String linkman = (String)map.get("linkman");
+                if(linkman != null && linkman.length()>0){
+                    linkman = ToolString.wipeStrBlank(linkman);
+                    map.put("linkman",linkman);
+                }else{
+                    map.put("linkman","");
+                }
+                String mobile = (String)map.get("mobile");
+                if(mobile != null && mobile.length()>0){
+                    if(mobile.contains(".00"))
+                        mobile = mobile.substring(0,mobile.lastIndexOf("."));
+                    map.put("mobile",mobile);
+                }else{
+                    map.put("mobile","");
+                }
+                final HashMap<String,String> temp = new HashMap<>();
+                temp.put("kv","名称'"+site_name+",联系人'"+linkman+"',地址'"+address+"'");
+                duplicates.add(temp);
+            }
+
+            //分组
+            final Map<String,List<Map<String, String>>> all = duplicates.stream().collect(groupingBy(map -> map.get("kv")));
+
+            for(final String key : all.keySet()){
+                final int size = all.get(key).size();
+                if(size > 1){
+                    return ToolClient.createJsonFail("导入失败,其中"+key+"数据重复,将其删除再导入!");
+                }
+            }
+
             list.forEach(map->{
                 final String freeze = "freeze";
                 final String entrance = "entrance";
                 final String risk = "risk";
-                String mobile = String.valueOf(map.get("mobile"));
-                mobile = mobile.substring(0,mobile.lastIndexOf("."));
-                map.put("mobile",mobile);
                 final String _freeze = String.valueOf(map.get(freeze));
                 if(_freeze.equals("是")){
                     map.put(freeze,1);
@@ -258,7 +304,6 @@ public class ManageLocationService{
                     map.put(risk,0);
                 }
                 final String userId = LocalUserId.get();
-                map.put("mobile",mobile);
                 map.put("kid",ToolString.getIdsChar32());
                 map.put("flag",1);
                 map.put("area_level",3);
@@ -269,7 +314,8 @@ public class ManageLocationService{
                 map.put("audit_user",userId);
                 map.put("craete_userid",userId);
                 map.put("modify_userid",userId);
-                map.put("site_letter",ToolChinese.getPinYinHeadChar(String.valueOf(map.get("site_name"))));
+                String site_name = (String)map.get("site_name");
+                map.put("site_letter",ToolChinese.getPinYinHeadChar(site_name));
                 final String site_type = "site_type";
                 final String type = String.valueOf(map.get(site_type));
                 for(int i = 0; i < ids.size(); i++){
@@ -280,11 +326,13 @@ public class ManageLocationService{
                     }
                 }
             });
-            return ToolClient.executeRows(0);
-        } catch (final Exception e) {
+            final int rows = managelocationDao.addExcel(list);
+            final String msg = (rows == list.size()) ? "成功导入"+rows+"条" : "成功"+rows+"条数,失败"+(list.size()-rows)+"条数";
+            return ToolClient.executeRows(rows,msg,"导入数据失败");
+        } catch (final Exception e){
             e.printStackTrace();
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.createJsonFail("导入失败<br/>1.请检查表头是否有误<br/>2.是否已设置单元格格式为‘文本’?");
+            return ToolClient.createJsonFail("导入数据失败<br/>1.请检查表头数据是否有误<br/>2.全部单元格格式均已设置为‘文本’<br/>3.检查表头'名称'列数据是否有空<br/>4.检查列'联系人'、'地址'是否有重复<br/>5.单次导入数据量不要超过50000条<br/>6.若'联系人'和'地址'对应列没有数据将其删除再重新导入!");
         }
     }
 
