@@ -46,10 +46,11 @@ public final class ToolChinese{
         return sb.toString();
     }
 
-    public static String getPinYinHeadChar(final String str) {
+    public static String getPinYinHeadChar(final String value){
+        if(value == null || value.length() <=0) return null;
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            final char word = str.charAt(i);
+        for (int i = 0; i < value.length(); i++) {
+            final char word = value.charAt(i);
             final String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
             if (pinyinArray != null) {
                 sb.append(pinyinArray[0].charAt(0));
