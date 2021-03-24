@@ -156,4 +156,13 @@
         UNION ALL
         SELECT KID VALUE,NAME LABEL,SORT,'UNIT' FROM SYS_DICT WHERE PID = #{UNIT} AND DELETED = 0 ORDER BY SORT
     </select>
+
+    <!-- 获取经营场所数据 -->
+    <select id="queryIdsByName" resultType="HashMap" parameterType="HashMap">
+        select kid,name from sys_dict where pid = 'fffffffffd06f648ffffffff98c8eec6' and deleted = 0
+            and name IN
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
 </mapper>

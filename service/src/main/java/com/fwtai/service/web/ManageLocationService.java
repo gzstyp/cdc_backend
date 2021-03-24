@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * 经营场所业务层
@@ -217,14 +220,71 @@ public class ManageLocationService{
         mapper.put("是否有冷冻冷藏产品","freeze");
         mapper.put("是否含有冷冻进口产品","entrance");
         mapper.put("是否含有高中风险地区产品","risk");
+
+        final String province_id = formData.getString(p_province_id);
+        final String city_id = formData.getString(p_city_id);
+        final String county_id = formData.getString(p_county_id);
+
         try {
             final ArrayList<HashMap<String,Object>> list = ToolExcel.parseExcel(mapper,fullPath,1,2);
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.queryJson(listFiles.get(0));
+            //分组
+            final Map<String,List<Map<String, Object>>> group = list.stream().collect(groupingBy(map -> map.get("site_type").toString()));
+            final ArrayList<String> names = new ArrayList<>(group.keySet());
+            final List<HashMap<String,String>> ids = managelocationDao.queryIdsByName(names);
+            list.forEach(map->{
+                final String freeze = "freeze";
+                final String entrance = "entrance";
+                final String risk = "risk";
+                String mobile = String.valueOf(map.get("mobile"));
+                mobile = mobile.substring(0,mobile.lastIndexOf("."));
+                map.put("mobile",mobile);
+                final String _freeze = String.valueOf(map.get(freeze));
+                if(_freeze.equals("是")){
+                    map.put(freeze,1);
+                }else{
+                    map.put(freeze,0);
+                }
+                final String _entrance = String.valueOf(map.get(entrance));
+                if(_entrance.equals("是")){
+                    map.put(entrance,1);
+                }else{
+                    map.put(entrance,0);
+                }
+                final String _risk = String.valueOf(map.get(risk));
+                if(_risk.equals("是")){
+                    map.put(risk,1);
+                }else{
+                    map.put(risk,0);
+                }
+                final String userId = LocalUserId.get();
+                map.put("mobile",mobile);
+                map.put("kid",ToolString.getIdsChar32());
+                map.put("flag",1);
+                map.put("area_level",3);
+                map.put("area_id",county_id);
+                map.put("province_id",province_id);
+                map.put("city_id",city_id);
+                map.put("county_id",county_id);
+                map.put("audit_user",userId);
+                map.put("craete_userid",userId);
+                map.put("modify_userid",userId);
+                map.put("site_letter",ToolChinese.getPinYinHeadChar(String.valueOf(map.get("site_name"))));
+                final String site_type = "site_type";
+                final String type = String.valueOf(map.get(site_type));
+                for(int i = 0; i < ids.size(); i++){
+                    final HashMap<String,String> _map = ids.get(i);
+                    if(_map.get("name").equals(type)){
+                        map.put(site_type,_map.get("kid"));
+                        break;
+                    }
+                }
+            });
+            return ToolClient.executeRows(0);
         } catch (final Exception e) {
             e.printStackTrace();
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.createJsonFail("导入失败,请检查文件表头是否有误");
+            return ToolClient.createJsonFail("导入失败<br/>1.请检查表头是否有误<br/>2.是否已设置单元格格式为‘文本’?");
         }
     }
 

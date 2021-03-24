@@ -56,4 +56,8 @@ public class ManageLocationDao{
     public List<HashMap<String, Object>> getManagerLocation(){
         return dao.queryForListHashMap("bs_manage.getManagerLocation");
     }
+
+    public List<HashMap<String,String>> queryIdsByName(final ArrayList<String> names){
+        return dao.queryForListString("sys_dict.queryIdsByName",names);
+    }
 }
