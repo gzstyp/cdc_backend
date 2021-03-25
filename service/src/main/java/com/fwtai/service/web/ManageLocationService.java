@@ -280,7 +280,9 @@ public class ManageLocationService{
                     return ToolClient.createJsonFail("导入失败,其中"+key+"数据重复,将其删除再导入!");
                 }
             }
-
+            if(all.size() > 10000){
+                return ToolClient.createJsonFail("导入失败,数据量已超过10000条");
+            }
             list.forEach(map->{
                 final String freeze = "freeze";
                 final String entrance = "entrance";
@@ -332,7 +334,7 @@ public class ManageLocationService{
         } catch (final Exception e){
             e.printStackTrace();
             ToolClient.delFileByThread(fullPath);
-            return ToolClient.createJsonFail("导入数据失败<br/>1.请检查表头数据是否有误<br/>2.全部单元格格式均已设置为‘文本’<br/>3.检查表头'名称'列数据是否有空<br/>4.检查列'联系人'、'地址'是否有重复<br/>5.单次导入数据量不要超过50000条<br/>6.若'联系人'和'地址'对应列没有数据将其删除再重新导入!");
+            return ToolClient.createJsonFail("导入数据失败<br/>1.请检查表头数据是否有误<br/>2.全部单元格格式均已设置为‘文本’<br/>3.检查表头'名称'列数据是否有空<br/>4.检查列'联系人'、'地址'是否有重复<br/>5.若'联系人'和'地址'对应列没有数据将其删除再重新导入!");
         }
     }
 
