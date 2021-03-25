@@ -12,23 +12,27 @@ import javax.sql.DataSource;
 @Configuration
 public class DynamicDataSource{
 
-    private final long maxLifetime = 1800002L;
-    private final long connectionTimeout = 600000L;
-    private final long idleTimeout = 960000L;// 60000 * 16 = 960000;
+    private final long maxLifetime = 2000002L;
+
+    private final long readTimeout = 600000L;
+
+    private final long idleReadTimeout = 900000L;
 
     @Primary
     @Bean(name = "dataSource")
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource(){
         final HikariDataSource hds = DataSourceBuilder.create().type(HikariDataSource.class).build();
-        hds.setConnectionTimeout(connectionTimeout);//连接超时时间：毫秒，如果小于250毫秒，否则被重置为默认值30秒(30*1000)
+        hds.setConnectionTimeout(1000000L);//连接超时时间：毫秒，如果小于250毫秒，否则被重置为默认值30秒(30*1000)
         hds.setMaxLifetime(maxLifetime);// 连接最大存活时间,默认值是1800000，不等于0且小于30秒，会被重置为默认值30分钟.设置应该比mysql设置的超时时间短
         //如果maxPoolSize小于1，则会被重置。当minIdle<=0被重置为DEFAULT_POOL_SIZE则为10;如果minIdle>0则重置为minIdle的值
         hds.setMaximumPoolSize(128);//最大连接数，小于等于0会被重置为默认值10；大于零小于1会被重置为minimum-idle的值
         //如果idleTimeout+1秒>maxLifetime 且 maxLifetime>0，则会被重置为0（代表永远不会退出）；如果idleTimeout!=0且小于10秒，则会被重置为10秒
-        hds.setIdleTimeout(idleTimeout);// 空闲连接超时时间，默认值600000（10分钟），如果大于等于max-lifetime且max-lifetime>0，会被重置为0；不等于0且小于10秒，会被重置为10秒
+        // 60000 * 16 = 960000;
+        hds.setIdleTimeout(1060000L);// 空闲连接超时时间，默认值600000（10分钟），如果大于等于max-lifetime且max-lifetime>0，会被重置为0；不等于0且小于10秒，会被重置为10秒
         hds.setMinimumIdle(120);//最小空闲连接，默认值10，小于0或大于maximum-pool-size，都会重置为maximum-pool-size
-        hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
+        hds.setConnectionTestQuery("SELECT 1");
+        //hds.setAllowPoolSuspension(true);//允许阻塞等待，恢复后执行sql，不丢失数据
         return hds;
     }
 
@@ -36,13 +40,13 @@ public class DynamicDataSource{
     @ConfigurationProperties(prefix = "spring.db.slave0")
     public DataSource slaveDataSource0() {
         final HikariDataSource hds = DataSourceBuilder.create().type(HikariDataSource.class).build();
-        hds.setConnectionTimeout(connectionTimeout);
+        hds.setConnectionTimeout(readTimeout);
         hds.setMaxLifetime(maxLifetime);
         hds.setMaximumPoolSize(129);
-        hds.setIdleTimeout(idleTimeout);
+        hds.setIdleTimeout(idleReadTimeout);
         hds.setMinimumIdle(120);
         hds.setReadOnly(true);
-        hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
+        hds.setConnectionTestQuery("SELECT 1");
         return hds;
     }
 
@@ -50,13 +54,13 @@ public class DynamicDataSource{
     @ConfigurationProperties(prefix = "spring.db.slave1")
     public DataSource slaveDataSource1() {
         final HikariDataSource hds = DataSourceBuilder.create().type(HikariDataSource.class).build();
-        hds.setConnectionTimeout(connectionTimeout);
+        hds.setConnectionTimeout(readTimeout);
         hds.setMaxLifetime(maxLifetime);
         hds.setMaximumPoolSize(130);
-        hds.setIdleTimeout(idleTimeout);
+        hds.setIdleTimeout(idleReadTimeout);
         hds.setMinimumIdle(120);
         hds.setReadOnly(true);
-        hds.setConnectionTestQuery("SELECT 1 FROM DUAL");
+        hds.setConnectionTestQuery("SELECT 1");
         return hds;
     }
 }
